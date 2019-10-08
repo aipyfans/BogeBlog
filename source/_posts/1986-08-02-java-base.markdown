@@ -1,0 +1,78 @@
+---
+layout: post
+title:  "Java基础总结"
+date:   1986-08-02 00:00:00
+categories: java
+---
+
+ 最近发现自己的Java基础很烂，所以针对各个地方的不足，上网进行恶补。
+
+* 进制以及进制之间的转换
+  - http://jingyan.baidu.com/article/495ba84109665338b30ede98.html
+  - http://jingyan.baidu.com/article/47a29f24292608c0142399cb.html
+  - http://www.cnblogs.com/icerainsoft/archive/2012/08/06/2624790.html
+  - 打印ASCII表与进制对照表
+
+
+* 8种基本类型
+  - http://www.runoob.com/java/java-basic-datatypes.html
+
+
+- 日期和时间
+- IO流
+
+
+# Java8
+
+[Java 8 教程汇总](https://wizardforcel.gitbooks.io/java8-tutorials/content/)
+
+[Java 8的新特性—终极版](https://www.jianshu.com/p/5b800057f2d8)
+
+
+
+[Java 知道您的类型](https://www.ibm.com/developerworks/cn/java/j-java8idioms8/index.html)
+
+[Java 8 中的 Streams API 详解](https://www.ibm.com/developerworks/cn/java/j-lo-java8streamapi/)
+
+[Java8 Lambda使用与原理](https://luyiisme.github.io/2017/01/21/java8-lambda/)
+
+[JAVA 8 函数式接口 - Functional Interface](http://www.cnblogs.com/chenpi/p/5890144.html)
+
+
+
+[在Android项目中使用Java8](https://zhuanlan.zhihu.com/p/23279894)
+
+# RxJava2
+
+* [探索专为 Android 而设计的 RxJava 2](https://academy.realm.io/cn/posts/gotocph-jake-wharton-exploring-rxjava2-android/)
+
+  ​
+
+* [图解RxJava2](http://rkhcy.github.io/)
+
+  * [图解RxJava2(一)](http://rkhcy.github.io/2017/12/13/%E5%9B%BE%E8%A7%A3RxJava2(%E4%B8%80)/)
+  * [图解RxJava2(二)](http://rkhcy.github.io/2017/12/21/%E5%9B%BE%E8%A7%A3RxJava2(%E4%BA%8C)/)
+  * [图解RxJava2(三)](http://rkhcy.github.io/2017/12/22/%E5%9B%BE%E8%A7%A3RxJava2(%E4%B8%89)/)
+
+  ​
+
+- [关于RxJava最友好的文章](https://juejin.im/user/566ae76a00b0bf37f5d1beec)
+
+  - [关于RxJava最友好的文章（初级篇）](https://zhuanlan.zhihu.com/p/23584382)
+  - [关于RxJava最友好的文章（进阶篇）](https://zhuanlan.zhihu.com/p/23585300)
+  - [关于RxJava最友好的文章——背压（Backpressure）](https://zhuanlan.zhihu.com/p/24473022?refer=dreawer)
+  - [关于 RxJava 最友好的文章—— RxJava 2.0 全新来袭](https://zhuanlan.zhihu.com/p/24482660)
+
+  ​
+
+- [RxJava 2.x 使用详解](https://maxwell-nc.github.io/categories.html)
+
+  - [RxJava 2.x 使用详解(一) 快速入门](https://maxwell-nc.github.io/android/rxjava2-1.html)
+  - [RxJava 2.x 使用详解(二) 创建操作符](https://maxwell-nc.github.io/android/rxjava2-2.html)
+  - [RxJava 2.x 使用详解(三) 过滤操作符](https://maxwell-nc.github.io/android/rxjava2-3.html)
+  - [RxJava 2.x 使用详解(四) 合并聚合操作符](https://maxwell-nc.github.io/android/rxjava2-4.html)
+  - [RxJava 2.x 使用详解(五) 条件操作符](https://maxwell-nc.github.io/android/rxjava2-5.html)
+  - [RxJava 2.x 使用详解(六) 变换操作符](https://maxwell-nc.github.io/android/rxjava2-6.html)
+
+
+

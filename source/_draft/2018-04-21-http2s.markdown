@@ -1,0 +1,17 @@
+---
+layout: post
+title:  "Http2S"
+date:   2018-04-21 22:49:01
+categories: CST
+tags:
+  - 
+  - 
+---
+
+## 1
+
+[跨域资源共享 CORS 详解](http://www.ruanyifeng.com/blog/2016/04/cors) 
+
+[Chrome CORS插件](https://chrome.google.com/webstore/detail/cors-toggle/jioikioepegflmdnbocfhgmpmopmjkim?hl=zh-CN) 
+
+## 2

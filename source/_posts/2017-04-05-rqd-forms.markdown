@@ -1,0 +1,294 @@
+---
+layout: post
+title:  "Forms(表单)"
+date:   2017-04-05 11:11:11
+categories: react
+---
+
+HTML form elements work a little bit differently from other DOM elements in React, because form elements naturally keep some internal state. For example, this form in plain HTML accepts a single name:
+
+HTML表单元素与React中的其他DOM元素有所不同，因为表单元素自然地保持一些内部状态。 例如，这个HTML格式的表单接受一个单一的名字：
+
+```html
+<form>
+  <label>
+    Name:
+    <input type="text" name="name" />
+  </label>
+  <input type="submit" value="Submit" />
+</form>
+```
+
+This form has the default HTML form behavior of browsing to a new page when the user submits the form. If you want this behavior in React, it just works. But in most cases, it's convenient to have a JavaScript function that handles the submission of the form and has access to the data that the user entered into the form. The standard way to achieve this is with a technique called "controlled components".
+
+当用户提交表单时，此表单具有[默认HTML表单(跳转到)新页面的行为]。 如果你想要这个行为在React中工作。 但是在大多数情况下，拥有处理提交表单（并）可访问用户输入表单的数据的（JavaScript函数）很方便。 实现这一点的标准方式是使用一种称为`"受控组件"`的技术。
+
+## Controlled Components(受控组件)
+
+In HTML, form elements such as `<input>`, `<textarea>`, and `<select>` typically maintain their own state and update it based on user input. In React, mutable state is typically kept in the state property of components, and only updated with [`setState()`](/react/docs/react-component.html#setstate).
+
+在HTML中，诸如`<input>`，`<textarea>`和`<select>`的表单元素通常保持自己的状态，并根据用户输入进行更新。 在React中，可变状态通常保存在组件的`状态`属性中，并且只能使用`setState()`进行更新。
+
+We can combine the two by making the React state be the "single source of truth". Then the React component that renders a form also controls what happens in that form on subsequent user input. An input form element whose value is controlled by React in this way is called a "controlled component".
+
+我们可以结合两者，使React的`状态`成为“真实数据的来源”。 然后，渲染表单的React组件也控制在后续用户输入时该表单中发生的情况。 以这种方式，其值由React控制的输入表单元素称为`"受控组件"`。
+
+For example, if we want to make the previous example log the name when it is submitted, we can write the form as a controlled component:
+
+例如，如果我们想使上一个示例在提交时记录名称，我们可以将表单写为受控组件：
+
+```javascript{4,10-12,24}
+class NameForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {value: ''};
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleChange(event) {
+    this.setState({value: event.target.value});
+  }
+
+  handleSubmit(event) {
+    alert('A name was submitted: ' + this.state.value);
+    event.preventDefault();
+  }
+
+  render() {
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <label>
+          Name:
+          <input type="text" value={this.state.value} onChange={this.handleChange} />
+        </label>
+        <input type="submit" value="Submit" />
+      </form>
+    );
+  }
+}
+```
+
+[Try it on CodePen.](https://codepen.io/gaearon/pen/VmmPgp?editors=0010)
+
+Since the `value` attribute is set on our form element, the displayed value will always be `this.state.value`, making the React state the source of truth. Since `handleChange` runs on every keystroke to update the React state, the displayed value will update as the user types.
+
+由于在我们的表单元素上设置了`value`属性，并且使React的状态成为数据的来源，所以显示的值始终为`this.state.value`。 由于`handleChange`在每个按键上触发输入以更新React状态，所以显示的值将随用户的输入更新。
+
+With a controlled component, every state mutation will have an associated handler function. This makes it straightforward to modify or validate user input. For example, if we wanted to enforce that names are written with all uppercase letters, we could write `handleChange` as:
+
+使用受控组件，每个状态的变化将具有相关联的处理函数。 这使得可以直接修改或验证用户输入。 例如，如果我们要强制这个名字用全部大写字母写，我们可以把`handleChange`写成：
+
+```javascript{2}
+handleChange(event) {
+  this.setState({value: event.target.value.toUpperCase()});
+}
+```
+
+## The textarea Tag(textarea标签)
+
+In HTML, a `<textarea>` element defines its text by its children:
+
+在HTML中，`<textarea>`元素由其子元素定义其文本：
+
+```html
+<textarea>
+  Hello there, this is some text in a text area
+</textarea>
+```
+
+In React, a `<textarea>` uses a `value` attribute instead. This way, a form using a `<textarea>` can be written very similarly to a form that uses a single-line input:
+
+在React中，`<textarea>`使用`value`属性替代。 这样，使用`<textarea>`的表单非常类似于使用单行输入的表单：
+
+```javascript{4-6,12-14,26}
+class EssayForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: 'Please write an essay about your favorite DOM element.'
+    };
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleChange(event) {
+    this.setState({value: event.target.value});
+  }
+
+  handleSubmit(event) {
+    alert('An essay was submitted: ' + this.state.value);
+    event.preventDefault();
+  }
+
+  render() {
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <label>
+          Name:
+          <textarea value={this.state.value} onChange={this.handleChange} />
+        </label>
+        <input type="submit" value="Submit" />
+      </form>
+    );
+  }
+}
+```
+
+Notice that `this.state.value` is initialized in the constructor, so that the text area starts off with some text in it.
+
+请注意，在构造函数中初始化`this.state.value`，以便文本区域使用这些文本开始显示。
+
+## The select Tag( `<select>` 标签)
+In HTML, `<select>` creates a drop-down list. For example, this HTML creates a drop-down list of flavors:
+
+在HTML中，`<select>`创建一个下拉列表。 例如，此HTML创建一个下拉列表的风格：
+
+```html
+<select>
+  <option value="grapefruit">Grapefruit</option>
+  <option value="lime">Lime</option>
+  <option selected value="coconut">Coconut</option>
+  <option value="mango">Mango</option>
+</select>
+```
+
+Note that the Coconut option is initially selected, because of the `selected` attribute. React, instead of using this `selected` attribute, uses a `value` attribute on the root `select` tag. This is more convenient in a controlled component because you only need to update it in one place. For example:
+
+请注意，由于 `selected` 的属性初始值设置了Coconut选项。 在React中，使用根`select` 标签上的`value`属性，替代`selected`的属性。这在受控组件中更方便，因为您只需要在一个位置更新它。 例如：
+
+```javascript{4,10-12,24}
+class FlavorForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {value: 'coconut'};
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleChange(event) {
+    this.setState({value: event.target.value});
+  }
+
+  handleSubmit(event) {
+    alert('Your favorite flavor is: ' + this.state.value);
+    event.preventDefault();
+  }
+
+  render() {
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <label>
+          Pick your favorite La Croix flavor:
+          <select value={this.state.value} onChange={this.handleChange}>
+            <option value="grapefruit">Grapefruit</option>
+            <option value="lime">Lime</option>
+            <option value="coconut">Coconut</option>
+            <option value="mango">Mango</option>
+          </select>
+        </label>
+        <input type="submit" value="Submit" />
+      </form>
+    );
+  }
+}
+```
+
+[Try it on CodePen.](https://codepen.io/gaearon/pen/JbbEzX?editors=0010)
+
+Overall, this makes it so that `<input type="text">`, `<textarea>`, and `<select>` all work very similarly - they all accept a `value` attribute that you can use to implement a controlled component.
+
+总的来说，这样做使得`<input type ="text">`，`<textarea>`和`<select>`运行都非常相似 - 它们都接受一个 `value` 属性，您可以使用它来实现受控组件。
+
+## Handling Multiple Inputs(处理多个输入)
+
+When you need to handle multiple controlled `input` elements, you can add a `name` attribute to each element and let the handler function choose what to do based on the value of `event.target.name`.
+
+当您需要处理多个受控 `input` 元素时，可以向每个元素添加一个 `name` 属性，让处理函数根据`event.target.name`的值来选择要执行的操作。
+
+For example:
+
+例如：
+
+```javascript{15,18,28,37}
+class Reservation extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isGoing: true,
+      numberOfGuests: 2
+    };
+
+    this.handleInputChange = this.handleInputChange.bind(this);
+  }
+
+  handleInputChange(event) {
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+
+    this.setState({
+      [name]: value
+    });
+  }
+
+  render() {
+    return (
+      <form>
+        <label>
+          Is going:
+          <input
+            name="isGoing"
+            type="checkbox"
+            checked={this.state.isGoing}
+            onChange={this.handleInputChange} />
+        </label>
+        <br />
+        <label>
+          Number of guests:
+          <input
+            name="numberOfGuests"
+            type="number"
+            value={this.state.numberOfGuests}
+            onChange={this.handleInputChange} />
+        </label>
+      </form>
+    );
+  }
+}
+```
+
+[Try it on CodePen.](https://codepen.io/gaearon/pen/wgedvV?editors=0010)
+
+Note how we used the ES6 [computed property name](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Operators/Object_initializer#Computed_property_names) syntax to update the state key corresponding to the given input name:
+
+注意我们如何使用ES6 [计算属性名称](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Operators/Object_initializer#Computed_property_names) 的语法来更新与给定输入名称相对应的状态键：
+
+```js{2}
+this.setState({
+  [name]: value
+});
+```
+
+It is equivalent to this ES5 code:
+
+这相当于这个ES5代码：
+
+```js{2}
+var partialState = {};
+partialState[name] = value;
+this.setState(partialState);
+```
+
+Also, since `setState()` automatically [merges a partial state into the current state](/react/docs/state-and-lifecycle.html#state-updates-are-merged), we only needed to call it with the changed parts.
+
+此外，由于`setState()`自动将部分状态合并到当前状态，所以我们只需要调用它去改变更改的部分。
+
+## Alternatives to Controlled Components
+
+It can sometimes be tedious to use controlled components, because you need to write an event handler for every way your data can change and pipe all of the input state through a React component. This can become particularly annoying when you are converting a preexisting codebase to React, or integrating a React application with a non-React library. In these situations, you might want to check out [uncontrolled components](/react/docs/uncontrolled-components.html), an alternative technique for implementing input forms.
+
+使用受控组件有时可能很繁琐，因为您需要为数据可以更改的每种方式编写一个事件处理程序，并通过一个React组件管理所有的输入状态。 当您将预先存在的代码库转换为React或将React应用程序与非React库集成时，这可能变得特别烦人。 在这些情况下，您可能需要检查不受控制的组件，这是实现输入表单的替代技术。
