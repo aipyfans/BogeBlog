@@ -1,0 +1,1129 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+<script data-ad-client="ca-pub-7376123380604387" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="静水流深" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="In the typical React dataflow, props are the only way that parent components interact with their children. To modify a child, you re-render it with new props. However, there are a few cases where you">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Refs and the DOM(DOM节点的引用)">
+<meta property="og:url" content="http://blog.lijunbo.com/2017/04/11/rad-refs-and-the-dom/index.html">
+<meta property="og:site_name" content="静水流深">
+<meta property="og:description" content="In the typical React dataflow, props are the only way that parent components interact with their children. To modify a child, you re-render it with new props. However, there are a few cases where you">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-10-08T10:39:52.098Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Refs and the DOM(DOM节点的引用)">
+<meta name="twitter:description" content="In the typical React dataflow, props are the only way that parent components interact with their children. To modify a child, you re-render it with new props. However, there are a few cases where you">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.lijunbo.com/2017/04/11/rad-refs-and-the-dom/"/>
+
+
+
+
+
+  <title> Refs and the DOM(DOM节点的引用) | 静水流深 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?4a874f383236eb548cfc14b4365008b8";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">静水流深</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">非淡泊无以明志，非宁静无以致远</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://blog.lijunbo.com/2017/04/11/rad-refs-and-the-dom/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="William-Dream">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://www.gravatar.com/avatar/c8b98e5df395f0e0fd3b47948b37b881.jpg?s=215">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="静水流深">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Refs and the DOM(DOM节点的引用)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-11T11:11:11+08:00">
+                2017-04-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/react/" itemprop="url" rel="index">
+                    <span itemprop="name">react</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/04/11/rad-refs-and-the-dom/" class="leancloud_visitors" data-flag-title="Refs and the DOM(DOM节点的引用)">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>In the typical React dataflow, <a href="/react/docs/components-and-props.html">props</a> are the only way that parent components interact with their children. To modify a child, you re-render it with new props. However, there are a few cases where you need to imperatively modify a child outside of the typical dataflow. The child to be modified could be an instance of a React component, or it could be a DOM element. For both of these cases, React provides an escape hatch.</p>
+<p>在典型的React数据流中， <a href="">props</a>是父组件与子组件互动的唯一方法。 要修改子组件，请用新的props重新渲染。 但是，有几种情况需要在典型数据流之外强制修改子组件。 要修改的子组件可以是React组件的一个实例，也可以是一个DOM元素。 对于这两种情况，React提供了一个逃生舱口。</p>
+<h3 id="When-to-Use-Refs-何时使用Refs引用"><a href="#When-to-Use-Refs-何时使用Refs引用" class="headerlink" title="When to Use Refs (何时使用Refs引用)"></a>When to Use Refs (何时使用Refs引用)</h3><p>There are a few good use cases for refs:</p>
+<p>在这里有一些关于Refs很好的用例</p>
+<ul>
+<li>Managing focus, text selection, or media playback.</li>
+<li>管理焦点，文本选择或媒体播放。</li>
+<li>Triggering imperative animations.</li>
+<li>触发强制性动画。</li>
+<li>Integrating with third-party DOM libraries.</li>
+<li>与第三方DOM库集成。</li>
+</ul>
+<p>Avoid using refs for anything that can be done declaratively.</p>
+<p>避免使用refs声明性地做任何事情。</p>
+<p>For example, instead of exposing <code>open()</code> and <code>close()</code> methods on a <code>Dialog</code> component, pass an <code>isOpen</code> prop to it.</p>
+<p>例如，不要在Dialog组件上暴露<code>open（）</code>和<code>close（）</code>方法，而是将一个<code>isOpen</code>属性传递给它。</p>
+<h3 id="Adding-a-Ref-to-a-DOM-Element-添加Ref引用到DOM元素"><a href="#Adding-a-Ref-to-a-DOM-Element-添加Ref引用到DOM元素" class="headerlink" title="Adding a Ref to a DOM Element (添加Ref引用到DOM元素)"></a>Adding a Ref to a DOM Element (添加Ref引用到DOM元素)</h3><p>React supports a special attribute that you can attach to any component. The <code>ref</code> attribute takes a callback function, and the callback will be executed immediately after the component is mounted or unmounted.</p>
+<p>React支持一个可以附加到任何组件的特殊属性。 <code>ref</code>属性采用回调函数，并且在组件被装载或卸载之后立即执行回调。</p>
+<p>When the <code>ref</code> attribute is used on an HTML element, the <code>ref</code> callback receives the underlying DOM element as its argument. For example, this code uses the <code>ref</code> callback to store a reference to a DOM node:</p>
+<p>当在HTML元素上使用<code>ref</code>属性时，<code>ref</code>回调接收底层的DOM元素作为其参数。 例如，此代码使用引用回调来存储对DOM节点的引用：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">class CustomTextInput extends React.Component &#123;</span><br><span class="line"></span><br><span class="line">  constructor(props) &#123;</span><br><span class="line">    super(props);</span><br><span class="line">    this.focus = this.focus.bind(this);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  focus() &#123;</span><br><span class="line">    // Explicitly focus the text input using the raw DOM API</span><br><span class="line">    // 使用原始DOM API明确地将文本输入聚焦</span><br><span class="line">    this.textInput.focus();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  render() &#123;</span><br><span class="line">    // Use the `ref` callback to store a reference to the text input DOM</span><br><span class="line">    // element in an instance field (for example, this.textInput).</span><br><span class="line">    // 使用`ref`回调来存储对文本输入DOM的引用</span><br><span class="line">    // 实例字段中的元素（例如this.textInput）</span><br><span class="line">    return (</span><br><span class="line">      &lt;div&gt;</span><br><span class="line">        &lt;input</span><br><span class="line">          type=&quot;text&quot;</span><br><span class="line">          ref=&#123;(input) =&gt; &#123; this.textInput = input; &#125;&#125; /&gt;</span><br><span class="line">        &lt;input</span><br><span class="line">          type=&quot;button&quot;</span><br><span class="line">          value=&quot;Focus the text input&quot;</span><br><span class="line">          onClick=&#123;this.focus&#125;</span><br><span class="line">        /&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>React will call the <code>ref</code> callback with the DOM element when the component mounts, and call it with <code>null</code> when it unmounts.</p>
+<p>当组件挂载时，React将使用DOM元素调用<code>ref</code>回调，并在卸载时将其调用为<code>null</code>。</p>
+<p>Using the <code>ref</code> callback just to set a property on the class is a common pattern for accessing DOM elements. The preferred way is to set the property in the <code>ref</code> callback like in the above example. There is even a shorter way to write it: <code>ref={input =&gt; this.textInput = input}</code>. </p>
+<p>使用<code>ref</code>回调只是为了在类上设置属性，这是访问DOM元素的常见模式。 首选的方法是在<code>ref</code>回调中设置属性，就像上面的例子一样。 甚至有一个较短的写法：<code>ref = {input =&gt; this.textInput = input}</code>。</p>
+<h3 id="Adding-a-Ref-to-a-Class-Component-添加Ref引用到类组件"><a href="#Adding-a-Ref-to-a-Class-Component-添加Ref引用到类组件" class="headerlink" title="Adding a Ref to a Class Component (添加Ref引用到类组件)"></a>Adding a Ref to a Class Component (添加Ref引用到类组件)</h3><p>When the <code>ref</code> attribute is used on a custom component declared as a class, the <code>ref</code> callback receives the mounted instance of the component as its argument. For example, if we wanted to wrap the <code>CustomTextInput</code> above to simulate it being clicked immediately after mounting:</p>
+<p>当在声明为类的自定义组件中使用<code>ref</code>属性时，<code>ref</code>回调接收组件的已挂载实例作为其参数。 例如，如果我们想要包装上面的<code>CustomTextInput</code>来模拟它在安装后立即被点击：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">class AutoFocusTextInput extends React.Component &#123;</span><br><span class="line"></span><br><span class="line">  componentDidMount() &#123;</span><br><span class="line">    this.textInput.focus();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  render() &#123;</span><br><span class="line">    return (</span><br><span class="line">      &lt;CustomTextInput</span><br><span class="line">        ref=&#123;(input) =&gt; &#123; this.textInput = input; &#125;&#125; /&gt;</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Note that this only works if <code>CustomTextInput</code> is declared as a class:</p>
+<p>请注意，这仅在<code>CustomTextInput</code>被声明为类时才有效：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">class CustomTextInput extends React.Component &#123;</span><br><span class="line">  // ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Refs-and-Functional-Components-Refs引用和功能组件"><a href="#Refs-and-Functional-Components-Refs引用和功能组件" class="headerlink" title="Refs and Functional Components (Refs引用和功能组件)"></a>Refs and Functional Components (Refs引用和功能组件)</h3><p><strong>You may not use the <code>ref</code> attribute on functional components</strong> because they don’t have instances:</p>
+<p><strong>您不能在功能组件上使用<code>ref</code>属性</strong>，因为它们没有实例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">function MyFunctionalComponent() &#123;</span><br><span class="line">  return &lt;input /&gt;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Parent extends React.Component &#123;</span><br><span class="line">  render() &#123;</span><br><span class="line">    // This will *not* work!</span><br><span class="line">    // 这样是 不能 运行的</span><br><span class="line">    return (</span><br><span class="line">      &lt;MyFunctionalComponent</span><br><span class="line">        ref=&#123;(input) =&gt; &#123; this.textInput = input; &#125;&#125; /&gt;</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>You should convert the component to a class if you need a ref to it, just like you do when you need lifecycle methods or state.</p>
+<p>如果需要Ref去引用它，您应该将组件转换为类，就像在需要生命周期方法或状态时一样。</p>
+<p>You can, however, <strong>use the <code>ref</code> attribute inside a functional component</strong> as long as you refer to a DOM element or a class component:</p>
+<p>但是，只要您引用DOM元素或类组件，您可以使用功能组件中的<code>ref</code>属性：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">function CustomTextInput(props) &#123;</span><br><span class="line">  // textInput must be declared here so the ref callback can refer to it</span><br><span class="line">  // textInput必须在这里声明，所以ref回调可以引用它</span><br><span class="line">  let textInput = null;</span><br><span class="line"></span><br><span class="line">  function handleClick() &#123;</span><br><span class="line">    textInput.focus();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  return (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;input</span><br><span class="line">        type=&quot;text&quot;</span><br><span class="line">        ref=&#123;(input) =&gt; &#123; textInput = input; &#125;&#125; /&gt;</span><br><span class="line">      &lt;input</span><br><span class="line">        type=&quot;button&quot;</span><br><span class="line">        value=&quot;Focus the text input&quot;</span><br><span class="line">        onClick=&#123;handleClick&#125;</span><br><span class="line">      /&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Don’t-Overuse-Refs-不要过度使用Refs引用"><a href="#Don’t-Overuse-Refs-不要过度使用Refs引用" class="headerlink" title="Don’t Overuse Refs (不要过度使用Refs引用)"></a>Don’t Overuse Refs (不要过度使用Refs引用)</h3><p>Your first inclination may be to use refs to “make things happen” in your app. If this is the case, take a moment and think more critically about where state should be owned in the component hierarchy. Often, it becomes clear that the proper place to “own” that state is at a higher level in the hierarchy. See the <a href="/react/docs/lifting-state-up.html">Lifting State Up</a> guide for examples of this.</p>
+<p>您的第一个倾向可能是在应用程序中使用Refs引用“使事情发生”。 如果是这种情况，请花一点时间，更多地关注组件层次结构中的状态应该如何拥有。 通常，很明显，“拥有”该状态的适当位置在层次结构中处于较高级别。 有关示例，请参阅<a href="">提升状态向导</a>”。</p>
+<h3 id="Legacy-API-String-Refs-旧版API：字符串引用参考"><a href="#Legacy-API-String-Refs-旧版API：字符串引用参考" class="headerlink" title="Legacy API: String Refs (旧版API：字符串引用参考)"></a>Legacy API: String Refs (旧版API：字符串引用参考)</h3><p>If you worked with React before, you might be familiar with an older API where the <code>ref</code> attribute is a string, like <code>&quot;textInput&quot;</code>, and the DOM node is accessed as <code>this.refs.textInput</code>. We advise against it because string refs have <a href="https://github.com/facebook/react/pull/8333#issuecomment-271648615" target="_blank" rel="noopener">some issues</a>, are considered legacy, and <strong>are likely to be removed in one of the future releases</strong>. If you’re currently using <code>this.refs.textInput</code> to access refs, we recommend the callback pattern instead.</p>
+<p>如果您之前使用过React，您可能会熟悉一个旧的API，其中<code>ref</code>属性是一个字符串，如<code>“textInput”</code>，DOM节点作为<code>this.refs.textInput</code>进行访问。 我们建议反对这样使用它，因为字符串引用有一些问题，被认为是遗留的Bug，并且可能会在以后的版本中被删除。 如果您正在使用<code>this.refs.textInput</code>访问引用，则建议使用回调模式。</p>
+<h3 id="Caveats-警告"><a href="#Caveats-警告" class="headerlink" title="Caveats (警告)"></a>Caveats (警告)</h3><p>If the <code>ref</code> callback is defined as an inline function, it will get called twice during updates, first with <code>null</code> and then again with the DOM element. This is because a new instance of the function is created with each render, so React needs to clear the old ref and set up the new one. You can avoid this by defining the <code>ref</code> callback as a bound method on the class, but note that it shouldn’t matter in most cases.</p>
+<p>如果<code>ref</code>回调被定义为内联函数，则在更新期间将被调用两次，首先为<code>null</code>，然后再次使用DOM元素。 这是因为每次渲染都创建了一个新的函数实例，所以React需要清除旧的引用并设置新的引用。 您可以通过将<code>ref</code>回调定义为类的绑定方法来避免这种情况，但请注意，在大多数情况下，这并不重要。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>感谢您的支持，这将鼓励我坚持技术分享！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="http://cn.gravatar.com/userimage/119205447/f356a9687dd39e3fb68fa6ad110b31a7.png?size=200" alt="William-Dream WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="http://cn.gravatar.com/userimage/119205447/aecd8d2eaf8428ddaad1b31aaf41a333.jpg?size=200" alt="William-Dream Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/10/rad-jsx-in-depth/" rel="next" title="JSX In Depth(深入JSX)">
+                <i class="fa fa-chevron-left"></i> JSX In Depth(深入JSX)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/04/12/rad-uncontrolled-components/" rel="prev" title="Uncontrolled Components(不受控组件)">
+                Uncontrolled Components(不受控组件) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yODE4MC80NzUz"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://www.gravatar.com/avatar/c8b98e5df395f0e0fd3b47948b37b881.jpg?s=215"
+               alt="William-Dream" />
+          <p class="site-author-name" itemprop="name">William-Dream</p>
+           
+              <p class="site-description motion-element" itemprop="description">为了梦-追梦,我的英文名由此而来</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">83</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/li-jun-bo" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              Links
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.lijunbo.com/" title="Net" target="_blank">Net</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#When-to-Use-Refs-何时使用Refs引用"><span class="nav-number">1.</span> <span class="nav-text">When to Use Refs (何时使用Refs引用)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Adding-a-Ref-to-a-DOM-Element-添加Ref引用到DOM元素"><span class="nav-number">2.</span> <span class="nav-text">Adding a Ref to a DOM Element (添加Ref引用到DOM元素)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Adding-a-Ref-to-a-Class-Component-添加Ref引用到类组件"><span class="nav-number">3.</span> <span class="nav-text">Adding a Ref to a Class Component (添加Ref引用到类组件)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Refs-and-Functional-Components-Refs引用和功能组件"><span class="nav-number">4.</span> <span class="nav-text">Refs and Functional Components (Refs引用和功能组件)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Don’t-Overuse-Refs-不要过度使用Refs引用"><span class="nav-number">5.</span> <span class="nav-text">Don’t Overuse Refs (不要过度使用Refs引用)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Legacy-API-String-Refs-旧版API：字符串引用参考"><span class="nav-number">6.</span> <span class="nav-text">Legacy API: String Refs (旧版API：字符串引用参考)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Caveats-警告"><span class="nav-number">7.</span> <span class="nav-text">Caveats (警告)</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">William-Dream</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("PWTRJaGA9VmnmuJISstgYQVk-gzGzoHsz", "OhMVXOeW5jbdIohUayYbpq1v");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+  
+
+
+  
+
+</body>
+</html>

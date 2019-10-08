@@ -1,0 +1,1386 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+<script data-ad-client="ca-pub-7376123380604387" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="静水流深" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="介绍Realm JavaScript使您能够以安全，持久和快速的方式有效地编写应用程序的Model层。它的设计是可以与 React Native 和 Node.js一起工作。 以下是使用React Native的示例： 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Realm for JavaScript(1.10.1)">
+<meta property="og:url" content="http://blog.lijunbo.com/2017/07/29/realm_js_doc/index.html">
+<meta property="og:site_name" content="静水流深">
+<meta property="og:description" content="介绍Realm JavaScript使您能够以安全，持久和快速的方式有效地编写应用程序的Model层。它的设计是可以与 React Native 和 Node.js一起工作。 以下是使用React Native的示例： 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-10-08T10:39:52.108Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Realm for JavaScript(1.10.1)">
+<meta name="twitter:description" content="介绍Realm JavaScript使您能够以安全，持久和快速的方式有效地编写应用程序的Model层。它的设计是可以与 React Native 和 Node.js一起工作。 以下是使用React Native的示例： 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.lijunbo.com/2017/07/29/realm_js_doc/"/>
+
+
+
+
+
+  <title> Realm for JavaScript(1.10.1) | 静水流深 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?4a874f383236eb548cfc14b4365008b8";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">静水流深</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">非淡泊无以明志，非宁静无以致远</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://blog.lijunbo.com/2017/07/29/realm_js_doc/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="William-Dream">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://www.gravatar.com/avatar/c8b98e5df395f0e0fd3b47948b37b881.jpg?s=215">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="静水流深">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Realm for JavaScript(1.10.1)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-29T11:11:11+08:00">
+                2017-07-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/database/" itemprop="url" rel="index">
+                    <span itemprop="name">database</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/07/29/realm_js_doc/" class="leancloud_visitors" data-flag-title="Realm for JavaScript(1.10.1)">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>Realm JavaScript使您能够以安全，持久和快速的方式有效地编写应用程序的Model层。它的设计是可以与 <a href="https://facebook.github.io/react-native/" target="_blank" rel="noopener">React Native</a> 和 <a href="https://nodejs.org/" target="_blank" rel="noopener">Node.js</a>一起工作。</p>
+<p>以下是使用React Native的示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">// 定义您的Model及其属性</span><br><span class="line">class Car &#123;&#125;</span><br><span class="line">Car.schema = &#123;</span><br><span class="line">  name: &apos;Car&apos;,</span><br><span class="line">  properties: &#123;</span><br><span class="line">    make:  &apos;string&apos;,</span><br><span class="line">    model: &apos;string&apos;,</span><br><span class="line">    miles: &apos;int&apos;,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">class Person &#123;&#125;</span><br><span class="line">Person.schema = &#123;</span><br><span class="line">  name: &apos;Person&apos;,</span><br><span class="line">  properties: &#123;</span><br><span class="line">    name:    &#123;type: &apos;string&apos;&#125;,</span><br><span class="line">    cars:    &#123;type: &apos;list&apos;, objectType: &apos;Car&apos;&#125;,</span><br><span class="line">    picture: &#123;type: &apos;data&apos;, optional: true&#125;, // 可选属性</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">// 获取支持我们对象的默认Realm实例</span><br><span class="line">let realm = new Realm(&#123;schema: [Car, Person]&#125;);</span><br><span class="line"></span><br><span class="line">// 创建Realm对象并写入本地存储</span><br><span class="line">realm.write(() =&gt; &#123;</span><br><span class="line">  let myCar = realm.create(&apos;Car&apos;, &#123;</span><br><span class="line">    make: &apos;Honda&apos;,</span><br><span class="line">    model: &apos;Civic&apos;,</span><br><span class="line">    miles: 1000,</span><br><span class="line">  &#125;);</span><br><span class="line">  myCar.miles += 20; // 更新属性值</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">// 查询出所有具有较高里程数的车辆</span><br><span class="line">let cars = realm.objects(&apos;Car&apos;).filtered(&apos;miles &gt; 1000&apos;);</span><br><span class="line"></span><br><span class="line">// 将返回一个结果对象(我们的1辆车)</span><br><span class="line">cars.length // =&gt; 1</span><br><span class="line"></span><br><span class="line">// 添加另一辆车</span><br><span class="line">realm.write(() =&gt; &#123;</span><br><span class="line">  let myCar = realm.create(&apos;Car&apos;, &#123;</span><br><span class="line">    make: &apos;Ford&apos;,</span><br><span class="line">    model: &apos;Focus&apos;,</span><br><span class="line">    miles: 2000,</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">// 查询结果将实时更新</span><br><span class="line">cars.length // =&gt; 2</span><br></pre></td></tr></table></figure>
+<h2 id="入门"><a href="#入门" class="headerlink" title="入门"></a>入门</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>按照以下安装说明，通过<a href="https://www.npmjs.com/package/realm" target="_blank" rel="noopener">npm</a>安装Realm JavaScript，或者在 <a href="https://github.com/realm/realm-js" target="_blank" rel="noopener">GitHub</a>上查看源代码。</p>
+<ul>
+<li><a href="https://realm.io/docs/javascript/latest/#react-install" target="_blank" rel="noopener">React Native</a></li>
+<li><a href="https://realm.io/docs/javascript/latest/#nodejs-install" target="_blank" rel="noopener">Node.js</a></li>
+</ul>
+<p><strong>必要条件</strong></p>
+<ul>
+<li><p>确保您的环境设置为运行React Native应用程序。按照React Native说明开始使用。</p>
+</li>
+<li><p>使用Realm的应用程序可以同时针对iOS和Android。</p>
+</li>
+<li><p>支持React Native 0.20.0及更高版本。</p>
+</li>
+<li><p>确保React Native软件包管理器（rnpm）全局安装并且是最新的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g rnpm</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong>安装</strong></p>
+<ul>
+<li><p>创建一个新的React Native工程:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">react-native init &lt;project-name&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将目录更改为新项目(<code>cd &lt;project-name&gt;</code>)，并添加<code>realm</code>依赖</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --save realm</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>接下来，将项目链接到<code>realm</code>原生模块。</p>
+<ul>
+<li><p>React Native <strong>&gt;=</strong> 0.31.0</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">react-native link realm</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>React Native <strong>&lt;</strong> 0.31.0</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rnpm link realm</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<p><em>Android的警告</em>：根据版本，rnpm可能会生成无效的配置，正确更新Gradle(<code>android/settings.gradle</code> and <code>android/app/build.gradle</code>) ，但无法添加Realm模块。确认<code>react-native link</code>已添加了Realm模块;如果没有，请通过以下步骤手动链接到库：</p>
+<ol>
+<li><p>添加以下行到 <code>android/settings.gradle</code>:</p>
+<p><code>gradle include &#39;:realm&#39; project(&#39;:realm&#39;).projectDir = new File(rootProject.projectDir, &#39;../node_modules/realm/android&#39;)</code></p>
+</li>
+<li><p>将编译行添加到 <code>android/app/build.gradle</code> 中的依赖项:</p>
+<p><code>gradle dependencies { compile project(&#39;:realm&#39;) }</code></p>
+</li>
+<li><p>在<code>MainApplication.java</code>中添加导入并链接包：:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">import io.realm.react.RealmReactPackage; // 添加导入</span><br><span class="line"></span><br><span class="line">public class MainApplication extends Application implements ReactApplication &#123;</span><br><span class="line">    @Override</span><br><span class="line">    protected List&lt;ReactPackage&gt; getPackages() &#123;</span><br><span class="line">        return Arrays.&lt;ReactPackage&gt;asList(</span><br><span class="line">            new MainReactPackage(),</span><br><span class="line">            new RealmReactPackage() // 添加链接包</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>你现在已经准备好了。要查看Realm中的action，请在<code>index.ios.js</code>或<code>index.android.js</code>中添加以下作为<code>class &lt;project-name&gt;</code>的定义：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">const Realm = require(&apos;realm&apos;);</span><br><span class="line"></span><br><span class="line">class &lt;project-name&gt; extends Component &#123;</span><br><span class="line"> render() &#123;</span><br><span class="line">   let realm = new Realm(&#123;</span><br><span class="line">     schema: [&#123;name: &apos;Dog&apos;, properties: &#123;name: &apos;string&apos;&#125;&#125;]</span><br><span class="line">   &#125;);</span><br><span class="line"></span><br><span class="line">   realm.write(() =&gt; &#123;</span><br><span class="line">     realm.create(&apos;Dog&apos;, &#123;name: &apos;Rex&apos;&#125;);</span><br><span class="line">   &#125;);</span><br><span class="line"></span><br><span class="line">   return (</span><br><span class="line">     &lt;View style=&#123;styles.container&#125;&gt;</span><br><span class="line">       &lt;Text style=&#123;styles.welcome&#125;&gt;</span><br><span class="line">         Count of Dogs in Realm: &#123;realm.objects(&apos;Dog&apos;).length&#125;</span><br><span class="line">       &lt;/Text&gt;</span><br><span class="line">     &lt;/View&gt;</span><br><span class="line">   );</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后，您可以在设备和模拟器中运行应用程序！</p>
+<h3 id="安装示例"><a href="#安装示例" class="headerlink" title="安装示例"></a>安装示例</h3><p>可以从Github克隆可选的示例库。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/realm/realm-js.git</span><br></pre></td></tr></table></figure>
+<p>更改到克隆的目录，并更新子模块：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd realm-js</span><br><span class="line">git submodule update --init --recursive</span><br></pre></td></tr></table></figure>
+<p>在Android上，您需要安装NDK，并且必须设置ANDROID_NDK环境变量.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export ANDROID_NDK=/usr/local/Cellar/android-ndk/r10e</span><br></pre></td></tr></table></figure>
+<p>React Native示例在<code>examples</code>目录中。您必须为每个示例运行<code>npm install</code>。</p>
+<h2 id="获得帮助"><a href="#获得帮助" class="headerlink" title="获得帮助"></a>获得帮助</h2><ul>
+<li><strong>需要帮助你的代码？</strong> <a href="http://stackoverflow.com/questions/ask?tags=realm" target="_blank" rel="noopener">在StackOverflow上提问吧</a>. 我们积极监督并立马回答您的问题！</li>
+<li><strong>有Bug上报?</strong> <a href="https://github.com/realm/realm-js/issues/new" target="_blank" rel="noopener">在我们Github库上提问吧</a>. 如果可能，请包括Realm版本，完整日志，Realm文件以及显示问题的项目。</li>
+<li><strong>有功能请求吗?</strong> <a href="https://github.com/realm/realm-js/issues/new" target="_blank" rel="noopener">在我们Github库上提交请求吧吧</a>. 告诉我们功能应该做什么，以及为什么要这个功能.</li>
+</ul>
+<p>如果您使用崩溃记录（如Crashlytics或HockeyApp），请确保启用日志收集。Realm在抛出异常和不可恢复的情况下记录元数据信息（但不包含用户数据），并且这些消息可以帮助在出现问题时进行调试。</p>
+<h2 id="模型"><a href="#模型" class="headerlink" title="模型"></a>模型</h2><p>Realm数据模型由初始化期间传递到Realm的schema信息定义。对象的<code>schema</code>由对象的<code>名称(name)</code>和一组属性组成，每个属性由<code>名称(name)</code>和<code>类型(type)</code>以及对象和列表属性的<code>objectType</code>组成。您还可以将每个属性指定为可选的或具有默认值。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">var Realm = require(&apos;realm&apos;);</span><br><span class="line"></span><br><span class="line">const CarSchema = &#123;</span><br><span class="line">  name: &apos;Car&apos;,</span><br><span class="line">  properties: &#123;</span><br><span class="line">    make:  &apos;string&apos;,</span><br><span class="line">    model: &apos;string&apos;,</span><br><span class="line">    miles: &#123;type: &apos;int&apos;, default: 0&#125;,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">const PersonSchema = &#123;</span><br><span class="line">  name: &apos;Person&apos;,</span><br><span class="line">  properties: &#123;</span><br><span class="line">    name:     &apos;string&apos;,</span><br><span class="line">    birthday: &apos;date&apos;,</span><br><span class="line">    cars:     &#123;type: &apos;list&apos;, objectType: &apos;Car&apos;&#125;,</span><br><span class="line">    picture:  &#123;type: &apos;data&apos;, optional: true&#125;, // 可选的属性</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">// 使用Car和Person的模型初始化Realm实例</span><br><span class="line">let realm = new Realm(&#123;schema: [CarSchema, PersonSchema]&#125;);</span><br></pre></td></tr></table></figure>
+<p>如果您希望对象继承自现有类，则只需在对象构造函数中定义schema，并在创建realm时传递构造函数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">class Person &#123;</span><br><span class="line">  get ageSeconds() &#123;</span><br><span class="line">    return Math.floor((Date.now() - this.birthday.getTime()));</span><br><span class="line">  &#125;</span><br><span class="line">  get age() &#123;</span><br><span class="line">    return ageSeconds() / 31557600000;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Person.schema = PersonSchema;</span><br><span class="line"></span><br><span class="line">// Note here we are passing in the `Person` constructor</span><br><span class="line">let realm = new Realm(&#123;schema: [CarSchema, Person]&#125;);</span><br></pre></td></tr></table></figure>
+<p>一旦定义了对象模型，就可以从Realm创建和获取对象：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">realm.write(() =&gt; &#123;</span><br><span class="line">  let car = realm.create(&apos;Car&apos;, &#123;</span><br><span class="line">    make: &apos;Honda&apos;,</span><br><span class="line">    model: &apos;Civic&apos;,</span><br><span class="line">    miles: 750,</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  // 您可以访问并设置模型中定义的所有属性</span><br><span class="line">  console.log(&apos;Car type is &apos; + car.make + &apos; &apos; + car.model);</span><br><span class="line">  car.miles = 1500;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="支持的类型"><a href="#支持的类型" class="headerlink" title="支持的类型"></a>支持的类型</h3><p>Realm支持以下基本类型: <code>bool</code>, <code>int</code>, <code>float</code>, <code>double</code>, <code>string</code>, <code>data</code>, 和 <code>date</code>.</p>
+<ul>
+<li><code>bool</code> 属性映射到 JavaScript <code>Boolean</code> 对象</li>
+<li><code>int</code>, <code>float</code>, and <code>double</code> 属性映射到 JavaScript <code>Number</code> 对象. 内部的“int”和“double”被存储为64位，而<code>float</code>以32位存储。</li>
+<li><code>string</code> 属性映射到 <code>String</code></li>
+<li><code>data</code> 属性映射到 <code>ArrayBuffer</code></li>
+<li><code>date</code> 属性映射到 <code>Date</code></li>
+</ul>
+<p>将基本属性指定为简写时，您可以仅指定类型，而不必指定具有单个条目的字典：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">const CarSchema = &#123;</span><br><span class="line">  name: &apos;Car&apos;,</span><br><span class="line">  properties: &#123;</span><br><span class="line">    // 以下属性类型是等效的     </span><br><span class="line">    make:   &#123;type: &apos;string&apos;&#125;,</span><br><span class="line">    model: &apos;string&apos;,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="关系"><a href="#关系" class="headerlink" title="关系"></a>关系</h3><h4 id="一对一关系"><a href="#一对一关系" class="headerlink" title="一对一关系"></a>一对一关系</h4><p> 对于一对一的关系，您可以将引用的对象<code>schema</code>的<code>name</code>属性指定为属性的<code>类型(type)</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">const PersonSchema = &#123;</span><br><span class="line">  name: &apos;Person&apos;,</span><br><span class="line">  properties: &#123;</span><br><span class="line">    // 所有以下属性定义是等效的</span><br><span class="line">    car: &#123;type: &apos;Car&apos;&#125;,</span><br><span class="line">    van: &apos;Car&apos;,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>使用对象属性时，需要确保所有引用的类型都存在于用于打开Realm的schema中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// CarSchema is needed since PersonSchema contains properties of type &apos;Car&apos;</span><br><span class="line">let realm = new Realm(&#123;schema: [CarSchema, PersonSchema]&#125;);</span><br></pre></td></tr></table></figure>
+<p>访问对象属性时，可以使用普通属性语法访问嵌套属性：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">realm.write(() =&gt; &#123;</span><br><span class="line">  var nameString = person.car.name;</span><br><span class="line">  person.car.miles = 1100;</span><br><span class="line"></span><br><span class="line">  // 通过将属性设置为有效的JSON来创建一个新的Car</span><br><span class="line">  person.van = &#123;make: &apos;Ford&apos;, model: &apos;Transit&apos;&#125;;</span><br><span class="line"></span><br><span class="line">  // 将两个属性设置为同一个汽车实例</span><br><span class="line">  person.car = person.van;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h4 id="一对多关系"><a href="#一对多关系" class="headerlink" title="一对多关系"></a>一对多关系</h4><p>对于多对多关系，您必须将属性类型指定为<code>列表(list)</code>以及<code>objectType</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">const PersonSchema = &#123;</span><br><span class="line">  name: &apos;Person&apos;,</span><br><span class="line">  properties: &#123;</span><br><span class="line">    cars: &#123;type: &apos;list&apos;, objectType: &apos;Car&apos;&#125;,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>访问列表属性时，返回一个<code>List</code>对象。列表<code>(List)</code>具有与常规<code>JavaScript</code>数组非常相似的方法。最大的区别是，对列表进行的任何更改都会自动持续到底层的Realm。此外，列表属于从其获取的基础对象 - 您只能通过从拥有对象访问属性来获取List实例，并且不能手动创建。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">let carList = person.cars;</span><br><span class="line"></span><br><span class="line">// 将新车添加到列表中</span><br><span class="line">realm.write(() =&gt; &#123;</span><br><span class="line">  carList.push(&#123;make: &apos;Honda&apos;, model: &apos;Accord&apos;, miles: 100&#125;);</span><br><span class="line">  carList.push(&#123;make: &apos;Toyota&apos;, model: &apos;Prius&apos;, miles: 200&#125;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">let secondCar = carList[1].model;  // 访问使用数组索引</span><br></pre></td></tr></table></figure>
+<h4 id="多对多关系"><a href="#多对多关系" class="headerlink" title="多对多关系"></a>多对多关系</h4><p>链接是单向的。所以如果一对多的属性<code>Person.dogs</code>链接到一个<code>Dog</code>实例和一个属性<code>Dog.owner</code>链接到<code>Person</code>，这些链接是彼此独立的。将<code>Dog</code>添加到<code>Person</code>实例的 <code>dogs</code> 属性不会自动将该狗的<code>owner</code> 属性设置为此<code>Person</code>。因为手动同步对关系是容易出错的，复杂的并复制信息，所以Realm提供链接对象属性来表示这些反向关系。</p>
+<p>使用链接对象属性，可以从特定属性获取链接到给定对象的所有对象。例如，<code>Dog</code>对象可以具有一个名为<code>owner</code>的属性，该属性包含其<code>dogs</code>属性中具有这个确切<code>Dog</code>对象的所有<code>Person</code>对象。通过<code>owners</code>属性的<code>linkingObjects</code>类型，指定它与Person对象的关系。</p>
+<p>这样做可以通过<code>owners</code>属性指定它与Person对象的关系。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">const PersonSchema = &#123;</span><br><span class="line">  name: &apos;Person&apos;,</span><br><span class="line">  properties: &#123;</span><br><span class="line">    dogs: &#123;type: &apos;list&apos;, objectType: &apos;Dog&apos;&#125;,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const DogSchema = &#123;</span><br><span class="line">  name:&apos;Dog&apos;,</span><br><span class="line">  properties: &#123;</span><br><span class="line">    owners: &#123;type: &apos;linkingObjects&apos;, objectType: &apos;Person&apos;, property: &apos;dogs&apos;&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>一个<code>linksObjects</code>属性可以指向一个<code>List</code>属性（多对多关系）或一个<code>Object</code>属性（一对一关系）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">const ShipSchema = &#123;</span><br><span class="line">  name: &apos;Ship&apos;,</span><br><span class="line">  properties: &#123;</span><br><span class="line">    captain: &apos;Captain&apos;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const CaptainSchema = &#123;</span><br><span class="line">  name: &apos;Captain&apos;,</span><br><span class="line">  properties: &#123;</span><br><span class="line">    ships: &#123;type: &apos;linkingObjects&apos;, objectType: &apos;Ship&apos;, property: &apos;captain&apos;&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>访问<code>linksObjects</code>属性时，返回一个<code>Results</code>对象，因此完全支持进一步的查询和排序。<code>linksObject</code>属性属于它们从中获取的对象，不能直接设置或操作。当事务提交时，它们将自动更新。</p>
+<p><em>访问没有schema的<code>linkingObjects</code></em>：如果您打开了一个Realm文件而不指定schema，例如在Realm Functions回调中，您可以通过在<code>Object</code>实例上调用 <code>linkingObjects(objectType, property)</code> 来获取<code>linksObjects</code>属性：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">let captain = realm.objectForPrimaryKey(&apos;Captain&apos;, 1);</span><br><span class="line">let ships = captain.linkingObjects(&apos;Ship&apos;, &apos;captain&apos;);</span><br></pre></td></tr></table></figure>
+<h3 id="可选属性"><a href="#可选属性" class="headerlink" title="可选属性"></a>可选属性</h3><p>属性可以通过在【属性定义】中指定【可选指示符】来声明为【可选属性 或 非可选属性】：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">const PersonSchema = &#123;</span><br><span class="line">  name: &apos;Person&apos;,</span><br><span class="line">  properties: &#123;</span><br><span class="line">    name:     &#123;type: &apos;string&apos;&#125;,               // 必需属性</span><br><span class="line">    birthday: &#123;type: &apos;date&apos;, optional: true&#125;, // 可选属性</span><br><span class="line"></span><br><span class="line">    // object properties are always optional</span><br><span class="line">    car:      &#123;type: &apos;Car&apos;&#125;,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">let realm = new Realm(&#123;schema: [PersonSchema, CarSchema]&#125;);</span><br><span class="line"></span><br><span class="line">realm.write(() =&gt; &#123;</span><br><span class="line">  // 可选属性可以在创建时设置为null或未定义</span><br><span class="line">  let charlie = realm.create(&apos;Person&apos;, &#123;</span><br><span class="line">    name: &apos;Charlie&apos;,</span><br><span class="line">    birthday: new Date(1995, 11, 25),</span><br><span class="line">    car: null,</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  // 可选属性可以设置为`null`，`undefined`或新的非空值</span><br><span class="line">  charlie.birthday = undefined;</span><br><span class="line">  charlie.car = &#123;make: &apos;Honda&apos;, model: &apos;Accord&apos;, miles: 10000&#125;;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>如上所述，对象属性始终是可选的，不需要可选名称。列表属性不能被声明为可选或设置为null。您可以使用空数组来设置或初始化列表以将其清除。</p>
+<h3 id="默认属性值"><a href="#默认属性值" class="headerlink" title="默认属性值"></a>默认属性值</h3><p>可以通过在属性定义中设置默认指示符来指定默认属性值。要使用默认值，请在创建对象期间保留未指定的属性。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">const CarSchema = &#123;</span><br><span class="line">  name: &apos;Car&apos;,</span><br><span class="line">  properties: &#123;</span><br><span class="line">    make:  &#123;type: &apos;string&apos;&#125;,</span><br><span class="line">    model: &#123;type: &apos;string&apos;&#125;,</span><br><span class="line">    drive: &#123;type: &apos;string&apos;, default: &apos;fwd&apos;&#125;,</span><br><span class="line">    miles: &#123;type: &apos;int&apos;,    default: 0&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">realm.write(() =&gt; &#123;</span><br><span class="line">  // 由于`miles`被遗漏，它默认为“0”，而`drive`被指定，它会覆盖默认值</span><br><span class="line">  realm.create(&apos;Car&apos;, &#123;make: &apos;Honda&apos;, model: &apos;Accord&apos;, drive: &apos;awd&apos;&#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="索引属性"><a href="#索引属性" class="headerlink" title="索引属性"></a>索引属性</h3><p>您可以将索引的指示符添加到属性定义，以使该属性进行索引。 目前支持 <code>int</code>, <code>string</code>, 和 <code>bool</code> 属性类型：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">var BookSchema = &#123;</span><br><span class="line">  name: &apos;Book&apos;,</span><br><span class="line">  properties: &#123;</span><br><span class="line">    name: &#123; type: &apos;string&apos;, indexed: true &#125;,</span><br><span class="line">    price: &apos;float&apos;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>索引属性将极大地加快查询的属性进行比较，但是以较慢的插入为代价。</p>
+<h3 id="主键"><a href="#主键" class="headerlink" title="主键"></a>主键</h3><p>您可以在对象模型中为<code>string</code>和<code>int</code>属性指定<code>primaryKey</code>属性。声明一个主键可以对对象进行高效查找和更新，并强制执行每个值的唯一性。一旦有一个主键的对象被添加到Realm，主键就不能被改变了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">const BookSchema = &#123;</span><br><span class="line">  name: &apos;Book&apos;,</span><br><span class="line">  primaryKey: &apos;id&apos;,</span><br><span class="line">  properties: &#123;</span><br><span class="line">    id:    &apos;int&apos;,    // primary key</span><br><span class="line">    title: &apos;string&apos;,</span><br><span class="line">    price: &apos;float&apos;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>主键属性自动编入索引。</p>
+<h2 id="写"><a href="#写" class="headerlink" title="写"></a>写</h2><p>创建，更新和删除Realm中的对象的操作必须在<code>write()</code>事务块中进行。请注意，写入事务具有不可忽略的开销;您应该尽量减少代码中写入块的数量。</p>
+<h3 id="创建对象"><a href="#创建对象" class="headerlink" title="创建对象"></a>创建对象</h3><p>使用<code>create</code>方法创建对象：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">let realm = new Realm(&#123;schema: [CarSchema]&#125;);</span><br><span class="line"></span><br><span class="line">try &#123;</span><br><span class="line">  realm.write(() =&gt; &#123;</span><br><span class="line">    realm.create(&apos;Car&apos;, &#123;make: &apos;Honda&apos;, model: &apos;Accord&apos;, drive: &apos;awd&apos;&#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125; catch (e) &#123;</span><br><span class="line">  console.log(&quot;Error on creation&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>请注意， <code>write()</code> 中抛出的任何异常都将取消事务。所有示例中都不会显示<code>try/catch</code> 块，但这是很好的做法。</p>
+<h3 id="嵌套对象"><a href="#嵌套对象" class="headerlink" title="嵌套对象"></a>嵌套对象</h3><p>如果对象具有对象属性，则可以通过为每个子属性指定JSON值来递归地创建这些属性的值：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">let realm = new Realm(&#123;schema: [PersonSchema, CarSchema]&#125;);</span><br><span class="line"></span><br><span class="line">realm.write(() =&gt; &#123;</span><br><span class="line">  realm.create(&apos;Person&apos;, &#123;</span><br><span class="line">    name: &apos;Joe&apos;,</span><br><span class="line">    // 嵌套对象是递归创建的</span><br><span class="line">    car: &#123;make: &apos;Honda&apos;, model: &apos;Accord&apos;, drive: &apos;awd&apos;&#125;,</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="更新对象"><a href="#更新对象" class="headerlink" title="更新对象"></a>更新对象</h3><h4 id="Typed-Updates-键入的更新"><a href="#Typed-Updates-键入的更新" class="headerlink" title="Typed Updates 键入的更新"></a>Typed Updates 键入的更新</h4><p>您可以通过在写事务中设置其属性来更新任何对象。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">realm.write(() =&gt; &#123;</span><br><span class="line">  car.miles = 1100;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h4 id="使用主键创建和更新对象"><a href="#使用主键创建和更新对象" class="headerlink" title="使用主键创建和更新对象"></a>使用主键创建和更新对象</h4><p>如果您的模型类包含主键，则可以根据主键值智能地更新或添加对象。这是通过将<code>true</code>作为第三个参数传递给<code>create</code>方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">realm.write(() =&gt; &#123;</span><br><span class="line">  // Create a book object</span><br><span class="line">  realm.create(&apos;Book&apos;, &#123;id: 1, title: &apos;Recipes&apos;, price: 35&#125;);</span><br><span class="line"></span><br><span class="line">  // Update book with new price keyed off the id</span><br><span class="line">  realm.create(&apos;Book&apos;, &#123;id: 1, price: 55&#125;, true);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>在上面的例子中，由于一个对象已经存在，<code>id</code>值为<code>1</code>，并且我们已经为第三个参数传递了<code>true</code>，所以<code>price</code>属性被更新，而不是尝试创建一个新的对象。由于<code>name</code>属性被省略，对象保留此属性的原始值。请注意，当使用主键属性创建或更新对象时，必须指定主键。</p>
+<h3 id="删除对象"><a href="#删除对象" class="headerlink" title="删除对象"></a>删除对象</h3><p>可以通过在写事务中调用<code>delete</code>方法来删除对象。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">realm.write(() =&gt; &#123;</span><br><span class="line">  // Create a book object</span><br><span class="line">  let book = realm.create(&apos;Book&apos;, &#123;id: 1, title: &apos;Recipes&apos;, price: 35&#125;);</span><br><span class="line"></span><br><span class="line">  // Delete the book</span><br><span class="line">  realm.delete(book);</span><br><span class="line"></span><br><span class="line">  // Delete multiple books by passing in a `Results`, `List`, or JavaScript `Array`</span><br><span class="line">  let allBooks = realm.objects(&apos;Book&apos;);</span><br><span class="line">  realm.delete(allBooks); // Deletes all books</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h2 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h2><p>查询允许您从Realm中获取单个类型的对象，并可选择过滤和排序这些结果。所有查询（包括查询和属性访问）在Realm中都是懒加载的。仅在访问对象和属性时才读取数据。这样，您可以以高效的方式表示大量数据。</p>
+<p>执行查询时，您将返回一个<code>Results</code>对象。<code>Results</code>只是您的数据视图，不可变。</p>
+<p>从Realm中检索对象的最基本方法是使用Realm中的对象方法来获取给定类型的所有对象</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let dogs = realm.objects(&apos;Dog&apos;); // retrieves all Dogs from the Realm</span><br></pre></td></tr></table></figure>
+<h3 id="过滤"><a href="#过滤" class="headerlink" title="过滤"></a>过滤</h3><p>您可以通过使用查询字符串调用过滤的方法来获取已过滤的结果。</p>
+<p>例如，以下将改变我们早期的例子，以检索所有具有颜色tan的狗，以’B’开头的名字：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">let dogs = realm.objects(&apos;Dog&apos;);</span><br><span class="line">let tanDogs = dogs.filtered(&apos;color = &quot;tan&quot; AND name BEGINSWITH &quot;B&quot;&apos;);</span><br></pre></td></tr></table></figure>
+<p>目前，查询语言只支持NSPredicate语法的一部分。</p>
+<p>数字属性支持基本比较运算符 <code>==</code>, <code>!=</code>, <code>&gt;</code>, <code>&gt;=</code>, <code>&lt;</code>, 和 <code>&lt;=</code>。</p>
+<p> <code>==</code>, <code>BEGINSWITH</code>, <code>ENDSWITH</code>, 和 <code>CONTAINS</code> 支持字符串属性。</p>
+<p>字符串比较可以通过将<code>[c]</code>附加到运算符来进行区分大小写： <code>==[c]</code>, <code>BEGINSWITH[c]</code> 等。</p>
+<p>可以通过在查询中指定关键字来完成对链接或子对象上的属性进行过滤，例如<code>car.color == &#39;blue&#39;</code>。</p>
+<h3 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h3><p><code>Results</code>允许您根据单个或多个属性指定排序标准和顺序。例如，以下呼叫会从上面的例子中以几英里的速度排列返回的车辆：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">let hondas = realm.objects(&apos;Car&apos;).filtered(&apos;make = &quot;Honda&quot;&apos;);</span><br><span class="line"></span><br><span class="line">// Sort Hondas by mileage</span><br><span class="line">let sortedHondas = hondas.sorted(&apos;miles&apos;);</span><br></pre></td></tr></table></figure>
+<p>请注意，仅当查询排序时，结果的顺序才能保持一致。出于性能原因，不能保证插入顺序不被保留。</p>
+<h3 id="自动更新结果集"><a href="#自动更新结果集" class="headerlink" title="自动更新结果集"></a>自动更新结果集</h3><p><code>Results</code>实例是活动的，自动更新到底层数据的视图，这意味着结果不必重新获取。修改影响查询的对象将立即反映在结果中。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">let hondas = realm.objects(&apos;Car&apos;).filtered(&apos;make = &quot;Honda&quot;&apos;);</span><br><span class="line">// hondas.length == 0</span><br><span class="line"></span><br><span class="line">realm.write(() =&gt; &#123;</span><br><span class="line">  realm.create(&apos;Car&apos;, &#123;make: &apos;Honda&apos;, model: &apos;RSX&apos;&#125;);</span><br><span class="line">&#125;);</span><br><span class="line">// hondas.length == 1</span><br></pre></td></tr></table></figure>
+<p>这适用于所有<code>Results</code>实例，包括由<code>objects</code>,<code>filtered</code>,<code>sorted</code>方法返回的结果集。</p>
+<p><code>Results</code>的这个属性不仅使Realm快速和高效，它允许您的代码更简单，更有灵活性。例如，如果您的视图依赖于查询的结果，则可以将结果存储在属性中并访问它，而无需在每次访问之前刷新其数据。</p>
+<p>您可以订阅通知，以了解何时更新Realm数据，指出何时应该刷新应用的UI，而无需重新获取Results。</p>
+<h3 id="限制结果集"><a href="#限制结果集" class="headerlink" title="限制结果集"></a>限制结果集</h3><p>大多数其他数据库技术提供了对查询结果进行“分页”的能力（例如SQLite中的“LIMIT”关键字）。这通常是为了避免从磁盘读取太多或者一次将太多结果拖到内存中而完成的。</p>
+<p>由于Realm中的查询是懒惰的，所以执行这种分页行为根本不是必需的，因为只有在明确访问该域后，域才会从查询结果中加载对象。</p>
+<p>如果由于与UI相关或其他实现原因，您需要查询中的特定对象子集，那么只需要使用<code>Results</code>对象，并只读出所需的对象。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">let cars = realm.objects(&apos;Car&apos;);</span><br><span class="line"></span><br><span class="line">// get first 5 Car objects</span><br><span class="line">let firstCars = cars.slice(0, 5);</span><br></pre></td></tr></table></figure>
+<h2 id="Realms"><a href="#Realms" class="headerlink" title="Realms"></a>Realms</h2><p><strong>Realm</strong>是Realm移动数据库容器的实例。Realm可以是本地的或同步的。同步Realm使用Realm对象服务器将其内容与其他设备透明地<a href="https://realm.io/docs/javascript/latest/#opening-a-synchronized-realm" target="_blank" rel="noopener">同步</a>。当您的应用程序继续使用同步的Realm，就像它是本地文件一样，该Realm中的数据可能会被具有该Realm的写入权限的任何设备更新。实际上，您的应用程序可以以任何类型的Realm以同样的方式运行，尽管打开一个同步的Realm需要一个已经被对象服务器认证的<a href="https://realm.io/docs/javascript/latest/#users" target="_blank" rel="noopener">用户</a>，并被<a href="https://realm.io/docs/javascript/latest/#authentication" target="_blank" rel="noopener">授权</a>打开该Realm。</p>
+<p>有关Realm的更详细的讨论，请阅读<a href="https://realm.io/docs/data-model" target="_blank" rel="noopener">Realm数据模型</a>。</p>
+<h3 id="打开Realm"><a href="#打开Realm" class="headerlink" title="打开Realm"></a>打开Realm</h3><p>打开Realm只是通过实例化一个新的Realm对象来执行。将配置对象传递给构造函数。我们已经看到这个已经在示例中使用了包含<code>schema</code>键的配置对象：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// Get the default Realm with support for our objects</span><br><span class="line">let realm = new Realm(&#123;schema: [Car, Person]&#125;);</span><br></pre></td></tr></table></figure>
+<p>有关配置对象的完整详细信息，请参阅API参考以进行<a href="https://realm.io/docs/javascript/latest/api/Realm.html#~Configuration" target="_blank" rel="noopener">配置</a>。对象的一些更常见的键，除了<code>schema</code>，包括：</p>
+<ul>
+<li><code>path</code>: 指定<a href="https://realm.io/docs/javascript/latest/#other-realms" target="_blank" rel="noopener">另一个Realm</a>的路径</li>
+<li><code>migration</code>: <a href="https://realm.io/docs/javascript/latest/#migrations" target="_blank" rel="noopener">迁移功能</a></li>
+<li><code>sync</code>: <a href="https://realm.io/docs/javascript/latest/#sync" target="_blank" rel="noopener">同步对象</a>, ，打开与Realm对象服务器同步的Realm</li>
+</ul>
+<h3 id="默认Realm"><a href="#默认Realm" class="headerlink" title="默认Realm"></a>默认Realm</h3><p>在以前的所有例子中可能已经注意到路径参数已被省略。在这种情况下，使用默认的Realm路径。您可以使用<code>Realm.defaultPath</code>全局属性访问和更改默认的Realm路径。</p>
+<h3 id="其它Realm"><a href="#其它Realm" class="headerlink" title="其它Realm"></a>其它Realm</h3><p>有多个Realm在多个位置持久化是有用的。例如，除了您的主Realm外，您还可能希望将一些数据与您的应用程序捆绑在Realm文件中。您可以通过在初始化Realm时指定路径参数来执行此操作。所有路径都相对于您的应用程序的可写入文档目录：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// Open a realm at another path</span><br><span class="line">let realmAtAnotherPath = new Realm(&#123;</span><br><span class="line">  path: &apos;anotherRealm.realm&apos;,</span><br><span class="line">  schema: [CarSchema]</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="Schema版本"><a href="#Schema版本" class="headerlink" title="Schema版本"></a>Schema版本</h3><p>打开Realm时可用的另一个选项是<code>schemaVersion</code>属性。当省略时，<code>schemaVersion</code>属性默认为0.在使用包含与之前规范不同的对象的Schema初始化现有Realm时，需要指定<code>schemaVersion</code>。如果Schema被更新并且<code>schemaVersion</code>不是之前的结构，将抛出异常。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">const PersonSchema = &#123;</span><br><span class="line">  name: &apos;Person&apos;,</span><br><span class="line">  properties: &#123;</span><br><span class="line">    name: &apos;string&apos;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">// schemaVersion默认是0</span><br><span class="line">let realm = new Realm(&#123;schema: [PersonSchema]&#125;);</span><br><span class="line"></span><br><span class="line">const UpdatedPersonSchema = &#123;</span><br><span class="line">  // 因为schema名称相同, 所以以前的“Person”对象在Realm将会更新</span><br><span class="line">  name: &apos;Person&apos;,</span><br><span class="line">  properties: &#123;</span><br><span class="line">    name: &apos;string&apos;,</span><br><span class="line">    dog:  &apos;Dog&apos;     // 新属性</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">// 这将抛出异常，因为schema已经改变和`schemaVersion`未指定</span><br><span class="line">let realm = new Realm(&#123;schema: [UpdatedPersonSchema]&#125;);</span><br><span class="line"></span><br><span class="line">// 这将成功并将Realm更新到新的schema</span><br><span class="line">let realm = new Realm(&#123;schema: [UpdatedPersonSchema], schemaVersion: 1&#125;);</span><br></pre></td></tr></table></figure>
+<p>如果您想要检索当前的Realmschema版本，可以使用<code>Realm.schemaVersion</code>方法。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let currentVersion = Realm.schemaVersion(Realm.defaultPath);</span><br></pre></td></tr></table></figure>
+<h3 id="异步打开Realm"><a href="#异步打开Realm" class="headerlink" title="异步打开Realm"></a>异步打开Realm</h3><p>如果打开Realm可能需要耗时的操作，例如应用<a href="https://realm.io/docs/javascript/latest/#migrations" target="_blank" rel="noopener">迁移</a>或下载<a href="https://realm.io/docs/javascript/latest/#sync" target="_blank" rel="noopener">同步Realm</a>的远程内容，则应该使用<code>openAsync API</code>执行所有需要的工作，以使Realm在后台线程上处于可用状态调度到给定的队列。您还应该使用<code>openAsync</code>设置只读的Realm。</p>
+<p>例如:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Realm.openAsync(&#123;</span><br><span class="line">  schema: [PersonSchema],</span><br><span class="line">  schemaVersion: 42,</span><br><span class="line">  migration: function(oldRealm, newRealm) &#123;</span><br><span class="line">    // 执行迁移（请参阅文档中的“迁移”）</span><br><span class="line">  &#125;</span><br><span class="line">&#125;, (error, realm) =&gt; &#123;</span><br><span class="line">  if (error) &#123;</span><br><span class="line">    return;</span><br><span class="line">  &#125;</span><br><span class="line">  // 用openAsync返回的Realm对象做回调</span><br><span class="line">  console.log(realm);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p><code>openAsync</code>命令将配置对象作为其第一个参数，回调作为第二个参数;回调函数接收布尔错误标志和已打开的Realm实例。</p>
+<h3 id="初始下载"><a href="#初始下载" class="headerlink" title="初始下载"></a>初始下载</h3><p>在某些情况下，您可能不想在所有远程数据可用之前打开领域。在这种情况下，请使用<code>openAsync</code>。当与同步Realm一起使用时，这将在调用回调之前下载所有的Realm内容。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">var carRealm;</span><br><span class="line">Realm.openAsync(&#123;</span><br><span class="line">  schema: [CarSchema],</span><br><span class="line">  sync: &#123;</span><br><span class="line">    user: user,</span><br><span class="line">    url: &apos;realm://object-server-url:9080/~/cars&apos;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;, (error, realm) =&gt; &#123;</span><br><span class="line">  if (error) &#123;</span><br><span class="line">    return;</span><br><span class="line">  &#125;</span><br><span class="line">  // Realm现已下载并可以使用</span><br><span class="line">  carRealm = realm;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h2 id="迁移"><a href="#迁移" class="headerlink" title="迁移"></a>迁移</h2><p>在数据库工作时，您的数据模型将很可能随时间而变化。</p>
+<p>例如，假设我们有以下Person模型：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">var PersonSchema = &#123;</span><br><span class="line">  name: &apos;Person&apos;,</span><br><span class="line">  properties: &#123;</span><br><span class="line">    firstName: &apos;string&apos;,</span><br><span class="line">    lastName: &apos;string&apos;,</span><br><span class="line">    age: &apos;int&apos;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们要更新数据模型，用来添加一个<code>name</code>属性，而不是单独的名字和姓氏。为此，我们只需将schema更改为以下内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">var PersonSchema = &#123;</span><br><span class="line">  name: &apos;Person&apos;,</span><br><span class="line">  properties: &#123;</span><br><span class="line">    name: &apos;string&apos;,</span><br><span class="line">    age: &apos;int&apos;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在这一点上，如果您使用以前的model版本保存了任何数据，新的代码和Realm已存储在磁盘上的旧数据将不匹配。发生这种情况时，当您尝试使用新的schema打开现有的Realm时，将抛出异常，除非运行迁移。</p>
+<h3 id="进行迁移"><a href="#进行迁移" class="headerlink" title="进行迁移"></a>进行迁移</h3><p>您可以通过更新<a href="https://realm.io/docs/javascript/latest/#schema-version" target="_blank" rel="noopener">schemaVersion</a>并定义可选的迁移函数来定义迁移和关联的schema版本。您的迁移函数提供将数据模型从以前的schema转换为新的schema所需的任何逻辑。当打开Realm时，只有在需要迁移时，才会将迁移函数应用于将Realm更新到给定的schema版本。</p>
+<p>如果没有提供迁移函数，则当更新到新的<code>schemaVersion</code>时，任何新的属性将自动添加并且旧的属性从数据库中删除。如果您需要在升级版本时更新旧的或填充的新属性，那么可以在迁移函数中执行此操作。例如，假设我们要迁移先前声明的<code>Person</code>模型。您可以使用旧的<code>firstName</code>和<code>lastName</code>属性填充新模式的<code>name</code>属性：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">var realm = new Realm(&#123;</span><br><span class="line">  schema: [PersonSchema],</span><br><span class="line">  schemaVersion: 1,</span><br><span class="line">  migration: function(oldRealm, newRealm) &#123;</span><br><span class="line">    // only apply this change if upgrading to schemaVersion 1</span><br><span class="line">    if (oldRealm.schemaVersion &lt; 1) &#123;</span><br><span class="line">      var oldObjects = oldRealm.objects(&apos;Person&apos;);</span><br><span class="line">      var newObjects = newRealm.objects(&apos;Person&apos;);</span><br><span class="line"></span><br><span class="line">      // loop through all objects and set the name property in the new schema</span><br><span class="line">      for (var i = 0; i &lt; oldObjects.length; i++) &#123;</span><br><span class="line">        newObjects[i].name = oldObjects[i].firstName + &apos; &apos; + oldObjects[i].lastName;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">var fullName = realm.objects(&apos;Person&apos;)[0].name;</span><br></pre></td></tr></table></figure>
+<p>迁移成功完成后，您的应用程序可以像往常一样访问Realm及其所有对象。</p>
+<h3 id="线性迁移"><a href="#线性迁移" class="headerlink" title="线性迁移"></a>线性迁移</h3><p>使用上述迁移模式，您可能会在多个版本上迁移时遇到问题。如果用户跳过应用程序更新，并且在跳过的版本中属性已被更改多次，则可能会发生这种情况。在这种情况下，您可能需要编辑旧的迁移代码才能将数据从旧schema更新到最新schema。</p>
+<p>可以通过顺序运行多个迁移来避免此问题，确保将数据库升级到每个先前版本，并运行关联的迁移代码。当遵循这种模式时，永远不需要修改旧的迁移代码，尽管您需要保留所有旧的schema和迁移模块以备将来使用。一个这样的例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">var schemas = [</span><br><span class="line">  &#123; schema: schema1, schemaVersion: 1, migration: migrationFunction1 &#125;,</span><br><span class="line">  &#123; schema: schema2, schemaVersion: 2, migration: migrationFunction2 &#125;,</span><br><span class="line">  ...</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">// 要更新的第一个schema是当前schema版本。</span><br><span class="line">// 因为第一个schema是在我们的数组里</span><br><span class="line">var nextSchemaIndex = Realm.schemaVersion(Realm.defaultPath);</span><br><span class="line">while (nextSchemaIndex &lt; schemas.length) &#123;</span><br><span class="line">  var migratedRealm = new Realm(schemas[nextSchemaIndex++]);</span><br><span class="line">  migratedRealm.close();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 用最新的schema打开Realm</span><br><span class="line">var realm = new Realm(schemas[schemas.length-1]);</span><br></pre></td></tr></table></figure>
+<h2 id="通知"><a href="#通知" class="headerlink" title="通知"></a>通知</h2><p>Realm的 <code>Results</code>和 <code>List</code> 对象提供了<code>addListener</code>方法来注册通知回调。每当更新对象时，将调用更改通知回调。</p>
+<p>有两种通知，“Realm通知”（提交写入事务时通知的简单回调）和“Collection通知”（更复杂的回调，它们在插入，删除和更新时接收更改元数据）。</p>
+<p>此外，专业版和企业版提供事件处理通知。阅读“Realm移动平台”了解更多信息。</p>
+<h3 id="Realm-通知"><a href="#Realm-通知" class="headerlink" title="Realm 通知"></a>Realm 通知</h3><p>每次提交写入事务时，领域实例都会向其他实例发送通知。注册通知：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 注册 Realm 通知</span><br><span class="line">realm.addListener(&apos;change&apos;, () =&gt; &#123;</span><br><span class="line">  // Update UI</span><br><span class="line">  ...</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">// 移除所有注册过的通知</span><br><span class="line">realm.removeAllListeners();</span><br></pre></td></tr></table></figure>
+<h3 id="Collection-通知"><a href="#Collection-通知" class="headerlink" title="Collection 通知"></a>Collection 通知</h3><p>Collection通知包含描述在细粒度级别发生了哪些更改的信息。这包括自上次通知以来插入，删除或修改的对象的索引。Collection通知异步传递：首先使用初始结果，然后在任何修改Collection中的任何对象的写入事务之后，从集合中删除对象，或向集合中添加新对象。</p>
+<p>当这些变化发生时，<code>addListener</code>通知回调函数会收到两个参数。第一个是更改的collection，第二个是具有关于由删除，插入和修改影响的集合索引的信息的<code>changes</code>对象。</p>
+<p>前两项，<strong>删除</strong>和<strong>插入</strong>，每当对象开始和停止作为collection的一部分时，记录索引。当您将对象添加到realm或将其从realm中删除时，这将考虑在内。对于<code>Results</code>，当您过滤特定值并且对象已更改，以使其现在与查询匹配或不匹配时，此操作也适用。对于基于<code>List</code>的collection，这适用于从关系中添加或删除对象时。</p>
+<p>当对象的属性发生更改时，您的应用程序将被通知有关修改，该属性以前是collection的一部分，并且仍然是其中的一部分。当一对多关系发生变化时，也会发生这种情况，但不考虑反向关系的变化。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">class Dog &#123;&#125;</span><br><span class="line">Dog.schema = &#123;</span><br><span class="line">  name: &apos;Dog&apos;,</span><br><span class="line">  properties: &#123;</span><br><span class="line">    name:  &apos;string&apos;,</span><br><span class="line">    age: &apos;int&apos;,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">class Person &#123;&#125;</span><br><span class="line">Person.schema = &#123;</span><br><span class="line">  name: &apos;Person&apos;,</span><br><span class="line">  properties: &#123;</span><br><span class="line">    name:    &#123;type: &apos;string&apos;&#125;,</span><br><span class="line">    dogs:    &#123;type: &apos;list&apos;, objectType: &apos;Dog&apos;&#125;,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>让我们假设您正在观察上面的模型代码给出的狗主人列表。当以下情况下，您将收到关于匹配的<code>Person</code>对象的修改的通知：</p>
+<ul>
+<li>您修改<code>Person</code>的<code>name</code>属性。</li>
+<li>你添加或删除<code>Dog</code>给<code>Person</code>的<code>dogs</code>属性。</li>
+<li>您修改属于该<code>Person</code>的 <code>Dog</code>的 <code>age</code> 属性。</li>
+</ul>
+<p>这使得可以离散地控制对UI内的内容进行的动画和视觉更新，而不是在每次发生通知时任意重新加载所有内容。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">// 注册通知</span><br><span class="line">realm.objects(&apos;Dog&apos;).filtered(&apos;age &lt; 2&apos;).addListener((puppies, changes) =&gt; &#123;</span><br><span class="line">  </span><br><span class="line">  // 更新UI以响应插入的对象</span><br><span class="line">  changes.insertions.forEach((index) =&gt; &#123;</span><br><span class="line">    let insertedDog = puppies[index];</span><br><span class="line">    ...</span><br><span class="line">  &#125;);</span><br><span class="line">  </span><br><span class="line">  // 更新UI以响应修改的对象</span><br><span class="line">  changes.modifications.forEach((index) =&gt; &#123;</span><br><span class="line">    let modifiedDog = puppies[index];</span><br><span class="line">    ...</span><br><span class="line">  &#125;);</span><br><span class="line">  </span><br><span class="line">  // 更新UI以响应已删除的对象</span><br><span class="line">  changes.deletions.forEach((index) =&gt; &#123;</span><br><span class="line">    // 已删除的对象无法直接访问</span><br><span class="line">    // 支持即将访问已删除的对象...</span><br><span class="line">    ...</span><br><span class="line">  &#125;);</span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">// 取消注册所有的通知</span><br><span class="line">realm.removeAllListeners();</span><br></pre></td></tr></table></figure>
+<h2 id="同步"><a href="#同步" class="headerlink" title="同步"></a>同步</h2><p>Realm移动平台（RMP）通过网络扩展了Realm移动数据库，实现了跨设备的数据自动同步。为了做到这一点，提供了一组支持这些同步Realm的类型和类;这些新类别与现有的Realm Mobile数据库相加。</p>
+<h3 id="用户"><a href="#用户" class="headerlink" title="用户"></a>用户</h3><p>Realm对象服务器中的中心对象是与同步Realm相关联的Realm用户（Realm.Sync.User）。<code>User</code>可以通过用户名/密码方案或通过多种第三方身份验证方法对共享的Realm进行身份验证。</p>
+<p>创建和登录用户需要两件事情：</p>
+<ul>
+<li>要连接到的Realm对象服务器的URL。</li>
+<li>用于认证机制的证书，该认证机制根据该机制描述用户（即，用户名/密码，访问密钥等）。</li>
+</ul>
+<h4 id="认证"><a href="#认证" class="headerlink" title="认证"></a>认证</h4><p>认证用于建立用户的身份并登录。请参阅我们的<a href="https://realm.io/docs/realm-object-server/#authentication" target="_blank" rel="noopener">身份验证文档</a>，了解Realm Mobile Platform支持的认证提供者列表。</p>
+<p>可以通过以下几种方式之一创建给定用户的凭据信息：</p>
+<ul>
+<li>提供有效的用户名/密码组合</li>
+<li>提供从受支持的第三方身份验证服务获取的令牌</li>
+<li>提供令牌和自定义验证提供程序（<a href="https://realm.io/docs/realm-object-server/#custom-authentication" target="_blank" rel="noopener">请参阅自定义验证</a>）</li>
+</ul>
+<p>用户名和密码认证完全由Realm对象服务器管理，可以完全控制应用程序的用户管理。</p>
+<p>对于其他身份验证方法，您的应用程序负责登录外部服务并获取身份验证令牌。</p>
+<p>以下是与各种提供程序设置凭据的一些示例。</p>
+<h5 id="用户名-密码"><a href="#用户名-密码" class="headerlink" title="用户名/密码"></a>用户名/密码</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Realm.Sync.User.login(&apos;http://my.realm-auth-server.com:9080&apos;, &apos;username&apos;, &apos;p@s$w0rd&apos;, (error, user) =&gt; &#123; /* ... */ &#125;);</span><br></pre></td></tr></table></figure>
+<p>在用户登录之前，必须创建该帐户。您可以使用管理控制台在服务器上提前执行此操作，也可以通过调用<code>register</code>方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Realm.Sync.User.register(&apos;http://my.realm-auth-server.com:9080&apos;, &apos;username&apos;, &apos;p@s$w0rd&apos;, (error, user) =&gt; &#123; /* ... */ &#125;);</span><br></pre></td></tr></table></figure>
+<h5 id="Google"><a href="#Google" class="headerlink" title="Google"></a>Google</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">const googleAccessToken = &apos;acc3ssT0ken...&apos;;</span><br><span class="line">Realm.Sync.User.registerWithProvider(&apos;http://my.realm-auth-server.com:9080&apos;, &apos;google&apos;, googleAccessToken, (error, user) =&gt; &#123; /* ... */ &#125;);</span><br></pre></td></tr></table></figure>
+<h5 id="Facebook"><a href="#Facebook" class="headerlink" title="Facebook"></a>Facebook</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">const fbAccessToken = &apos;acc3ssT0ken...&apos;;</span><br><span class="line">Realm.Sync.User.registerWithProvider(&apos;http://my.realm-auth-server.com:9080&apos;, &apos;facebook&apos;, fbAccessToken, (error, user) =&gt; &#123; /* ... */ &#125;);</span><br></pre></td></tr></table></figure>
+<h5 id="自定义认证"><a href="#自定义认证" class="headerlink" title="自定义认证"></a>自定义认证</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// The user token provided by your authentication server</span><br><span class="line">const accessToken = &apos;acc3ssT0ken...&apos;;</span><br><span class="line"></span><br><span class="line">const user = Realm.Sync.User.registerWithProvider(</span><br><span class="line">  &apos;http://my.realm-auth-server.com:9080&apos;,</span><br><span class="line">  &apos;custom/fooauth&apos;,</span><br><span class="line">  accessToken,</span><br><span class="line">  (error, user) =&gt; &#123; /* ... */ &#125;</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>注意：JavaScript SDK当前不允许您发送其他数据。如果您需要发送多个单个令牌，请将附加数据编码为JSON，并通过accessToken参数传递，并对服务器端的此字符串进行解码。</p>
+<h5 id="注销"><a href="#注销" class="headerlink" title="注销"></a>注销</h5><p>注销同步的Realm很简单：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">user.logout();</span><br></pre></td></tr></table></figure>
+<p>当用户注销时，同步将停止。退出的用户将无法再打开同步的Realm。</p>
+<h4 id="Working-with-Users"><a href="#Working-with-Users" class="headerlink" title="Working with Users"></a>Working with Users</h4><p>同步服务器URL可以包含波形符号（“〜”），它将被透明地扩展以表示用户的唯一标识符。这个方案很容易让您编写应用程序以满足其个人用户需求。磁盘上共享realm的位置由框架管理，但如果需要可以覆盖。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Realm.Sync.User.login(/* ... */, (error, user) =&gt; &#123;</span><br><span class="line">  if (!error) &#123;</span><br><span class="line">    var realm = new Realm(&#123;</span><br><span class="line">      sync: &#123;</span><br><span class="line">        user: user,</span><br><span class="line">        url: &apos;realm://object-server-url:9080/~/my-realm&apos;,</span><br><span class="line">      &#125;,</span><br><span class="line">      schema: [/* ... */]</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    realm.write(() =&gt; &#123; </span><br><span class="line">      /* ... */</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p><code>Realm.Sync.User.current</code>可用于获取当前登录的用户。如果没有用户登录或全部已经注销，它将返回 <code>undefined</code>。如果有多个登录用户，将会抛出一个错误。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let user = Realm.Sync.User.current;</span><br></pre></td></tr></table></figure>
+<p>如果可能有多个用户登录，您可以通过调用<code>Realm.Sync.User.all</code>获取它们的一个集合。如果没有用户登录，这将是空的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">let users = Realm.Sync.User.all;</span><br><span class="line"></span><br><span class="line">for(const key in users) &#123;</span><br><span class="line">  const user = users[key];</span><br><span class="line"></span><br><span class="line">  // do something with the user.  </span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h3 id="打开同步Realm"><a href="#打开同步Realm" class="headerlink" title="打开同步Realm"></a>打开同步Realm</h3><p>一旦您使用一个Realm对象服务器的URL和一个用户对象打开Realm，您可以像JavaScript中的其他Realm一样进行交互。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">realm.write(() =&gt; &#123;</span><br><span class="line">  realm.create(&apos;MyObject&apos;, jsonData);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">var objects = realm.object(&apos;MyObject&apos;);</span><br></pre></td></tr></table></figure>
+<p>如果Realm具有只读权限，那么您必须按照异步打开Realm的描述使用<code>openAsync</code>。在没有<code>openAsync</code>的情况下打开只读领域会导致错误。</p>
+<h3 id="同步会话"><a href="#同步会话" class="headerlink" title="同步会话"></a>同步会话</h3><p>同步的Realm与Realm对象服务器的连接由<code>Session</code>对象表示。可以通过调用<code>realm.syncSession</code>来检索会话对象。</p>
+<p>可以使用<code>state</code>属性检索基础会话的状态。这可以用于检查会话是活动的，未连接到服务器还是处于错误状态。</p>
+<h3 id="访问控制"><a href="#访问控制" class="headerlink" title="访问控制"></a>访问控制</h3><p>Realm移动平台提供灵活的访问控制机制，以限制哪些用户与哪些Realm文件同步。例如，这可以用于创建多个用户写入同一个Realm的协作应用程序。它也可以用于在发布者/订阅者场景中共享数据，其中单个写入用户与具有读取权限的许多用户共享数据。</p>
+<p>有三个权限可以控制用户给定Realm的访问级别：</p>
+<ul>
+<li><code>mayRead</code> 示允许用户从Realm读取。</li>
+<li><code>mayWrite</code> 表示允许用户写入Realm。</li>
+<li><code>mayManage</code> 表示允许用户更改Realm的权限。</li>
+</ul>
+<p>除非明确修改权限，否则只有领域的所有者（创建者）可以访问它。唯一的例外是管理员用户：他们总是授予服务器上所有Realm的所有权限。</p>
+<p><strong>Write-only</strong> permissions (i.e., <code>mayWrite</code> set without <code>mayRead</code>) are not currently supported.</p>
+<p>当前不支持只写权限（即，<code>mayWrite</code>没有<code>mayRead</code>的设置）。</p>
+<p>请参阅<a href="https://realm.io/docs/realm-object-server/#access-control" target="_blank" rel="noopener">访问控制</a>的通用<code>Realm Object Server</code>文档，以了解有关概念的更多信息。</p>
+<h4 id="管理-Realm"><a href="#管理-Realm" class="headerlink" title="管理 Realm"></a>管理 Realm</h4><p>所有访问级管理操作都是通过写入管理realm来执行的。管理realm就像一个常规的同步realm，但是Realm对象服务器是专门针对默认情况而设计的。<a href="https://realm.io/docs/javascript/latest/#modifying-permissions" target="_blank" rel="noopener">权限修改</a>对象可以添加到realm，以将这些更改应用于Realm文件的访问控制设置。</p>
+<p>要获取给定用户的管理realm，请调用其<code>user.openManagementRealm()</code>方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const managementRealm = user.openManagementRealm();</span><br></pre></td></tr></table></figure>
+<h4 id="修改权限"><a href="#修改权限" class="headerlink" title="修改权限"></a>修改权限</h4><p>通过向管理Realm添加权限对象实例来修改Realm文件的访问控制设置。目前，支持两个工作流程：</p>
+<h5 id="PermissionChange"><a href="#PermissionChange" class="headerlink" title="PermissionChange"></a>PermissionChange</h5><p><code>PermissionChange</code>对象允许您直接控制Realm的访问控制设置。当您已经知道要向其授予权限的用户的Ids或希望向每个人授予权限时，这是非常有用的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">managementRealm.write(() =&gt; &#123;</span><br><span class="line">  managementRealm.create(&apos;PermissionChange&apos;, &#123;</span><br><span class="line">    id: generateUniqueId(),   // 实现创建唯一ID的内容。</span><br><span class="line">    createdAt: new Date(),</span><br><span class="line">    updatedAt: new Date(),</span><br><span class="line">    userId: &apos;...&apos;,</span><br><span class="line">    realmUrl: &apos;...&apos;,</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>要应用用户管理的所有Realm的权限更改，请指定一个<code>realmURL</code>值*。</p>
+<p>要对使用对象服务器授权的所有用户应用权限更改，请指定<code>userId</code>值*。</p>
+<p>如果您不提供<code>mayRead</code>，<code>mayWrite</code>或<code>mayManage</code>的值，或者提供<code>null</code>，<code>read</code>，<code>write</code>或<code>manage</code>权限将保持不变。这可能是有用的，例如，如果您要授予用户读取权限，但不想从已拥有该权限的用户取走写入权限：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">managementRealm.write(() =&gt; &#123;</span><br><span class="line">  for(const userId in users) &#123;</span><br><span class="line">    managementRealm.create(&apos;PermissionChange&apos;, &#123;</span><br><span class="line">      id: generateUniqueId(),</span><br><span class="line">      createdAt: new Date(),</span><br><span class="line">      updatedAt: new Date(),</span><br><span class="line">      userId: userId,</span><br><span class="line">      realmUrl: realmUrl,</span><br><span class="line">      mayRead: true</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>这样，列表中的所有用户将被授予读取权限，但是具有 <code>write</code> 和 <code>manage</code> 访问权限的用户将不会丢失它。</p>
+<h5 id="PermissionOffer-PermissionResponse"><a href="#PermissionOffer-PermissionResponse" class="headerlink" title="PermissionOffer/PermissionResponse"></a>PermissionOffer/PermissionResponse</h5><p><code>PermissionOffer</code>和<code>PermissionOfferResponse</code>对类允许您设计共享方案，其中，邀请者生成令牌，然后可以由一个或多个用户使用令牌：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">managementRealm.write(() =&gt; &#123;</span><br><span class="line">  let expirationDate = new Date();</span><br><span class="line">  expirationDate.setDate(expirationDate.getDate() + 7); // 一周内过期</span><br><span class="line"></span><br><span class="line">  managementRealm.create(&apos;PermissionOffer&apos;, &#123;</span><br><span class="line">    id: generateUniqueId(),</span><br><span class="line">    createdAt: new Date(),</span><br><span class="line">    updatedAt: new Date(),</span><br><span class="line">    userId: userId,</span><br><span class="line">    realmUrl: realmUrl,</span><br><span class="line">    mayRead: true,</span><br><span class="line">    mayWrite: true,</span><br><span class="line">    mayManage: false,</span><br><span class="line">    expiresAt: expirationDate</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">/* 等待报价处理 */</span><br><span class="line">var token = permissionOffer.token;</span><br><span class="line">/* 将令牌发送给其他用户 */</span><br></pre></td></tr></table></figure>
+<p>与<code>PermissionChange</code>类似，在提供的<code>realmUrl</code>中有一些参数控制Realm的读取，写入和管理访问。您可以提供的另外一个参数是<code>expiresAt</code>，它控制令牌何时不再是可消耗的。如果您不传递值或通过null，则该报价永远不会过期。请注意，使用该优惠的用户在过期后不会失去访问权限。</p>
+<p>一旦用户获得了令牌，他们就可以使用它：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">const managementRealm = anotherUser.openManagementRealm();</span><br><span class="line">let offerResponse;</span><br><span class="line"></span><br><span class="line">managementRealm.write(() =&gt;</span><br><span class="line">&#123;</span><br><span class="line">    offerResponse = managementRealm.create(&apos;PermissionOfferResponse&apos;, &#123;</span><br><span class="line">      id: generateUniqueId(),</span><br><span class="line">      createdAt: new Date(),</span><br><span class="line">      token: token</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">/* Wait for the offer to be processed */</span><br><span class="line"></span><br><span class="line">const realmUrl = offerResponse.realmUrl;</span><br><span class="line"></span><br><span class="line">// Now we can open the shared realm:</span><br><span class="line"></span><br><span class="line">var realm = new Realm(&#123;</span><br><span class="line">  sync: &#123;</span><br><span class="line">    user: anotherUser,</span><br><span class="line">    url: realmUrl,</span><br><span class="line">  &#125;,</span><br><span class="line">  schema: [/* ... */]</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>请注意，通过使用<code>PermissionOffer</code>授予的权限是相加的，即如果用户已经具有<code>write</code>权限并且接受授予<code>read</code>权限的<code>PermissionOffer</code>，则它们不会丢失其<code>write</code>权限。</p>
+<p><code>PermissionOffers</code>可以通过从管理域中删除或将过期设置为<code>expiresAt</code>日期来撤销。这将阻止新用户接受该优惠，但不会在之前消费的用户撤销任何权限。</p>
+<p>一旦对象服务器处理了在权限对象中编码的操作，它将设置该对象的<code>statusCode</code>和<code>statusMessage</code>属性。</p>
+<h2 id="React-Native-ListView"><a href="#React-Native-ListView" class="headerlink" title="React Native ListView"></a>React Native ListView</h2><p>如果要使用<code>List</code>或<code>Results</code>实例作为<code>ListView</code>的数据，强烈建议您使用由 <code>realm/react-native</code> 模块提供的<code>ListView</code>和<code>ListView.DataSource</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">import &#123; ListView &#125; from &apos;realm/react-native&apos;;</span><br></pre></td></tr></table></figure>
+<p>API与<code>React.ListView</code>完全相同，因此您可以参考<code>ListView</code><a href="https://facebook.github.io/react-native/docs/listview.html" target="_blank" rel="noopener">文档</a>获取使用信息。</p>
+<h2 id="加密"><a href="#加密" class="headerlink" title="加密"></a>加密</h2><p>请注意我们的许可证的出口合规部分，因为如果您位于美国出口限制或禁运的国家/地区，则会对其使用限制。</p>
+<p>Realm支持使用<code>AES-256+SHA2</code>通过在创建Realm时提供64字节的加密密钥来加密磁盘上的数据库文件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">var key = new Int8Array(64);  // pupulate with a secure key</span><br><span class="line">var realm = new Realm(&#123;schema: [CarObject], encryptionKey: key&#125;);</span><br><span class="line"></span><br><span class="line">// Use the Realm as normal</span><br><span class="line">var dogs = realm.objects(&apos;Car&apos;);</span><br></pre></td></tr></table></figure>
+<p>这使得所有存储在磁盘上的数据都可以根据需要使用<code>AES-256</code>进行透明加密和解密，并通过<code>SHA-2 HMAC</code>进行验证。必须在每次获得Realm实例时提供相同的加密密钥。</p>
+<p>使用加密的Realms时，性能下降很小（通常低于10％）。</p>
+<h2 id="故障排除"><a href="#故障排除" class="headerlink" title="故障排除"></a>故障排除</h2><h3 id="Missing-Realm-Constructor"><a href="#Missing-Realm-Constructor" class="headerlink" title="Missing Realm Constructor"></a>Missing Realm Constructor</h3><p>如果您的应用程序崩溃，告诉您Realm构造函数未找到，您可以尝试几件事情：</p>
+<p>首先，运行 <code>react-native link realm</code></p>
+<p>如果没有帮助，并且您的问题在Android上，请尝试:</p>
+<p>在<code>MainApplication.java</code>文件中添加以下内容：<code>java import io.realm.react.RealmReactPackage</code>;</p>
+<p>并将<code>RealmReactPackage</code>添加到软件包列表中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">protected List getPackages() &#123;</span><br><span class="line">    return Arrays.asList(</span><br><span class="line">        new MainReactPackage(),</span><br><span class="line">        new RealmReactPackage() // add this line</span><br><span class="line">    );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在<code>settings.gradle</code>中添加以下两行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">include &apos;:realm&apos;</span><br><span class="line">project(&apos;:realm&apos;).projectDir = new File(settingsDir, &apos;../node_modules/realm/android&apos;)</span><br></pre></td></tr></table></figure>
+<p>如果您的问题在iOS上，请尝试：1.关闭所有模拟器/设备构建2.停止在终端中运行的软件包管理器（或更好的是，只需重新启动终端）3.在finder 4中打开应用程序根目录中的ios文件夹。Go进入构建文件夹（注意：你不会看到这个构建文件夹在原子，所以只需右键单击ios并单击打开查找器）5.删除构建文件夹内的所有内容（只是移动到垃圾桶，并保持垃圾，以防万一’担心）6.运行反应本机运行以重建整个事情</p>
+<h3 id="崩溃报告"><a href="#崩溃报告" class="headerlink" title="崩溃报告"></a>崩溃报告</h3><p>我们建议您在应用程序中使用崩溃记录。许多Realm的操作可能会在运行时失败（像任何其他磁盘IO），因此从应用程序收集崩溃报告将有助于识别您（或我们）可以改进错误处理和修复崩溃错误的区域。</p>
+<p>大多数商业崩溃记录者可以选择收集日志。我们强烈建议您启用此功能。Realm在抛出异常和不可恢复的情况下记录元数据信息（但不包含用户数据），并且这些消息可以帮助在出现问题时进行调试。</p>
+<h3 id="提交Realm问题"><a href="#提交Realm问题" class="headerlink" title="提交Realm问题"></a>提交Realm问题</h3><p>如果您发现了Realm的问题，请<a href="https://github.com/realm/realm-js/issues/new" target="_blank" rel="noopener">在GitHub上提出问题</a>，或者发送电子邮件至<a href="mailto:help@realm.io" target="_blank" rel="noopener">help@realm.io</a>，尽可能多地了解和重现您的问题。</p>
+<p>以下信息对我们非常有用：</p>
+<ol>
+<li>Bug名称.</li>
+<li>预期结果.</li>
+<li>实际结果.</li>
+<li>重现步骤.</li>
+<li>强调问题的代码示例（我们可以自己编译的全部工作项目是比较理想的）.</li>
+<li>Realm版本.</li>
+<li>崩溃日志 &amp; 堆栈信息.有关详细信息，请参阅上述<a href="https://realm.io/docs/javascript/latest/#crash-reporting" target="_blank" rel="noopener">崩溃报告</a>.</li>
+</ol>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>感谢您的支持，这将鼓励我坚持技术分享！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="http://cn.gravatar.com/userimage/119205447/f356a9687dd39e3fb68fa6ad110b31a7.png?size=200" alt="William-Dream WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="http://cn.gravatar.com/userimage/119205447/aecd8d2eaf8428ddaad1b31aaf41a333.jpg?size=200" alt="William-Dream Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/19/on-road/" rel="next" title="在路上">
+                <i class="fa fa-chevron-left"></i> 在路上
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/01/day_001/" rel="prev" title="不卑不亢">
+                不卑不亢 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yODE4MC80NzUz"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://www.gravatar.com/avatar/c8b98e5df395f0e0fd3b47948b37b881.jpg?s=215"
+               alt="William-Dream" />
+          <p class="site-author-name" itemprop="name">William-Dream</p>
+           
+              <p class="site-description motion-element" itemprop="description">为了梦-追梦,我的英文名由此而来</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">83</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/li-jun-bo" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              Links
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.lijunbo.com/" title="Net" target="_blank">Net</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#介绍"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#入门"><span class="nav-number">2.</span> <span class="nav-text">入门</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装"><span class="nav-number">2.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装示例"><span class="nav-number">2.2.</span> <span class="nav-text">安装示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获得帮助"><span class="nav-number">3.</span> <span class="nav-text">获得帮助</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模型"><span class="nav-number">4.</span> <span class="nav-text">模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#支持的类型"><span class="nav-number">4.1.</span> <span class="nav-text">支持的类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关系"><span class="nav-number">4.2.</span> <span class="nav-text">关系</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#一对一关系"><span class="nav-number">4.2.1.</span> <span class="nav-text">一对一关系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#一对多关系"><span class="nav-number">4.2.2.</span> <span class="nav-text">一对多关系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多对多关系"><span class="nav-number">4.2.3.</span> <span class="nav-text">多对多关系</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可选属性"><span class="nav-number">4.3.</span> <span class="nav-text">可选属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#默认属性值"><span class="nav-number">4.4.</span> <span class="nav-text">默认属性值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#索引属性"><span class="nav-number">4.5.</span> <span class="nav-text">索引属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#主键"><span class="nav-number">4.6.</span> <span class="nav-text">主键</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#写"><span class="nav-number">5.</span> <span class="nav-text">写</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建对象"><span class="nav-number">5.1.</span> <span class="nav-text">创建对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#嵌套对象"><span class="nav-number">5.2.</span> <span class="nav-text">嵌套对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#更新对象"><span class="nav-number">5.3.</span> <span class="nav-text">更新对象</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Typed-Updates-键入的更新"><span class="nav-number">5.3.1.</span> <span class="nav-text">Typed Updates 键入的更新</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用主键创建和更新对象"><span class="nav-number">5.3.2.</span> <span class="nav-text">使用主键创建和更新对象</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除对象"><span class="nav-number">5.4.</span> <span class="nav-text">删除对象</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查询"><span class="nav-number">6.</span> <span class="nav-text">查询</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#过滤"><span class="nav-number">6.1.</span> <span class="nav-text">过滤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#排序"><span class="nav-number">6.2.</span> <span class="nav-text">排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自动更新结果集"><span class="nav-number">6.3.</span> <span class="nav-text">自动更新结果集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#限制结果集"><span class="nav-number">6.4.</span> <span class="nav-text">限制结果集</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Realms"><span class="nav-number">7.</span> <span class="nav-text">Realms</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#打开Realm"><span class="nav-number">7.1.</span> <span class="nav-text">打开Realm</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#默认Realm"><span class="nav-number">7.2.</span> <span class="nav-text">默认Realm</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其它Realm"><span class="nav-number">7.3.</span> <span class="nav-text">其它Realm</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Schema版本"><span class="nav-number">7.4.</span> <span class="nav-text">Schema版本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#异步打开Realm"><span class="nav-number">7.5.</span> <span class="nav-text">异步打开Realm</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#初始下载"><span class="nav-number">7.6.</span> <span class="nav-text">初始下载</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#迁移"><span class="nav-number">8.</span> <span class="nav-text">迁移</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#进行迁移"><span class="nav-number">8.1.</span> <span class="nav-text">进行迁移</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线性迁移"><span class="nav-number">8.2.</span> <span class="nav-text">线性迁移</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#通知"><span class="nav-number">9.</span> <span class="nav-text">通知</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Realm-通知"><span class="nav-number">9.1.</span> <span class="nav-text">Realm 通知</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Collection-通知"><span class="nav-number">9.2.</span> <span class="nav-text">Collection 通知</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#同步"><span class="nav-number">10.</span> <span class="nav-text">同步</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#用户"><span class="nav-number">10.1.</span> <span class="nav-text">用户</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#认证"><span class="nav-number">10.1.1.</span> <span class="nav-text">认证</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#用户名-密码"><span class="nav-number">10.1.1.1.</span> <span class="nav-text">用户名/密码</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Google"><span class="nav-number">10.1.1.2.</span> <span class="nav-text">Google</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Facebook"><span class="nav-number">10.1.1.3.</span> <span class="nav-text">Facebook</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#自定义认证"><span class="nav-number">10.1.1.4.</span> <span class="nav-text">自定义认证</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#注销"><span class="nav-number">10.1.1.5.</span> <span class="nav-text">注销</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Working-with-Users"><span class="nav-number">10.1.2.</span> <span class="nav-text">Working with Users</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#打开同步Realm"><span class="nav-number">10.2.</span> <span class="nav-text">打开同步Realm</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#同步会话"><span class="nav-number">10.3.</span> <span class="nav-text">同步会话</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#访问控制"><span class="nav-number">10.4.</span> <span class="nav-text">访问控制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#管理-Realm"><span class="nav-number">10.4.1.</span> <span class="nav-text">管理 Realm</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#修改权限"><span class="nav-number">10.4.2.</span> <span class="nav-text">修改权限</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#PermissionChange"><span class="nav-number">10.4.2.1.</span> <span class="nav-text">PermissionChange</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#PermissionOffer-PermissionResponse"><span class="nav-number">10.4.2.2.</span> <span class="nav-text">PermissionOffer/PermissionResponse</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#React-Native-ListView"><span class="nav-number">11.</span> <span class="nav-text">React Native ListView</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#加密"><span class="nav-number">12.</span> <span class="nav-text">加密</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#故障排除"><span class="nav-number">13.</span> <span class="nav-text">故障排除</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Missing-Realm-Constructor"><span class="nav-number">13.1.</span> <span class="nav-text">Missing Realm Constructor</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#崩溃报告"><span class="nav-number">13.2.</span> <span class="nav-text">崩溃报告</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#提交Realm问题"><span class="nav-number">13.3.</span> <span class="nav-text">提交Realm问题</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">William-Dream</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("PWTRJaGA9VmnmuJISstgYQVk-gzGzoHsz", "OhMVXOeW5jbdIohUayYbpq1v");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+  
+
+
+  
+
+</body>
+</html>

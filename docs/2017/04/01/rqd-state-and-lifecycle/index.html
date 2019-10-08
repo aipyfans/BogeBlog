@@ -1,0 +1,1258 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+<script data-ad-client="ca-pub-7376123380604387" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="静水流深" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="Consider the ticking clock example from one of the previous sections. 考虑上一节的秒表时钟示例。 So far we have only learned one way to update the UI. 到目前为止，我们只学到了一种更新UI的方法。 We call ReactDOM.render() to change the">
+<meta property="og:type" content="article">
+<meta property="og:title" content="State and Lifecycle(状态和生命周期)">
+<meta property="og:url" content="http://blog.lijunbo.com/2017/04/01/rqd-state-and-lifecycle/index.html">
+<meta property="og:site_name" content="静水流深">
+<meta property="og:description" content="Consider the ticking clock example from one of the previous sections. 考虑上一节的秒表时钟示例。 So far we have only learned one way to update the UI. 到目前为止，我们只学到了一种更新UI的方法。 We call ReactDOM.render() to change the">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-10-08T10:39:52.095Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="State and Lifecycle(状态和生命周期)">
+<meta name="twitter:description" content="Consider the ticking clock example from one of the previous sections. 考虑上一节的秒表时钟示例。 So far we have only learned one way to update the UI. 到目前为止，我们只学到了一种更新UI的方法。 We call ReactDOM.render() to change the">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.lijunbo.com/2017/04/01/rqd-state-and-lifecycle/"/>
+
+
+
+
+
+  <title> State and Lifecycle(状态和生命周期) | 静水流深 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?4a874f383236eb548cfc14b4365008b8";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">静水流深</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">非淡泊无以明志，非宁静无以致远</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://blog.lijunbo.com/2017/04/01/rqd-state-and-lifecycle/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="William-Dream">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://www.gravatar.com/avatar/c8b98e5df395f0e0fd3b47948b37b881.jpg?s=215">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="静水流深">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                State and Lifecycle(状态和生命周期)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-01T11:11:11+08:00">
+                2017-04-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/react/" itemprop="url" rel="index">
+                    <span itemprop="name">react</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/04/01/rqd-state-and-lifecycle/" class="leancloud_visitors" data-flag-title="State and Lifecycle(状态和生命周期)">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Consider the ticking clock example from <a href="/react/docs/rendering-elements.html#updating-the-rendered-element">one of the previous sections</a>.</p>
+<p>考虑上一节的秒表时钟示例。</p>
+<p>So far we have only learned one way to update the UI.</p>
+<p>到目前为止，我们只学到了一种更新UI的方法。</p>
+<p>We call <code>ReactDOM.render()</code> to change the rendered output:</p>
+<p>我们调用 <code>ReactDOM.render()</code>来更改渲染的输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">function tick() &#123;</span><br><span class="line">  const element = (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;h1&gt;Hello, world!&lt;/h1&gt;</span><br><span class="line">      &lt;h2&gt;It is &#123;new Date().toLocaleTimeString()&#125;.&lt;/h2&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">  ReactDOM.render(</span><br><span class="line">    element,</span><br><span class="line">    document.getElementById(&apos;root&apos;)</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">setInterval(tick, 1000);</span><br></pre></td></tr></table></figure>
+<p><a href="http://codepen.io/gaearon/pen/gwoJZk?editors=0010" target="_blank" rel="noopener">Try it on CodePen.</a></p>
+<p>In this section, we will learn how to make the <code>Clock</code> component truly reusable and encapsulated. It will set up its own timer and update itself every second.</p>
+<p>在本节中，我们将学习如何使<code>Clock</code>组件真正可重用和并对其封装。 它将设置自己的计时器并每秒更新一次。</p>
+<p>We can start by encapsulating how the clock looks:</p>
+<p>我们可以从封装时钟开始：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">function Clock(props) &#123;</span><br><span class="line">  return (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;h1&gt;Hello, world!&lt;/h1&gt;</span><br><span class="line">      &lt;h2&gt;It is &#123;props.date.toLocaleTimeString()&#125;.&lt;/h2&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function tick() &#123;</span><br><span class="line">  ReactDOM.render(</span><br><span class="line">    &lt;Clock date=&#123;new Date()&#125; /&gt;,</span><br><span class="line">    document.getElementById(&apos;root&apos;)</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">setInterval(tick, 1000);</span><br></pre></td></tr></table></figure>
+<p><a href="http://codepen.io/gaearon/pen/dpdoYR?editors=0010" target="_blank" rel="noopener">Try it on CodePen.</a></p>
+<p>However, it misses a crucial requirement: the fact that the <code>Clock</code> sets up a timer and updates the UI every second should be an implementation detail of the <code>Clock</code>.</p>
+<p>然而，它错过了一个关键的要求：<code>Clock</code>设置定时器并每秒更新UI的事实应该是<code>Clock</code>的实现细节。</p>
+<p>Ideally we want to write this once and have the <code>Clock</code> update itself:</p>
+<p>理想情况下，我们要写一下这个时钟更新本身：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ReactDOM.render(</span><br><span class="line">  &lt;Clock /&gt;,</span><br><span class="line">  document.getElementById(&apos;root&apos;)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>To implement this, we need to add “state” to the <code>Clock</code> component.</p>
+<p>为了实现这一点，我们需要在<code>Clock</code>组件中添加”state”。</p>
+<p>State is similar to props, but it is private and fully controlled by the component.</p>
+<p>状态(State)类似于属性，但它是私有的，完全由组件控制。</p>
+<p>We <a href="/react/docs/components-and-props.html#functional-and-class-components">mentioned before</a> that components defined as classes have some additional features. Local state is exactly that: a feature available only to classes.</p>
+<p>我们之前提到，定义为类的组件具有一些附加功能。 本地状态就是这样：一个功能只适用于类。</p>
+<h2 id="Converting-a-Function-to-a-Class-将函数转换为类"><a href="#Converting-a-Function-to-a-Class-将函数转换为类" class="headerlink" title="Converting a Function to a Class(将函数转换为类)"></a>Converting a Function to a Class(将函数转换为类)</h2><p>You can convert a functional component like <code>Clock</code> to a class in five steps:</p>
+<ol>
+<li>Create an <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Classes" target="_blank" rel="noopener">ES6 class</a> with the same name that extends <code>React.Component</code>.</li>
+<li>Add a single empty method to it called <code>render()</code>.</li>
+<li>Move the body of the function into the <code>render()</code> method.</li>
+<li>Replace <code>props</code> with <code>this.props</code> in the <code>render()</code> body.</li>
+<li>Delete the remaining empty function declaration.</li>
+</ol>
+<hr>
+<p>您可以通过五个步骤将时钟功能组件转换为类：</p>
+<ol>
+<li>创建一个名称继承为<code>React.Component</code>的ES6类。</li>
+<li>在类中添加一个名为<code>render()</code>的空方法。</li>
+<li>将函数体移动到<code>render()</code>方法中。</li>
+<li>在<code>render()</code>函数中使用this.props替换<code>props</code>。</li>
+<li>删除剩余的空函数声明。</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Clock</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span><br><span class="line">  render() &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;div&gt;</span><br><span class="line">        &lt;h1&gt;Hello, world!<span class="xml"><span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span></span><br><span class="line">        &lt;h2&gt;It is &#123;<span class="keyword">this</span>.props.date.toLocaleTimeString()&#125;.&lt;<span class="regexp">/h2&gt;</span></span><br><span class="line"><span class="regexp">      &lt;/</span>div&gt;</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><a href="http://codepen.io/gaearon/pen/zKRGpo?editors=0010" target="_blank" rel="noopener">Try it on CodePen.</a></p>
+<p><code>Clock</code> is now defined as a class rather than a function.</p>
+<p><code>Clock</code>现在被定义为一个类而不是一个函数。</p>
+<p>This lets us use additional features such as local state and lifecycle hooks.</p>
+<p>这使我们可以使用其他功能，如本地状态和生命周期的钩子函数。</p>
+<h2 id="Adding-Local-State-to-a-Class-将本地状态添加到类"><a href="#Adding-Local-State-to-a-Class-将本地状态添加到类" class="headerlink" title="Adding Local State to a Class(将本地状态添加到类)"></a>Adding Local State to a Class(将本地状态添加到类)</h2><p>We will move the <code>date</code> from props to state in three steps:</p>
+<p>我们将分三个步骤，将<code>date</code>的属性映射到状态。</p>
+<p>1) Replace <code>this.props.date</code> with <code>this.state.date</code> in the <code>render()</code> method:</p>
+<p>1）在<code>render()</code>方法中将this.props.date替换为this.state.date：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">class Clock extends React.Component &#123;</span><br><span class="line">  render() &#123;</span><br><span class="line">    return (</span><br><span class="line">      &lt;div&gt;</span><br><span class="line">        &lt;h1&gt;Hello, world!&lt;/h1&gt;</span><br><span class="line">        &lt;h2&gt;It is &#123;this.state.date.toLocaleTimeString()&#125;.&lt;/h2&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>2) Add a <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Classes#Constructor" target="_blank" rel="noopener">class constructor</a> that assigns the initial <code>this.state</code>:</p>
+<p>2）添加分配初始this.state到类的构造函数中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">class Clock extends React.Component &#123;</span><br><span class="line">  constructor(props) &#123;</span><br><span class="line">    super(props);</span><br><span class="line">    this.state = &#123;date: new Date()&#125;;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  render() &#123;</span><br><span class="line">    return (</span><br><span class="line">      &lt;div&gt;</span><br><span class="line">        &lt;h1&gt;Hello, world!&lt;/h1&gt;</span><br><span class="line">        &lt;h2&gt;It is &#123;this.state.date.toLocaleTimeString()&#125;.&lt;/h2&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Note how we pass <code>props</code> to the base constructor:</p>
+<p>注意我们如何将 <code>props</code> 传递给基础构造函数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">constructor(props) &#123;</span><br><span class="line">  super(props);</span><br><span class="line">  this.state = &#123;date: new Date()&#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Class components should always call the base constructor with <code>props</code>.</p>
+<p>类组件应始终使用 <code>props</code>调用基础构造函数。</p>
+<p>3) Remove the <code>date</code> prop from the <code>&lt;Clock /&gt;</code> element:</p>
+<p>3）从<code>&lt;Clock /&gt;</code>元素中删除日期：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ReactDOM.render(</span><br><span class="line">  &lt;Clock /&gt;,</span><br><span class="line">  document.getElementById(&apos;root&apos;)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>We will later add the timer code back to the component itself.</p>
+<p>稍后将定时器代码添加回组件本身。</p>
+<p>The result looks like this:</p>
+<p>结果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">class Clock extends React.Component &#123;</span><br><span class="line">  constructor(props) &#123;</span><br><span class="line">    super(props);</span><br><span class="line">    this.state = &#123;date: new Date()&#125;;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  render() &#123;</span><br><span class="line">    return (</span><br><span class="line">      &lt;div&gt;</span><br><span class="line">        &lt;h1&gt;Hello, world!&lt;/h1&gt;</span><br><span class="line">        &lt;h2&gt;It is &#123;this.state.date.toLocaleTimeString()&#125;.&lt;/h2&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ReactDOM.render(</span><br><span class="line">  &lt;Clock /&gt;,</span><br><span class="line">  document.getElementById(&apos;root&apos;)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p><a href="http://codepen.io/gaearon/pen/KgQpJd?editors=0010" target="_blank" rel="noopener">Try it on CodePen.</a></p>
+<p>Next, we’ll make the <code>Clock</code> set up its own timer and update itself every second.</p>
+<p>接下来，我们将使<code>Clock</code>设置自己的定时器并每秒更新一次。</p>
+<h2 id="Adding-Lifecycle-Methods-to-a-Class-将生命周期方法添加到类中"><a href="#Adding-Lifecycle-Methods-to-a-Class-将生命周期方法添加到类中" class="headerlink" title="Adding Lifecycle Methods to a Class(将生命周期方法添加到类中)"></a>Adding Lifecycle Methods to a Class(将生命周期方法添加到类中)</h2><p>In applications with many components, it’s very important to free up resources taken by the components when they are destroyed.</p>
+<p>在具有许多组件的应用程序中，在销毁时释放组件所占用的资源非常重要。</p>
+<p>We want to <a href="https://developer.mozilla.org/en-US/docs/Web/API/WindowTimers/setInterval" target="_blank" rel="noopener">set up a timer</a> whenever the <code>Clock</code> is rendered to the DOM for the first time. This is called “mounting” in React.</p>
+<p>当<code>Clock</code>第一次渲染到DOM时，我们要设置一个定时器。 这在React中称为“挂载”。</p>
+<p>We also want to <a href="https://developer.mozilla.org/en-US/docs/Web/API/WindowTimers/clearInterval" target="_blank" rel="noopener">clear that timer</a> whenever the DOM produced by the <code>Clock</code> is removed. This is called “unmounting” in React.</p>
+<p>当<code>Clock</code>产生的DOM被删除时，我们也想清除该计时器。 这在React中称为“卸载”。</p>
+<p>We can declare special methods on the component class to run some code when a component mounts and unmounts:</p>
+<p>当组件挂载和卸载时，我们可以在组件类上声明特殊的方法来运行一些代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">class Clock extends React.Component &#123;</span><br><span class="line">  constructor(props) &#123;</span><br><span class="line">    super(props);</span><br><span class="line">    this.state = &#123;date: new Date()&#125;;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  componentDidMount() &#123;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  componentWillUnmount() &#123;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  render() &#123;</span><br><span class="line">    return (</span><br><span class="line">      &lt;div&gt;</span><br><span class="line">        &lt;h1&gt;Hello, world!&lt;/h1&gt;</span><br><span class="line">        &lt;h2&gt;It is &#123;this.state.date.toLocaleTimeString()&#125;.&lt;/h2&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>These methods are called “lifecycle hooks”.</p>
+<p>这些方法称为“生命周期钩子函数”。</p>
+<p>The <code>componentDidMount()</code> hook runs after the component output has been rendered to the DOM. This is a good place to set up a timer:</p>
+<p>在组件输出已经渲染给DOM之后， <code>componentDidMount()</code> 钩子函数运行。 这是一个建立定时器的好地方：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">componentDidMount() &#123;</span><br><span class="line">  this.timerID = setInterval(</span><br><span class="line">    () =&gt; this.tick(),</span><br><span class="line">    1000</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Note how we save the timer ID right on <code>this</code>.</p>
+<p>注意我们如何在<code>this</code>上保存正确的计时器ID。</p>
+<p>While <code>this.props</code> is set up by React itself and <code>this.state</code> has a special meaning, you are free to add additional fields to the class manually if you need to store something that is not used for the visual output.</p>
+<p>虽<code>this.props</code>由React本身设置，而this.state具有特殊的含义，但如果需要存储未用于可视输出的内容，则可以手动向类中添加其他字段。</p>
+<p>If you don’t use something in <code>render()</code>, it shouldn’t be in the state.</p>
+<p>如果您不在 <code>render()</code>,中使用某些东西，则不应该处于该状态。</p>
+<p>We will tear down the timer in the <code>componentWillUnmount()</code> lifecycle hook:</p>
+<p>我们将在componentWillUnmount()生命周期钩子函数中终止计时器：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">componentWillUnmount() &#123;</span><br><span class="line">  clearInterval(this.timerID);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Finally, we will implement the <code>tick()</code> method that runs every second.</p>
+<p>最后，我们将实现每秒运行的<code>tick()</code> 方法。</p>
+<p>It will use <code>this.setState()</code> to schedule updates to the component local state:</p>
+<p>它将使用<code>this.setState()</code> 来计划更新组件的本地状态：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">class Clock extends React.Component &#123;</span><br><span class="line">  constructor(props) &#123;</span><br><span class="line">    super(props);</span><br><span class="line">    this.state = &#123;date: new Date()&#125;;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  componentDidMount() &#123;</span><br><span class="line">    this.timerID = setInterval(</span><br><span class="line">      () =&gt; this.tick(),</span><br><span class="line">      1000</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  componentWillUnmount() &#123;</span><br><span class="line">    clearInterval(this.timerID);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  tick() &#123;</span><br><span class="line">    this.setState(&#123;</span><br><span class="line">      date: new Date()</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  render() &#123;</span><br><span class="line">    return (</span><br><span class="line">      &lt;div&gt;</span><br><span class="line">        &lt;h1&gt;Hello, world!&lt;/h1&gt;</span><br><span class="line">        &lt;h2&gt;It is &#123;this.state.date.toLocaleTimeString()&#125;.&lt;/h2&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ReactDOM.render(</span><br><span class="line">  &lt;Clock /&gt;,</span><br><span class="line">  document.getElementById(&apos;root&apos;)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p><a href="http://codepen.io/gaearon/pen/amqdNA?editors=0010" target="_blank" rel="noopener">Try it on CodePen.</a></p>
+<p>Now the clock ticks every second.</p>
+<p>现在时钟每秒钟滴答滴答的跑个不停。</p>
+<p>Let’s quickly recap what’s going on and the order in which the methods are called:</p>
+<p>让我们快速回顾一下发生了什么以及调用方法的顺序：</p>
+<p>1) When <code>&lt;Clock /&gt;</code> is passed to <code>ReactDOM.render()</code>, React calls the constructor of the <code>Clock</code> component. Since <code>Clock</code> needs to display the current time, it initializes <code>this.state</code> with an object including the current time. We will later update this state.</p>
+<p>1）当<code>&lt;Clock /&gt;</code>传递给<code>ReactDOM.render（）</code>时，React调用<code>Clock</code>组件的构造函数。 由于<code>Clock</code>需要显示当前时间，所以它将使用包含当前时间的对象来初始化<code>this.state</code>。 我们稍后会更新此状态。</p>
+<p>2) React then calls the <code>Clock</code> component’s <code>render()</code> method. This is how React learns what should be displayed on the screen. React then updates the DOM to match the <code>Clock</code>‘s render output.</p>
+<p>2）React然后调用<code>Clock</code>组件的<code>render（）</code>方法。 这时React知道如何在屏幕上显示内容。 然后，React更新DOM以匹配<code>Clock</code>的渲染输出。</p>
+<p>3) When the <code>Clock</code> output is inserted in the DOM, React calls the <code>componentDidMount()</code> lifecycle hook. Inside it, the <code>Clock</code> component asks the browser to set up a timer to call <code>tick()</code> once a second.</p>
+<p>3）当时钟输出插入到DOM中时，React调用<code>componentDidMount（）</code>生命周期钩子函数。 在其中，<code>Clock</code>组件要求浏览器设置一个定时器来每秒调用<code>tick（）</code>一次。</p>
+<p>4) Every second the browser calls the <code>tick()</code> method. Inside it, the <code>Clock</code> component schedules a UI update by calling <code>setState()</code> with an object containing the current time. Thanks to the <code>setState()</code> call, React knows the state has changed, and calls <code>render()</code> method again to learn what should be on the screen. This time, <code>this.state.date</code> in the <code>render()</code> method will be different, and so the render output will include the updated time. React updates the DOM accordingly.</p>
+<p>4）浏览器每秒钟调用<code>tick（）</code>方法。 在其中，<code>Clock</code>组件通过使用包含当前时间的对象调用<code>setState（）</code>来调动UI更新。 感谢<code>setState（</code>）调用，React知道状态已经改变，并再次调用<code>render（）</code>方法来了解屏幕上应该更新或渲染什么。 这一次，<code>render（）</code>方法中的<code>this.state.date</code>将不同，因此渲染输出将包含更新的时间。 React会相应地更新DOM。</p>
+<p>5) If the <code>Clock</code> component is ever removed from the DOM, React calls the <code>componentWillUnmount()</code> lifecycle hook so the timer is stopped.</p>
+<p>5）如果时钟组件从DOM中删除，则React会调用<code>componentWillUnmount（）</code>生命周期钩子函数，以使定时器停止。</p>
+<h2 id="Using-State-Correctly（正确使用状态）"><a href="#Using-State-Correctly（正确使用状态）" class="headerlink" title="Using State Correctly（正确使用状态）"></a>Using State Correctly（正确使用状态）</h2><p>There are three things you should know about <code>setState()</code>.</p>
+<p>你应该知道有关<code>setState（）</code>的三件事情。</p>
+<h3 id="Do-Not-Modify-State-Directly-不要直接修改状态"><a href="#Do-Not-Modify-State-Directly-不要直接修改状态" class="headerlink" title="Do Not Modify State Directly(不要直接修改状态)"></a>Do Not Modify State Directly(不要直接修改状态)</h3><p>For example, this will not re-render a component:</p>
+<p>例如，这不会重新渲染组件：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Wrong</span></span><br><span class="line"><span class="keyword">this</span>.state.comment = <span class="string">'Hello'</span>;</span><br></pre></td></tr></table></figure>
+<p>Instead, use <code>setState()</code>:</p>
+<p>而是使用<code>setState（）</code>代替：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Correct</span></span><br><span class="line"><span class="keyword">this</span>.setState(&#123;<span class="attr">comment</span>: <span class="string">'Hello'</span>&#125;);</span><br></pre></td></tr></table></figure>
+<p>The only place where you can assign <code>this.state</code> is the constructor.</p>
+<p>唯一可以分配<code>this.state</code>的地方是构造函数。</p>
+<h3 id="State-Updates-May-Be-Asynchronous-状态更新可能是异步的"><a href="#State-Updates-May-Be-Asynchronous-状态更新可能是异步的" class="headerlink" title="State Updates May Be Asynchronous(状态更新可能是异步的)"></a>State Updates May Be Asynchronous(状态更新可能是异步的)</h3><p>React may batch multiple <code>setState()</code> calls into a single update for performance.</p>
+<p>React可以将多个setState（）批量调用转化为单个更新以实现性能优化。</p>
+<p>Because <code>this.props</code> and <code>this.state</code> may be updated asynchronously, you should not rely on their values for calculating the next state.</p>
+<p>因为<code>this.props</code>和<code>this.state</code>可能会异步更新，所以您不应该依靠它们的值来计算下一个状态。</p>
+<p>For example, this code may fail to update the counter:</p>
+<p>例如，此代码可能无法更新计数器：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Wrong</span></span><br><span class="line"><span class="keyword">this</span>.setState(&#123;</span><br><span class="line">  counter: <span class="keyword">this</span>.state.counter + <span class="keyword">this</span>.props.increment,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>To fix it, use a second form of <code>setState()</code> that accepts a function rather than an object. That function will receive the previous state as the first argument, and the props at the time the update is applied as the second argument:</p>
+<p>要修复它，请使用第二个形式的接受函数而不是对象的<code>setState（）</code>。 该函数将接收先前的状态作为第一个参数，并且更新应用时的属性作为第二个参数：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Correct</span></span><br><span class="line"><span class="keyword">this</span>.setState(<span class="function">(<span class="params">prevState, props</span>) =&gt;</span> (&#123;</span><br><span class="line">  counter: prevState.counter + props.increment</span><br><span class="line">&#125;));</span><br></pre></td></tr></table></figure>
+<p>We used an <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Functions/Arrow_functions" target="_blank" rel="noopener">arrow function</a> above, but it also works with regular functions:</p>
+<p>我们使用了上面的箭头函数，但它也适用于常规函数：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Correct</span></span><br><span class="line"><span class="keyword">this</span>.setState(<span class="function"><span class="keyword">function</span>(<span class="params">prevState, props</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    counter: prevState.counter + props.increment</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="State-Updates-are-Merged（状态更新即合并）"><a href="#State-Updates-are-Merged（状态更新即合并）" class="headerlink" title="State Updates are Merged（状态更新即合并）"></a>State Updates are Merged（状态更新即合并）</h3><p>When you call <code>setState()</code>, React merges the object you provide into the current state.</p>
+<p>当您调用<code>setState()</code>时，React将您提供的对象合并到当前状态。</p>
+<p>For example, your state may contain several independent variables:</p>
+<p>例如，您的状态可能包含几个独立变量：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">constructor(props) &#123;</span><br><span class="line">  super(props);</span><br><span class="line">  this.state = &#123;</span><br><span class="line">    posts: [],</span><br><span class="line">    comments: []</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Then you can update them independently with separate <code>setState()</code> calls:</p>
+<p>然后可以使用单独的<code>setState（）</code>调用独立更新它们：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">componentDidMount() &#123;</span><br><span class="line">  fetchPosts().then(response =&gt; &#123;</span><br><span class="line">    this.setState(&#123;</span><br><span class="line">      posts: response.posts</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  fetchComments().then(response =&gt; &#123;</span><br><span class="line">    this.setState(&#123;</span><br><span class="line">      comments: response.comments</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>The merging is shallow, so <code>this.setState({comments})</code> leaves <code>this.state.posts</code> intact, but completely replaces <code>this.state.comments</code>.</p>
+<p>合并很浅，所以<code>this.setState（{comments}）</code>与<code>this.state.posts</code>各自完整，但完全替代了<code>this.state.comments</code>。</p>
+<h2 id="The-Data-Flows-Down（数据流）"><a href="#The-Data-Flows-Down（数据流）" class="headerlink" title="The Data Flows Down（数据流）"></a>The Data Flows Down（数据流）</h2><p>Neither parent nor child components can know if a certain component is stateful or stateless, and they shouldn’t care whether it is defined as a function or a class.</p>
+<p>父组件和子组件都不能知道某个组件是有状态还是无状态，并且它们不应该关心它是否被定义为函数或类。</p>
+<p>This is why state is often called local or encapsulated. It is not accessible to any component other than the one that owns and sets it.</p>
+<p>这就是为什么状态通常被称为局部调用或封装。 除了设置它自身之外，它不可访问其它的任何组件。</p>
+<p>A component may choose to pass its state down as props to its child components:</p>
+<p>组件可以选择将其状态作为属性传递给其子组件：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;h2&gt;It is &#123;<span class="keyword">this</span>.state.date.toLocaleTimeString()&#125;.&lt;<span class="regexp">/h2&gt;</span></span><br></pre></td></tr></table></figure>
+<p>This also works for user-defined components:</p>
+<p>这也适用于用户自定义的组件：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;FormattedDate date=&#123;<span class="keyword">this</span>.state.date&#125; /&gt;</span><br></pre></td></tr></table></figure>
+<p>The <code>FormattedDate</code> component would receive the <code>date</code> in its props and wouldn’t know whether it came from the <code>Clock</code>‘s state, from the <code>Clock</code>‘s props, or was typed by hand:</p>
+<p><code>FormattedDate</code>组件将在其属性中收到<code>日期</code>，并且不知道它是来自<code>时钟</code>的状态，还是来自<code>时钟</code>的属性，还是手动输入：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">FormattedDate</span>(<span class="params">props</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">h2</span>&gt;</span>It is &#123;props.date.toLocaleTimeString()&#125;.<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><a href="http://codepen.io/gaearon/pen/zKRqNB?editors=0010" target="_blank" rel="noopener">Try it on CodePen.</a></p>
+<p>This is commonly called a “top-down” or “unidirectional” data flow. Any state is always owned by some specific component, and any data or UI derived from that state can only affect components “below” them in the tree.</p>
+<p>这通常被称为“自顶向下”或“单向”数据流。 任何状态始终由某个特定组件所有，并且从该状态导出的任何数据或UI只能影响树中“下方”的组件。</p>
+<p>If you imagine a component tree as a waterfall of props, each component’s state is like an additional water source that joins it at an arbitrary point but also flows down.</p>
+<p>如果你想象一个组件树作为属性的瀑布，每个组件的状态就像一个额外的水源，它连接在一个任意点，但也流下来。</p>
+<p>To show that all components are truly isolated, we can create an <code>App</code> component that renders three <code>&lt;Clock&gt;</code>s:</p>
+<p>为了表明所有组件都是真正隔离的，我们可以创建一个应用程序组件，呈现三个<code>&lt;Clock&gt;</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">function App() &#123;</span><br><span class="line">  return (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;Clock /&gt;</span><br><span class="line">      &lt;Clock /&gt;</span><br><span class="line">      &lt;Clock /&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ReactDOM.render(</span><br><span class="line">  &lt;App /&gt;,</span><br><span class="line">  document.getElementById(&apos;root&apos;)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p><a href="http://codepen.io/gaearon/pen/vXdGmd?editors=0010" target="_blank" rel="noopener">Try it on CodePen.</a></p>
+<p>Each <code>Clock</code> sets up its own timer and updates independently.</p>
+<p>每个时钟设置自己的定时器并独自更新。</p>
+<p>In React apps, whether a component is stateful or stateless is considered an implementation detail of the component that may change over time. You can use stateless components inside stateful components, and vice versa.</p>
+<p>在React应用程序中，组件是有状态还是无状态被认为是可能随时间而变化的组件的实现细节。 可以在有状态组件中使用无状态组件，反之亦然。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>感谢您的支持，这将鼓励我坚持技术分享！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="http://cn.gravatar.com/userimage/119205447/f356a9687dd39e3fb68fa6ad110b31a7.png?size=200" alt="William-Dream WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="http://cn.gravatar.com/userimage/119205447/aecd8d2eaf8428ddaad1b31aaf41a333.jpg?size=200" alt="William-Dream Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/31/rqd-components-and-props/" rel="next" title="Components and Props(组件和属性)">
+                <i class="fa fa-chevron-left"></i> Components and Props(组件和属性)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/04/02/rqd-handling-events/" rel="prev" title="Handling Events(处理事件)">
+                Handling Events(处理事件) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yODE4MC80NzUz"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://www.gravatar.com/avatar/c8b98e5df395f0e0fd3b47948b37b881.jpg?s=215"
+               alt="William-Dream" />
+          <p class="site-author-name" itemprop="name">William-Dream</p>
+           
+              <p class="site-description motion-element" itemprop="description">为了梦-追梦,我的英文名由此而来</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">83</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/li-jun-bo" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              Links
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.lijunbo.com/" title="Net" target="_blank">Net</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Converting-a-Function-to-a-Class-将函数转换为类"><span class="nav-number">1.</span> <span class="nav-text">Converting a Function to a Class(将函数转换为类)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Adding-Local-State-to-a-Class-将本地状态添加到类"><span class="nav-number">2.</span> <span class="nav-text">Adding Local State to a Class(将本地状态添加到类)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Adding-Lifecycle-Methods-to-a-Class-将生命周期方法添加到类中"><span class="nav-number">3.</span> <span class="nav-text">Adding Lifecycle Methods to a Class(将生命周期方法添加到类中)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Using-State-Correctly（正确使用状态）"><span class="nav-number">4.</span> <span class="nav-text">Using State Correctly（正确使用状态）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Do-Not-Modify-State-Directly-不要直接修改状态"><span class="nav-number">4.1.</span> <span class="nav-text">Do Not Modify State Directly(不要直接修改状态)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#State-Updates-May-Be-Asynchronous-状态更新可能是异步的"><span class="nav-number">4.2.</span> <span class="nav-text">State Updates May Be Asynchronous(状态更新可能是异步的)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#State-Updates-are-Merged（状态更新即合并）"><span class="nav-number">4.3.</span> <span class="nav-text">State Updates are Merged（状态更新即合并）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-Data-Flows-Down（数据流）"><span class="nav-number">5.</span> <span class="nav-text">The Data Flows Down（数据流）</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">William-Dream</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("PWTRJaGA9VmnmuJISstgYQVk-gzGzoHsz", "OhMVXOeW5jbdIohUayYbpq1v");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+  
+
+
+  
+
+</body>
+</html>

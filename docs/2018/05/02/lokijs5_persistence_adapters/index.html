@@ -1,0 +1,1179 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+<script data-ad-client="ca-pub-7376123380604387" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="静水流深" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="概述LokiJS持久化是通过适配器接口实现的。我们支持自动保存和自动加载选项，简单的键/值适配器以及参考模式的适配器，并且现在支持各种结构化序列化方法，可以轻松创建自己的持久化适配器以及批量或流式数据交换。 像lokijs这样的内存数据库和传统数据库系统之间的一个重要区别是，所有文档/记录都保存在内存中，并且不会根据需要加载。因此持久化仅用于保存和恢复这个内存数据库的状态。  如果您的数据库足够小">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LokiJS 持久化以及适配器">
+<meta property="og:url" content="http://blog.lijunbo.com/2018/05/02/lokijs5_persistence_adapters/index.html">
+<meta property="og:site_name" content="静水流深">
+<meta property="og:description" content="概述LokiJS持久化是通过适配器接口实现的。我们支持自动保存和自动加载选项，简单的键/值适配器以及参考模式的适配器，并且现在支持各种结构化序列化方法，可以轻松创建自己的持久化适配器以及批量或流式数据交换。 像lokijs这样的内存数据库和传统数据库系统之间的一个重要区别是，所有文档/记录都保存在内存中，并且不会根据需要加载。因此持久化仅用于保存和恢复这个内存数据库的状态。  如果您的数据库足够小">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-10-08T10:39:52.114Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="LokiJS 持久化以及适配器">
+<meta name="twitter:description" content="概述LokiJS持久化是通过适配器接口实现的。我们支持自动保存和自动加载选项，简单的键/值适配器以及参考模式的适配器，并且现在支持各种结构化序列化方法，可以轻松创建自己的持久化适配器以及批量或流式数据交换。 像lokijs这样的内存数据库和传统数据库系统之间的一个重要区别是，所有文档/记录都保存在内存中，并且不会根据需要加载。因此持久化仅用于保存和恢复这个内存数据库的状态。  如果您的数据库足够小">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.lijunbo.com/2018/05/02/lokijs5_persistence_adapters/"/>
+
+
+
+
+
+  <title> LokiJS 持久化以及适配器 | 静水流深 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?4a874f383236eb548cfc14b4365008b8";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">静水流深</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">非淡泊无以明志，非宁静无以致远</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://blog.lijunbo.com/2018/05/02/lokijs5_persistence_adapters/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="William-Dream">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://www.gravatar.com/avatar/c8b98e5df395f0e0fd3b47948b37b881.jpg?s=215">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="静水流深">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                LokiJS 持久化以及适配器
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-02T09:12:51+08:00">
+                2018-05-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/database/" itemprop="url" rel="index">
+                    <span itemprop="name">database</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/05/02/lokijs5_persistence_adapters/" class="leancloud_visitors" data-flag-title="LokiJS 持久化以及适配器">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>LokiJS持久化是通过适配器接口实现的。我们支持<code>自动保存</code>和<code>自动加载</code>选项，简单的<code>键/值</code>适配器以及<code>参考模式</code>的适配器，并且现在支持各种结构化序列化方法，可以轻松创建自己的持久化适配器以及批量或流式数据交换。</p>
+<p>像<code>lokijs</code>这样的内存数据库和传统数据库系统之间的一个重要区别是，所有文档/记录都保存在内存中，并且不会根据需要加载。因此持久化仅用于<code>保存和恢复</code>这个内存数据库的状态。</p>
+<blockquote>
+<p>如果您的数据库足够小，并且您希望尝试，则可以调用<code>db.serialize()</code>以返回完整序列化的数据库，并将其加载到另一个数据库实例中，如<code>dbcopy.loadJSON(str)</code>。</p>
+</blockquote>
+<h1 id="Node-js-快速开始"><a href="#Node-js-快速开始" class="headerlink" title="Node.js 快速开始"></a>Node.js 快速开始</h1><p>If you are using lokijs in a node environment, we will automatically detect and use the built-in LokiFsAdapter without your needing to provide an adapter.</p>
+<h3 id="No-Persistence-example-entirely-synchronous-and-in-memory"><a href="#No-Persistence-example-entirely-synchronous-and-in-memory" class="headerlink" title="No Persistence example (entirely synchronous and in memory) :"></a>No Persistence example (entirely synchronous and in memory) :</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> loki = <span class="built_in">require</span>(<span class="string">"lokijs"</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> db = <span class="keyword">new</span> loki(<span class="string">"quickstart.db"</span>);</span><br><span class="line"><span class="keyword">var</span> users = db.addCollection(<span class="string">"users"</span>);</span><br><span class="line"></span><br><span class="line">users.insert(&#123;<span class="attr">name</span>:<span class="string">'odin'</span>, <span class="attr">age</span>: <span class="number">50</span>&#125;);</span><br><span class="line">users.insert(&#123;<span class="attr">name</span>:<span class="string">'thor'</span>, <span class="attr">age</span>: <span class="number">35</span>&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> result = users.find(&#123; <span class="attr">age</span> : &#123; <span class="attr">$lte</span>: <span class="number">35</span> &#125; &#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// dumps array with 1 doc (thor) to console</span></span><br><span class="line"><span class="built_in">console</span>.log(result);</span><br></pre></td></tr></table></figure>
+<h3 id="Autosave-autoload-quickstart-with-default-LokiFsAdapter-async-i-o"><a href="#Autosave-autoload-quickstart-with-default-LokiFsAdapter-async-i-o" class="headerlink" title="Autosave/autoload quickstart with default LokiFsAdapter (async i/o) :"></a>Autosave/autoload quickstart with default LokiFsAdapter (async i/o) :</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> db = <span class="keyword">new</span> loki(<span class="string">'quickstart.db'</span>, &#123;</span><br><span class="line">	autoload: <span class="literal">true</span>,</span><br><span class="line">	autoloadCallback : databaseInitialize,</span><br><span class="line">	autosave: <span class="literal">true</span>, </span><br><span class="line">	autosaveInterval: <span class="number">4000</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// implement the autoloadback referenced in loki constructor</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">databaseInitialize</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> entries = db.getCollection(<span class="string">"entries"</span>);</span><br><span class="line">  <span class="keyword">if</span> (entries === <span class="literal">null</span>) &#123;</span><br><span class="line">    entries = db.addCollection(<span class="string">"entries"</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// kick off any program logic or start listening to external events</span></span><br><span class="line">  runProgramLogic();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// example method with any bootstrap logic to run after database initialized</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">runProgramLogic</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> entryCount = db.getCollection(<span class="string">"entries"</span>).count();</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"number of entries in database : "</span> + entryCount);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>If you expect your database to grow over 100mb or you experience slow save speeds you might to use our more high-performance LokiFsStructuredAdapter. This adapter utilitizes es6 generator iterators and node streams to stream the database line by line. It will also save each collection into its own file (partitioned) with a file name derived from the base name. This database should scale to support databases just under 1 gb on the default node heap allocation of 1.4gb. Increasing heap allocation, you can push this limit further.</p>
+<h3 id="An-example-using-fastest-and-most-scalable-LokiFsStructuredAdapter-for-nodejs-might-look-like"><a href="#An-example-using-fastest-and-most-scalable-LokiFsStructuredAdapter-for-nodejs-might-look-like" class="headerlink" title="An example using fastest and most scalable LokiFsStructuredAdapter (for nodejs) might look like :"></a>An example using fastest and most scalable LokiFsStructuredAdapter (for nodejs) might look like :</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> loki = <span class="built_in">require</span>(<span class="string">"lokijs"</span>);</span><br><span class="line"><span class="keyword">const</span> lfsa = <span class="built_in">require</span>(<span class="string">'../src/loki-fs-structured-adapter.js'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> adapter = <span class="keyword">new</span> lfsa();</span><br><span class="line"><span class="keyword">var</span> db = <span class="keyword">new</span> loki(<span class="string">'sandbox.db'</span>, &#123; </span><br><span class="line">  adapter : adapter,</span><br><span class="line">  autoload: <span class="literal">true</span>,</span><br><span class="line">  autoloadCallback : databaseInitialize,</span><br><span class="line">  autosave: <span class="literal">true</span>, </span><br><span class="line">  autosaveInterval: <span class="number">4000</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">databaseInitialize</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> log = db.getCollection(<span class="string">"log"</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (log === <span class="literal">null</span>) &#123;</span><br><span class="line">    db.addCollection(<span class="string">"log"</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// log some random event data as part of our example</span></span><br><span class="line">  log.insert(&#123; <span class="attr">event</span>: <span class="string">'dbinit'</span>, <span class="attr">dt</span>: (<span class="keyword">new</span> <span class="built_in">Date</span>()).getTime() &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="Web-快速开始"><a href="#Web-快速开始" class="headerlink" title="Web 快速开始"></a>Web 快速开始</h1><p>If you are using lokijs in a web environment, we will automatically use the built-in LokiLocalStorageAdapter. This adapter is limited to around 5mb so that won’t last long but here is how to quickly get started experimenting with lokijs :</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script src=<span class="string">"../../src/lokijs.js"</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+<h3 id="Example-constructing-loki-for-in-memory-only-or-manual-save-load-with-default-localStorage-adapter"><a href="#Example-constructing-loki-for-in-memory-only-or-manual-save-load-with-default-localStorage-adapter" class="headerlink" title="Example constructing loki for in-memory only or manual save/load (with default localStorage adapter) :"></a>Example constructing loki for in-memory only or manual save/load (with default localStorage adapter) :</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> loki = <span class="keyword">new</span> loki(<span class="string">"test.db"</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="Example-constructing-loki-for-autoload-autosave-with-default-localStorage-adapter"><a href="#Example-constructing-loki-for-autoload-autosave-with-default-localStorage-adapter" class="headerlink" title="Example constructing loki for autoload/autosave (with default localStorage adapter) :"></a>Example constructing loki for autoload/autosave (with default localStorage adapter) :</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> db = <span class="keyword">new</span> loki(<span class="string">"quickstart.db"</span>, &#123;</span><br><span class="line">  autoload: <span class="literal">true</span>,</span><br><span class="line">  autoloadCallback : databaseInitialize,</span><br><span class="line">  autosave: <span class="literal">true</span>, </span><br><span class="line">  autosaveInterval: <span class="number">4000</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">databaseInitialize</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (!db.getCollection(<span class="string">"users"</span>)) &#123;</span><br><span class="line">    db.addCollection(<span class="string">"users"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>If you expect your database to grow up to 60megs you might want to use our LokiIndexedAdapter which can save to IndexedDb, if your browser supports it.</p>
+<h3 id="Example-using-more-scalable-LokiIndexedAdapter"><a href="#Example-using-more-scalable-LokiIndexedAdapter" class="headerlink" title="Example using more scalable LokiIndexedAdapter :"></a>Example using more scalable LokiIndexedAdapter :</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;script src=&quot;../../src/lokijs.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">&lt;script src=&quot;../../src/loki-indexed-adapter.js&quot;&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">var idbAdapter = new LokiIndexedAdapter();</span><br><span class="line">var db = new loki(&quot;test.db&quot;, &#123; </span><br><span class="line">  adapter: idbAdapter,</span><br><span class="line">  autoload: true,</span><br><span class="line">  autoloadCallback : databaseInitialize,</span><br><span class="line">  autosave: true, </span><br><span class="line">  autosaveInterval: 4000</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>If you expect your database to grow over 60megs things start to get browser dependent. To provide singular guidance and since Chrome is the most popular web browser you will want to employ our LokiPartitioningAdapter in addition to our LokiIndexedAdapter. To sum up as briefly as possible, this will divide collections into their own files and if a collection exceeds 25megs (customizable) it will subdivide into separate pages(files). This allows our indexed db adapter to accomplish a single database save/load using many key/value pairs. This adapter will allow scaling up to around 300mb or so in current testing.</p>
+<h3 id="An-example-using-the-LokiPartitioningAdapter-along-with-LokiIndexedAdapter-might-appear-as"><a href="#An-example-using-the-LokiPartitioningAdapter-along-with-LokiIndexedAdapter-might-appear-as" class="headerlink" title="An example using the LokiPartitioningAdapter along with LokiIndexedAdapter might appear as :"></a>An example using the LokiPartitioningAdapter along with LokiIndexedAdapter might appear as :</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;script src=&quot;../../src/lokijs.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">&lt;script src=&quot;../../src/loki-indexed-adapter.js&quot;&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">var idbAdapter = new LokiIndexedAdapter();</span><br><span class="line"></span><br><span class="line">// use paging only if you expect a single collection to be over 50 megs or so</span><br><span class="line">var pa = new loki.LokiPartitioningAdapter(idbAdapter, &#123; paging: true &#125;);</span><br><span class="line"></span><br><span class="line">var db = new loki(&apos;test.db&apos;, &#123; </span><br><span class="line">  adapter: pa,</span><br><span class="line">  autoload: true,</span><br><span class="line">  autoloadCallback : databaseInitialize,</span><br><span class="line">  autosave: true, </span><br><span class="line">  autosaveInterval: 4000</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h1 id="Description-of-LokiNativescriptAdapter"><a href="#Description-of-LokiNativescriptAdapter" class="headerlink" title="Description of LokiNativescriptAdapter"></a>Description of LokiNativescriptAdapter</h1><p>This adapter can be used when developing a nativescript application for iOS or Android, it persists the loki db to the filesystem using the native platform api.</p>
+<h3 id="Simple-Example-of-using-LokiNativescriptAdapter"><a href="#Simple-Example-of-using-LokiNativescriptAdapter" class="headerlink" title="Simple Example of using LokiNativescriptAdapter :"></a>Simple Example of using LokiNativescriptAdapter :</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">const loki = require (&apos;lokijs&apos;);</span><br><span class="line">const LokiNativescriptAdapter = require(&apos;lokijs/src/loki-nativescript-adapter&apos;);</span><br><span class="line">let db = new loki(&apos;loki.json&apos;,&#123;</span><br><span class="line">            adapter:new LokiNativescriptAdapter()</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>In addition to the above adapters which are included in the lokijs distro, several community members have also created their own adapters using this adapter interface. Some of these include :</p>
+</blockquote>
+<ul>
+<li>Cordova adapter : <a href="https://github.com/cosmith/loki-cordova-fs-adapter" target="_blank" rel="noopener">https://github.com/cosmith/loki-cordova-fs-adapter</a></li>
+<li>localForage adapter : <a href="https://github.com/paulhovey/loki-localforage-adapter" target="_blank" rel="noopener">https://github.com/paulhovey/loki-localforage-adapter</a></li>
+</ul>
+<h1 id="Configuring-persistence-adapters"><a href="#Configuring-persistence-adapters" class="headerlink" title="Configuring persistence adapters"></a>Configuring persistence adapters</h1><h2 id="Autosave-Autoload-and-close"><a href="#Autosave-Autoload-and-close" class="headerlink" title="Autosave, Autoload and close()"></a>Autosave, Autoload and close()</h2><p>LokiJS now supports automatic saving at user defined intervals, configured via loki constructor options. This is supported for all persistenceMethods. Data is only saved if changes have occurred since the last save. You can also specify an autoload to immediately load a saved database during new loki construction. If you need to process anything on load completion you can also specify your own autoloadCallback. Finally, in an autosave scenario, if the user wants to exit or is notified of leaving the webpage (window.onbeforeunload) you can call close() on the database which will perform a final save (if needed).</p>
+<blockquote>
+<p><strong>*Note : the ability of loki to ‘flush’ data on events such as a browsers onbeforeunload event, depends on the storage adapter being synchronous. Local storage and file system adapters are synchronous but indexeddb is asynchronous and cannot save when triggered from db.close() in an onbeforeunload event. The mouseleave event may allow enough time to perform a preemptive save.*</strong></p>
+</blockquote>
+<h3 id="Autosave-example"><a href="#Autosave-example" class="headerlink" title="Autosave example"></a>Autosave example</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">var idbAdapter = new LokiIndexedAdapter(&apos;loki&apos;);</span><br><span class="line">var db = new loki(&apos;test&apos;, </span><br><span class="line">  &#123;</span><br><span class="line">    autosave: true, </span><br><span class="line">    autosaveInterval: 10000, // 10 seconds</span><br><span class="line">    adapter: idbAdapter</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="Autosave-with-autoload-example"><a href="#Autosave-with-autoload-example" class="headerlink" title="Autosave with autoload example"></a>Autosave with autoload example</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">var idbAdapter = new lokiIndexedAdapter(&apos;loki&apos;);</span><br><span class="line">var db = new loki(&apos;test.db&apos;, </span><br><span class="line">  &#123;</span><br><span class="line">    autoload: true,</span><br><span class="line">    autoloadCallback : loadHandler,</span><br><span class="line">    autosave: true, </span><br><span class="line">    autosaveInterval: 10000, // 10 seconds</span><br><span class="line">    adapter: idbAdapter</span><br><span class="line">  &#125;); </span><br><span class="line"></span><br><span class="line">function loadHandler() &#123;</span><br><span class="line">  // if database did not exist it will be empty so I will intitialize here</span><br><span class="line">  var coll = db.getCollection(&apos;entries&apos;);</span><br><span class="line">  if (coll === null) &#123;</span><br><span class="line">    coll = db.addCollection(&apos;entries&apos;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><a href="https://rawgit.com/techfort/LokiJS/master/examples/sandbox/LokiSandbox.htm#rawgist=https://gist.githubusercontent.com/obeliskos/447edca33d1274dd9a64767d23df56e9/raw/740d3bedc1ed76d3718acd207b6913281a11ed78/autoloadCallback" target="_blank" rel="noopener">Try in Loki Sandbox</a>.</p>
+<h1 id="Save-throttling-and-persistence-contention-management"><a href="#Save-throttling-and-persistence-contention-management" class="headerlink" title="Save throttling and persistence contention management"></a>Save throttling and persistence contention management</h1><p>LokiJS now supports throttled saves and loads to avoid overlapping saveDatabase and loadDatabase calls from interfering with each other. This is controlled by a loki constructor option called ‘throttledSaves’ and the default for that option is ‘true’.</p>
+<p>This means that within any single Loki database instance, multiple saves routed to the persistence adapter will be throttled and ensured to not conflict by overlap. With save throttling, during the time between an adapter save and an adapter response to that save, if new save requests come in we will queue those requests (and their callbacks) for a save which we will initiate immediately after the current save is complete. In that situation, if 10 requests to save had been made while a save is pending, the subsequent (single) save will callback all ten queued/tiered callbacks when -it- completes.</p>
+<p>If a loadDatabase call occurs while a save is pending, we will (by default) wait indefinitely for the queue to deplete without being replenished. Once that occurs we will lock all saves during the load… any incoming save requests made while the database is being loaded will then be queued for saving once the load is completed. Since loadDatabase now internally calls a new ‘throttledSaveDrain’ we will pass through options to control that drain. (These options will be summarized below).</p>
+<p>You may also directly call this ‘throttledSaveDrain’ loki method which can wait for the queue to drain. You might do this using any of these variations/options :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// wait indefinitely (recursively)</span><br><span class="line">db.throttledSaveDrain(function () &#123;</span><br><span class="line">  console.log(&quot;no saves in progress&quot;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// wait only for the -current- queue to deplete</span><br><span class="line">db.throttledSaveDrain(function () &#123;</span><br><span class="line">  console.log(&quot;queue drained&quot;);</span><br><span class="line">&#125;, &#123; recursiveWait: false &#125; );</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// wait recursively but only for so long...</span><br><span class="line">db.throttledSaveDrain(function (success) &#123;</span><br><span class="line">  if (success) &#123;</span><br><span class="line">    console.log(&quot;no saves in progress&quot;);</span><br><span class="line">  &#125;</span><br><span class="line">  else &#123;</span><br><span class="line">    console.log(&quot;taking too long, try again later&quot;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;, &#123; recursiveWaitLimit: true, recursiveWaitLimitDuration: 2000 &#125;);</span><br></pre></td></tr></table></figure>
+<p>If you do not wish loki to supervise these conflicts with its throttling contention management, you can disable this by constructing loki with the following option (in addition to any existing options you are passing) :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var db = new loki(&apos;test.db&apos;, &#123; throttledSaves: false &#125;);</span><br></pre></td></tr></table></figure>
+<h1 id="Creating-your-own-Loki-Persistence-Adapters"><a href="#Creating-your-own-Loki-Persistence-Adapters" class="headerlink" title="Creating your own Loki Persistence Adapters"></a>Creating your own Loki Persistence Adapters</h1><p>Lokijs currently supports two types of database adapters : ‘basic’, and ‘reference’ mode adapters. Basic adapters are passed a string to save and return a string when loaded… this is well suited to key/value stores. Reference mode adapters are passed a reference to the database itself where it can save however it wishes to. When loading, reference mode adapters can return an object reference or serialized string. Below we will describe the minimal functionality which lokijs requires, you may want to provide additional adapter functionality for deleting or inspecting its persistence store.</p>
+<h1 id="Creating-your-own-‘Basic’-persistence-adapter"><a href="#Creating-your-own-‘Basic’-persistence-adapter" class="headerlink" title="Creating your own ‘Basic’ persistence adapter"></a>Creating your own ‘Basic’ persistence adapter</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">MyCustomAdapter.prototype.loadDatabase = function(dbname, callback) &#123;</span><br><span class="line">  // using dbname, load the database from wherever your adapter expects it</span><br><span class="line">  var serializedDb = localStorage[dbname];</span><br><span class="line"></span><br><span class="line">  var success = true; // make your own determinations</span><br><span class="line"></span><br><span class="line">  if (success) &#123;</span><br><span class="line">    callback(serializedDb);</span><br><span class="line">  &#125;</span><br><span class="line">  else &#123;</span><br><span class="line">    callback(new Error(&quot;There was a problem loading the database&quot;));</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>and a saveDatabase example might look like :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">MyCustomAdapter.prototype.saveDatabase = function(dbname, dbstring, callback) &#123;</span><br><span class="line">  // store the database, for this example to localstorage</span><br><span class="line">  localStorage[dbname] = dbstring;</span><br><span class="line"></span><br><span class="line">  var success = true;  // make your own determinations</span><br><span class="line">  if (success) &#123;</span><br><span class="line">    callback(null);</span><br><span class="line">  &#125;</span><br><span class="line">  else &#123;</span><br><span class="line">    callback(new Error(&quot;An error was encountered loading &quot; + dbname + &quot; database.&quot;));</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="Creating-your-own-‘Reference-Mode’-persistence-adapter"><a href="#Creating-your-own-‘Reference-Mode’-persistence-adapter" class="headerlink" title="Creating your own ‘Reference Mode’ persistence adapter"></a>Creating your own ‘Reference Mode’ persistence adapter</h1><p>An additional ‘level’ of adapter support would be for your adapter to support <strong>‘reference’</strong> mode support. This ‘reference’ mode will allow lokijs to provide your adapter with a reference to a lightweight ‘copy’ of the database sharing only the collection.data[] document object instances with the original database. You would use this reference to destructure or save however you want to.</p>
+<p>To instruct loki that your adapter supports ‘reference’ mode, you will need to implement a top level property called ‘mode’ on your adapter and set it equal to ‘reference’. Having done that and configured that adapter to be used, whenever loki wishes to save the database it will instead call out to an exportDatabase() method on your adapter.</p>
+<p>A simple example of an advanced ‘reference’ mode adapter might look like :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">function YourAdapter() &#123;</span><br><span class="line">   this.mode = &quot;reference&quot;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">YourAdapter.prototype.exportDatabase = function(dbname, dbref, callback) &#123;</span><br><span class="line">  this.customSaveLogic(dbref);</span><br><span class="line"></span><br><span class="line">  var success = true; // make your own determinations</span><br><span class="line"></span><br><span class="line">  if (success) &#123;</span><br><span class="line">    callback(null);</span><br><span class="line">  &#125;</span><br><span class="line">  else &#123;</span><br><span class="line">    callback(new Error(&quot;some error occurred.&quot;));</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// reference mode uses the same loadDatabase method signature</span><br><span class="line">YourAdapter.prototype.loadDatabase = function(dbname, callback) &#123;</span><br><span class="line">  // do some magic to reconstruct a new loki database object instance from wherever</span><br><span class="line">  var newDatabase = this.customLoadLogic();</span><br><span class="line"> </span><br><span class="line">  var success = true; // make you own determinations</span><br><span class="line"></span><br><span class="line">  // once reconstructed, loki will expect either a serialized response or a Loki object instance to reinflate from</span><br><span class="line">  if (success) &#123;</span><br><span class="line">    callback(newSerialized);</span><br><span class="line">  &#125;</span><br><span class="line">  else &#123;</span><br><span class="line">    callback(new Error(&quot;some error&quot;));</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="LokiPartitioningAdapter"><a href="#LokiPartitioningAdapter" class="headerlink" title="LokiPartitioningAdapter"></a>LokiPartitioningAdapter</h1><p>This is an adapter for adapters. It wraps around and converts any ‘basic’ persistence adapter into one that scales nicely to your memory contraints. It can split your database up, saving each collection independently and only if changes have occurred since the last save. Since each collection is saved separately there is lower memory overhead and since only dirty collections are saved there is improved i/o save speeds.</p>
+<blockquote>
+<p>Chrome (using indexedDb) places a restriction on how large a single saved ‘chunk’ can be, this Partitioning adapter with just partitioning raises that limit from being ‘per db’ to ‘per collection’… when paging is enabled that limit is raised to being ‘per document’. Chrome indexedDb limit is somewhere around 30-60megs sized chunks.</p>
+</blockquote>
+<p>An example using partition adapter with our LokiIndexedAdapter might appear such as :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var idbAdapter = new LokiIndexedAdapter(&apos;appAdapter&apos;);</span><br><span class="line">var pa = new loki.LokiPartitioningAdapter(idbAdapter);</span><br><span class="line"></span><br><span class="line">var db = new loki(&apos;sandbox.db&apos;, &#123; adapter: pa &#125;);</span><br></pre></td></tr></table></figure>
+<p>If you expect a single collection to grow rather large you may even want to utilize an additional ‘paging’ mode that this adapter provides. This is useful if you want to limit the size of data sent to the inner persistence adapter. This paging mode was added to accomodate a Chrome limitation on maximum record sizes. An example using paging mode might appear as follows :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var idbAdapter = new LokiIndexedAdapter(&apos;appAdapter&apos;);</span><br><span class="line">var pa = new loki.LokiPartitioningAdapter(idbAdapter, &#123; paging: true &#125;);</span><br><span class="line"></span><br><span class="line">var db = new loki(&apos;sandbox.db&apos;, &#123; adapter: pa &#125;);</span><br></pre></td></tr></table></figure>
+<p>You can also pass in a pageSize option if you wish to use a page size other than the default 25meg page size.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// set up adapter to page using 35 meg page size</span><br><span class="line">var pa = new loki.LokiPartitioningAdapter(idbAdapter, &#123; paging: true, pageSize:35*1024*1024 &#125;);</span><br></pre></td></tr></table></figure>
+<h1 id="LokiMemoryAdapter"><a href="#LokiMemoryAdapter" class="headerlink" title="LokiMemoryAdapter"></a>LokiMemoryAdapter</h1><p>This ‘basic’ persistence adapter is only intended for experimenting and testing since it retains its key/value store in memory and will be lost when session is done. This enables us to verify the partitioning adapter works and can be used to mock persistence for unit testing.</p>
+<p>You might access this memory adapter (which is included in the main source file) similarly to the following :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var mem = new loki.LokiMemoryAdapter();</span><br><span class="line">var db = new loki(&apos;sandbox.db&apos;, &#123;adapter: mem&#125;);</span><br></pre></td></tr></table></figure>
+<p>If you wish to simulate asynchronous ‘basic’ adapter you can pass options to its constructor :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// simulate 50ms async delay for loads and saves. this will yield thread until then</span><br><span class="line">var mem = new loki.LokiMemoryAdapter(&#123; asyncResponses: true, asyncTimeout: 50 &#125;);</span><br><span class="line">var db = new loki(&apos;sandbox.db&apos;, &#123;adapter: mem&#125;);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>In order to see LokiPartitioningAdapter used in conjunction with LokiMemoryAdapter you can view this <a href="https://rawgit.com/techfort/LokiJS/master/examples/sandbox/LokiSandbox.htm#rawgist=https://gist.githubusercontent.com/obeliskos/15c1aa87da16cd89b328eb84bbcdf8fa/raw/d91ac3fee212dc5aa96cb05f479d825faa17c1c8/PartitionedMemoryAdapterTest" target="_blank" rel="noopener">Loki Sandbox gist</a> in your browser.</p>
+</blockquote>
+<p>What is happening in the gist linked above is that we create an instance of a LokiMemoryAdapter and pass that instance to the LokiPartitioningAdapter. We utilimately pass in the created LokiPartitioningAdapter instance to the database constructor. We then add multiple collections to our database, save it, update one of the collections (causing that collection’s ‘dirty’ flag to be set), and save again. When we examine the output of the script we can view the contents of the memory adapter’s internal hash store to see how there are multiple keys for a single database. We can also see that our modified collection (along with the database container itself) was saved again. The database container currently has no ‘dirty’ flag set but since we remove all collection.data[] object instances from it, it is relatively lightweight.</p>
+<h1 id="‘Rolling-your-own’-structured-serialization-mechanism"><a href="#‘Rolling-your-own’-structured-serialization-mechanism" class="headerlink" title="‘Rolling your own’ structured serialization mechanism"></a>‘Rolling your own’ structured serialization mechanism</h1><p>In addition to the <a href="https://github.com/techfort/LokiJS/wiki/Changes-API" target="_blank" rel="noopener">ChangesAPI</a> which can be utilized to isolate changesets, LokiJS has established several internal utility methods to assist users in developing optimal persistence or transmission of database contents.</p>
+<p>Those mechanisms include the ability to decompose the database into ‘partitions’ of structured serializations or assembled into a line oriented format (non-partitioned) and either delimited (single delimited string per collection) or non-delimited (array of strings, one per document). These utility methods are located on the Loki object instance itself as the ‘serializeDestructured’ and ‘deserializeDestructured’ methods. They can be invoked to create structured json serialization for the entire database, or (if you pass a partition option) it can provide a single partition at a time. Internal loki structured serialization in its current form provides mild memory overhead reduction and decreases I/O time if only some collections need to be saved. It may also be useful for other data exchange or synchronization mechanisms.</p>
+<p>In lokijs terminology the partitions of a database include the database container (partition -1) along with each individual collection (partitions 0-n).</p>
+<p>To destructure in various formats you can experiment with the following parameters :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var result = db.serializeDestructured(&#123;</span><br><span class="line">  partitioned: false,</span><br><span class="line">  delimited: false</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>To destructure a single partition you might use the following syntax and experiment with ‘delimited’ and ‘partition’ properties :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">var result = db.serializeDestructured(&#123;</span><br><span class="line">  partitioned: true,</span><br><span class="line">  partition: 1,</span><br><span class="line">  delimited: false</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>To experiment with the various structured serialization formats you can view this <a href="https://rawgit.com/techfort/LokiJS/master/examples/sandbox/LokiSandbox.htm#rawgist=https://gist.githubusercontent.com/obeliskos/98a73205d7fe9746a687634e19a5eb89/raw/3821c9bbb6bae2689b00d16be9fae78dff430e28/destructuring%2520demo" target="_blank" rel="noopener">Loki Sandbox gist</a> and try various combinations of ‘partitioned’ and ‘delimited’ options (making sure both the serializeDestructured and deserializeDestructured use the same values.</p>
+</blockquote>
+<p>Destructuring (making many smaller json serializations vs one large serialization) does not lower memory overhead but seems to be a little faster. Partitioning can reduce memory overhead if you can dispose of those memory chunks before advancing to the next (which our adapter implementations do). Our 2.0.0 branch which is able to use ES6 language constructs may gain an iterable interface in the future for data exchange or line-by-line streaming.</p>
+<p>If your database is small enough you can use the LokiPartitioningAdapter (with or without paging) along with LokiMemoryAdapter to decompose database into appropriately sized ‘chunks’ for transmission.</p>
+<h1 id="Detailed-LokiIndexedAdapter-Description"><a href="#Detailed-LokiIndexedAdapter-Description" class="headerlink" title="Detailed LokiIndexedAdapter Description"></a>Detailed LokiIndexedAdapter Description</h1><p>Our LokiIndexedAdapter is implemented as a ‘basic’ mode loki persistence adapter. Since this will probably be the default web persistence adapter, this section will overview some of its advanced features.</p>
+<p>It implements persistence by defining an app/key/value database in indexeddb for storing serialized databases (or partitions). The ‘app’ portion is designated when instantiating the adapter and loki only supplies it key/value pair for storage.</p>
+<h3 id="Simple-Example-of-using-LokiIndexedAdapter-for-browser-environments"><a href="#Simple-Example-of-using-LokiIndexedAdapter-for-browser-environments" class="headerlink" title="Simple Example of using LokiIndexedAdapter (for browser environments) :"></a>Simple Example of using LokiIndexedAdapter (for browser environments) :</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;script src=&quot;scripts/lokijs/lokijs.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">&lt;script src=&quot;scripts/lokijs/loki-indexed-adapter.js&quot;&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<p>…</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var idbAdapter = new LokiIndexedAdapter(&apos;finance&apos;);</span><br><span class="line">var db = new loki(&apos;test&apos;, &#123; adapter: idbAdapter &#125;);</span><br></pre></td></tr></table></figure>
+<p>Note the ‘finance’ in this case represents an ‘App’ context and the ‘test’ designates the key (or database name)… the ‘value’ is the serialized strings representing your database which loki will provide. Advantages include larger storage limits over localstorage, and a catalog based approach where you can store many databases, grouped by an ‘App’ context. Since indexedDB storage is provided ‘per-domain’, and on any given domain you might be running several web ‘apps’ each with its own database(s), this structure allows for organization and expandibility.</p>
+<blockquote>
+<p><strong>*Note : the ‘App’ context is an conceptual separation, not a security partition. Security is provided by your web browser, partitioned per-domain within client storage in the browser/system.*</strong></p>
+</blockquote>
+<h1 id="Loki-Indexed-adapter-interface"><a href="#Loki-Indexed-adapter-interface" class="headerlink" title="Loki Indexed adapter interface"></a>Loki Indexed adapter interface</h1><p>In addition to core loadDatabase and saveDatabase methods, the loki Indexed adapter provides the ability to getDatabaseList (for the current app context), deleteDatabase, and getCatalogSummary to retrieve unfiltered list of app/keys along with the size in database. (Note sizes reported may not be Unicode sizes so effective ‘size’ it may consume might be double that amount as indexeddb saves in Unicode). The loki indexed adapter also is console-friendly… even though indexeddb is highly asynchronous, relying on callbacks, you can omit callbacks for many of its methods and will log results to console instead. This makes experimenting, diagnosing, and maintenance of loki catalog easier to learn and inspect.</p>
+<h3 id="Full-Examples-of-using-loki-indexed-adapter"><a href="#Full-Examples-of-using-loki-indexed-adapter" class="headerlink" title="Full Examples of using loki indexed adapter"></a>Full Examples of using loki indexed adapter</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">// Save : will save App/Key/Val as &apos;finance&apos;/&apos;test&apos;/&#123;serializedDb&#125;</span><br><span class="line">// if appContect (&apos;finance&apos; in this example) is omitted, &apos;loki&apos; will be used</span><br><span class="line">var idbAdapter = new lokiIndexedAdapter(&apos;finance&apos;);</span><br><span class="line">var db = new loki(&apos;test&apos;, &#123; adapter: idbAdapter &#125;);</span><br><span class="line">var coll = db.addCollection(&apos;testColl&apos;);</span><br><span class="line">coll.insert(&#123;test: &apos;val&apos;&#125;);</span><br><span class="line">db.saveDatabase();  // could pass callback if needed for async complete</span><br><span class="line"></span><br><span class="line">// Load database</span><br><span class="line">var idbAdapter = new LokiIndexedAdapter(&apos;finance&apos;);</span><br><span class="line">var db = new loki(&apos;test&apos;, &#123; adapter: idbAdapter &#125;);</span><br><span class="line">db.loadDatabase(&#123;&#125;, function(result) &#123;</span><br><span class="line">  console.log(&apos;done&apos;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">// Get database list</span><br><span class="line">var idbAdapter = new LokiIndexedAdapter(&apos;finance&apos;);</span><br><span class="line">idbAdapter.getDatabaseList(function(result) &#123;</span><br><span class="line">  // result is array of string names for that appcontext (&apos;finance&apos;)</span><br><span class="line">  result.forEach(function(str) &#123;</span><br><span class="line">    console.log(str);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">// Delete database</span><br><span class="line">var idbAdapter = new LokiIndexedAdapter(&apos;finance&apos;);</span><br><span class="line">idbAdapter.deleteDatabase(&apos;test&apos;); // delete &apos;finance&apos;/&apos;test&apos; value from catalog</span><br><span class="line"></span><br><span class="line">// Delete database partitions and/or pages</span><br><span class="line">// This deletes all partitions or pages derived from this base filename</span><br><span class="line">var idbAdapter = new LokiIndexedAdapter(&apos;finance&apos;);</span><br><span class="line">idbAdapter.deleteDatabasePartitions(&apos;test&apos;); </span><br><span class="line"></span><br><span class="line">// Summary</span><br><span class="line">var idbAdapter = new LokiIndexedAdapter(&apos;finance&apos;);</span><br><span class="line">idbAdapter.getCatalogSummary(function(entries) &#123;</span><br><span class="line">  entries.forEach(function(obj) &#123;</span><br><span class="line">    console.log(&quot;app : &quot; + obj.app);</span><br><span class="line">    console.log(&quot;key : &quot; + obj.key);</span><br><span class="line">    console.log(&quot;size : &quot; + obj.size);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="Examples-of-using-loki-Indexed-adapter-from-console"><a href="#Examples-of-using-loki-Indexed-adapter-from-console" class="headerlink" title="Examples of using loki Indexed adapter from console"></a>Examples of using loki Indexed adapter from console</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// CONSOLE USAGE : if using from console for management/diagnostic, here are a few examples :</span></span><br><span class="line"><span class="keyword">var</span> adapter = <span class="keyword">new</span> LokiIndexedAdapter(<span class="string">'loki'</span>);  <span class="comment">// or whatever appContext you want to use</span></span><br><span class="line">adapter.getDatabaseList(); <span class="comment">// with no callback passed, this method will log results to console</span></span><br><span class="line">adapter.saveDatabase(<span class="string">'UserDatabase'</span>, <span class="built_in">JSON</span>.stringify(myDb));</span><br><span class="line">adapter.loadDatabase(<span class="string">'UserDatabase'</span>); <span class="comment">// will log the serialized db to console</span></span><br><span class="line">adapter.deleteDatabase(<span class="string">'UserDatabase'</span>);</span><br><span class="line">adapter.getCatalogSummary(); <span class="comment">// gets list of all keys along with their sizes</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>感谢您的支持，这将鼓励我坚持技术分享！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="http://cn.gravatar.com/userimage/119205447/f356a9687dd39e3fb68fa6ad110b31a7.png?size=200" alt="William-Dream WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="http://cn.gravatar.com/userimage/119205447/aecd8d2eaf8428ddaad1b31aaf41a333.jpg?size=200" alt="William-Dream Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/02/lokijs3_query_examples/" rel="next" title="查询示例">
+                <i class="fa fa-chevron-left"></i> 查询示例
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/05/02/lokijs4_changes_api/" rel="prev" title="API的变化">
+                API的变化 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yODE4MC80NzUz"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://www.gravatar.com/avatar/c8b98e5df395f0e0fd3b47948b37b881.jpg?s=215"
+               alt="William-Dream" />
+          <p class="site-author-name" itemprop="name">William-Dream</p>
+           
+              <p class="site-description motion-element" itemprop="description">为了梦-追梦,我的英文名由此而来</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">83</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/li-jun-bo" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              Links
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.lijunbo.com/" title="Net" target="_blank">Net</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Node-js-快速开始"><span class="nav-number">2.</span> <span class="nav-text">Node.js 快速开始</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#No-Persistence-example-entirely-synchronous-and-in-memory"><span class="nav-number">2.0.1.</span> <span class="nav-text">No Persistence example (entirely synchronous and in memory) :</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Autosave-autoload-quickstart-with-default-LokiFsAdapter-async-i-o"><span class="nav-number">2.0.2.</span> <span class="nav-text">Autosave/autoload quickstart with default LokiFsAdapter (async i/o) :</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#An-example-using-fastest-and-most-scalable-LokiFsStructuredAdapter-for-nodejs-might-look-like"><span class="nav-number">2.0.3.</span> <span class="nav-text">An example using fastest and most scalable LokiFsStructuredAdapter (for nodejs) might look like :</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Web-快速开始"><span class="nav-number">3.</span> <span class="nav-text">Web 快速开始</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Example-constructing-loki-for-in-memory-only-or-manual-save-load-with-default-localStorage-adapter"><span class="nav-number">3.0.1.</span> <span class="nav-text">Example constructing loki for in-memory only or manual save/load (with default localStorage adapter) :</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Example-constructing-loki-for-autoload-autosave-with-default-localStorage-adapter"><span class="nav-number">3.0.2.</span> <span class="nav-text">Example constructing loki for autoload/autosave (with default localStorage adapter) :</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Example-using-more-scalable-LokiIndexedAdapter"><span class="nav-number">3.0.3.</span> <span class="nav-text">Example using more scalable LokiIndexedAdapter :</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#An-example-using-the-LokiPartitioningAdapter-along-with-LokiIndexedAdapter-might-appear-as"><span class="nav-number">3.0.4.</span> <span class="nav-text">An example using the LokiPartitioningAdapter along with LokiIndexedAdapter might appear as :</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Description-of-LokiNativescriptAdapter"><span class="nav-number">4.</span> <span class="nav-text">Description of LokiNativescriptAdapter</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Simple-Example-of-using-LokiNativescriptAdapter"><span class="nav-number">4.0.1.</span> <span class="nav-text">Simple Example of using LokiNativescriptAdapter :</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Configuring-persistence-adapters"><span class="nav-number">5.</span> <span class="nav-text">Configuring persistence adapters</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Autosave-Autoload-and-close"><span class="nav-number">5.1.</span> <span class="nav-text">Autosave, Autoload and close()</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Autosave-example"><span class="nav-number">5.1.1.</span> <span class="nav-text">Autosave example</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Autosave-with-autoload-example"><span class="nav-number">5.1.2.</span> <span class="nav-text">Autosave with autoload example</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Save-throttling-and-persistence-contention-management"><span class="nav-number">6.</span> <span class="nav-text">Save throttling and persistence contention management</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Creating-your-own-Loki-Persistence-Adapters"><span class="nav-number">7.</span> <span class="nav-text">Creating your own Loki Persistence Adapters</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Creating-your-own-‘Basic’-persistence-adapter"><span class="nav-number">8.</span> <span class="nav-text">Creating your own ‘Basic’ persistence adapter</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Creating-your-own-‘Reference-Mode’-persistence-adapter"><span class="nav-number">9.</span> <span class="nav-text">Creating your own ‘Reference Mode’ persistence adapter</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LokiPartitioningAdapter"><span class="nav-number">10.</span> <span class="nav-text">LokiPartitioningAdapter</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LokiMemoryAdapter"><span class="nav-number">11.</span> <span class="nav-text">LokiMemoryAdapter</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#‘Rolling-your-own’-structured-serialization-mechanism"><span class="nav-number">12.</span> <span class="nav-text">‘Rolling your own’ structured serialization mechanism</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Detailed-LokiIndexedAdapter-Description"><span class="nav-number">13.</span> <span class="nav-text">Detailed LokiIndexedAdapter Description</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Simple-Example-of-using-LokiIndexedAdapter-for-browser-environments"><span class="nav-number">13.0.1.</span> <span class="nav-text">Simple Example of using LokiIndexedAdapter (for browser environments) :</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Loki-Indexed-adapter-interface"><span class="nav-number">14.</span> <span class="nav-text">Loki Indexed adapter interface</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Full-Examples-of-using-loki-indexed-adapter"><span class="nav-number">14.0.1.</span> <span class="nav-text">Full Examples of using loki indexed adapter</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Examples-of-using-loki-Indexed-adapter-from-console"><span class="nav-number">14.0.2.</span> <span class="nav-text">Examples of using loki Indexed adapter from console</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">William-Dream</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("PWTRJaGA9VmnmuJISstgYQVk-gzGzoHsz", "OhMVXOeW5jbdIohUayYbpq1v");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+  
+
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1246 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+<script data-ad-client="ca-pub-7376123380604387" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="静水流深" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="注意：我们现在在这个库的’examples’子文件夹中有几个快速入门示例。 https://github.com/techfort/LokiJS/blob/master/examples/quickstart-core.js  https://github.com/techfort/LokiJS/blob/master/examples/quickstart-chaining.js https:/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="查询示例">
+<meta property="og:url" content="http://blog.lijunbo.com/2018/05/02/lokijs3_query_examples/index.html">
+<meta property="og:site_name" content="静水流深">
+<meta property="og:description" content="注意：我们现在在这个库的’examples’子文件夹中有几个快速入门示例。 https://github.com/techfort/LokiJS/blob/master/examples/quickstart-core.js  https://github.com/techfort/LokiJS/blob/master/examples/quickstart-chaining.js https:/">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-10-08T10:39:52.113Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="查询示例">
+<meta name="twitter:description" content="注意：我们现在在这个库的’examples’子文件夹中有几个快速入门示例。 https://github.com/techfort/LokiJS/blob/master/examples/quickstart-core.js  https://github.com/techfort/LokiJS/blob/master/examples/quickstart-chaining.js https:/">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.lijunbo.com/2018/05/02/lokijs3_query_examples/"/>
+
+
+
+
+
+  <title> 查询示例 | 静水流深 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?4a874f383236eb548cfc14b4365008b8";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">静水流深</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">非淡泊无以明志，非宁静无以致远</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://blog.lijunbo.com/2018/05/02/lokijs3_query_examples/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="William-Dream">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://www.gravatar.com/avatar/c8b98e5df395f0e0fd3b47948b37b881.jpg?s=215">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="静水流深">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                查询示例
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-02T09:12:51+08:00">
+                2018-05-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/database/" itemprop="url" rel="index">
+                    <span itemprop="name">database</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/05/02/lokijs3_query_examples/" class="leancloud_visitors" data-flag-title="查询示例">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="注意：我们现在在这个库的’examples’子文件夹中有几个快速入门示例。"><a href="#注意：我们现在在这个库的’examples’子文件夹中有几个快速入门示例。" class="headerlink" title="注意：我们现在在这个库的’examples’子文件夹中有几个快速入门示例。"></a>注意：我们现在在这个库的’examples’子文件夹中有几个快速入门示例。</h3><blockquote>
+<p><a href="https://github.com/techfort/LokiJS/blob/master/examples/quickstart-core.js" target="_blank" rel="noopener">https://github.com/techfort/LokiJS/blob/master/examples/quickstart-core.js</a></p>
+<p> <a href="https://github.com/techfort/LokiJS/blob/master/examples/quickstart-chaining.js" target="_blank" rel="noopener">https://github.com/techfort/LokiJS/blob/master/examples/quickstart-chaining.js</a></p>
+<p><a href="https://github.com/techfort/LokiJS/blob/master/examples/quickstart-transforms.js" target="_blank" rel="noopener">https://github.com/techfort/LokiJS/blob/master/examples/quickstart-transforms.js</a></p>
+<p><a href="https://github.com/techfort/LokiJS/blob/master/examples/quickstart-dynview.js" target="_blank" rel="noopener">https://github.com/techfort/LokiJS/blob/master/examples/quickstart-dynview.js</a></p>
+<p>对于持久性示例，我们在 <a href="https://rawgit.com/techfort/LokiJS/master/examples/sandbox/LokiSandbox.htm" target="_blank" rel="noopener">Loki Sandbox </a>中的 <a href="https://github.com/techfort/LokiJS/tree/master/examples" target="_blank" rel="noopener">示例文件夹</a> 和Web快速入门要点中编号了节点快速入门。</p>
+</blockquote>
+<h3 id="设计查询"><a href="#设计查询" class="headerlink" title="设计查询"></a>设计查询</h3><p>LokiJS衍生出了多种查询数据库的机制。在最高抽象层次上，让我们将这些方法分为以下几类：</p>
+<ul>
+<li>核心方法 - 直接应用于集合的查询的简单而强大的方法。</li>
+<li>链（通过Resultset） - 允许按顺序排序(sorting)，限制(limiting)，偏移(offsets)和多个查询(multiple queries)。</li>
+<li>链变换 - 类似于上面的方法链，但在可以序列化的对象结构中定义。</li>
+<li>动态视图  - 允许具有可能较大结果集的常用查询以获得最佳性能和可用性。</li>
+</ul>
+<p>在每种方法中，您的查询通常属于<code>find</code>和<code>where</code>类别。</p>
+<h3 id="‘Where’-查询"><a href="#‘Where’-查询" class="headerlink" title="‘Where’ 查询"></a>‘Where’ 查询</h3><p>这些查询利用<code>JavaScript函数</code>来过滤数据。<strong>这是用于过滤集合中文档的最慢但最通用的方法。</strong>从本质上讲，我们将在集合中的每个文档上应用过滤器，以查看它是否应该放在结果集中。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 简单的匿名过滤器</span></span><br><span class="line"><span class="keyword">var</span> results = coll.where(<span class="function"><span class="keyword">function</span>(<span class="params">obj</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> obj.legs === <span class="number">8</span>;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// -或- 设置命名过滤器函数</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sleipnirFilter</span>(<span class="params">obj</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> obj.legs === <span class="number">8</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 然后传递给where函数</span></span><br><span class="line">results = coll.where(sleipnirFunction);</span><br></pre></td></tr></table></figure>
+<h3 id="‘Find’-查询"><a href="#‘Find’-查询" class="headerlink" title="‘Find’ 查询"></a>‘Find’ 查询</h3><p><strong><code>Find查询</code>基于<code>mongo查询</code>语法的子集，并且能够使用<code>索引</code>来加速查询。</strong><u>与<code>集合变换(Collection Transforms)</code>或<code>动态视图(Dynamic Views)</code>一起使用时，这些过滤器可以保存到数据库本身中。</u><strong>这是查询Loki数据库的首选方法。</strong><u>使用<code>Find</code>查询所有内容（或尽可能多地过滤），如果发现不支持的边界情况，则使用<code>&#39;where&#39;</code>过滤。</u></p>
+<h3 id="‘Find’-操作符示例"><a href="#‘Find’-操作符示例" class="headerlink" title="‘Find’ 操作符示例 :"></a>‘Find’ 操作符示例 :</h3><p><strong>[目前增加和审查几个操作符的功能…我们可能应该用更好的例子来扩展本节的更多细节]</strong></p>
+<p>目前支持的主要操作符：</p>
+<p><strong>$eq-(equal)</strong> - 过滤具有(严格)<code>相等</code>属性的文档</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 隐式（假设已经使用了$eq运算符）</span></span><br><span class="line"><span class="keyword">var</span> results = coll.find(&#123;<span class="string">'Name'</span>: <span class="string">'Odin'</span>&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 显式 $eq</span></span><br><span class="line">results = coll.find(&#123;<span class="string">'Name'</span>: &#123; <span class="string">'$eq'</span> : <span class="string">'Odin'</span> &#125;&#125;);</span><br></pre></td></tr></table></figure>
+<p><strong>$ne-(not equal</strong>) -对属性<code>不等于</code>提供值的文档进行过滤</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 不等于测试</span></span><br><span class="line"><span class="keyword">var</span> results = coll.find(&#123;<span class="string">'legs'</span>: &#123; <span class="string">'$ne'</span> : <span class="number">8</span> &#125;&#125;);</span><br></pre></td></tr></table></figure>
+<p><strong>$aeq-(abstract equal)</strong> - 过滤具有抽象（非严格）<code>等同</code>性质的文档</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 将匹配20岁或20岁的文档</span></span><br><span class="line"><span class="keyword">var</span> results = coll.find(age: &#123;<span class="attr">$aeq</span>: <span class="number">20</span>&#125;);</span><br></pre></td></tr></table></figure>
+<p><strong>$dteq-(date equal)</strong> - 过滤<code>日期属性等于</code>提供日期值的文档</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> dt1 = <span class="keyword">new</span> <span class="built_in">Date</span>(<span class="string">"1/1/2017"</span>);</span><br><span class="line"><span class="keyword">var</span> dt2 = <span class="keyword">new</span> <span class="built_in">Date</span>(<span class="string">"1/1/2017"</span>);</span><br><span class="line"></span><br><span class="line">items.insert(&#123; <span class="attr">name</span> : <span class="string">'mjolnir'</span>, <span class="attr">created</span>: dt1 &#125;);</span><br><span class="line">items.insert(&#123; <span class="attr">name</span> : <span class="string">'gungnir'</span>, <span class="attr">created</span>: dt2 &#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">//返回上述两个插入的文档</span></span><br><span class="line"><span class="keyword">var</span> results = items.find(&#123; <span class="attr">created</span>: &#123; <span class="attr">$dteq</span>: <span class="keyword">new</span> <span class="built_in">Date</span>(<span class="string">"1/1/2017"</span>) &#125; &#125;);</span><br></pre></td></tr></table></figure>
+<p><strong>$gt-(greater than)</strong> - 过滤属性<code>大于</code>提供值的文档</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> results = coll.find(&#123;<span class="string">'age'</span>: &#123;<span class="string">'$gt'</span>: <span class="number">40</span>&#125;&#125;);</span><br></pre></td></tr></table></figure>
+<p><strong>$gte-(greater than equal)</strong> -过滤具有<code>大于或等于</code>提供值的属性的文档</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> results = coll.find(&#123;<span class="string">'age'</span>: &#123;<span class="string">'$gte'</span>: <span class="number">40</span>&#125;&#125;);</span><br></pre></td></tr></table></figure>
+<p><strong>$lt-(less than)</strong> - 过滤属性<code>小于</code>提供值的文档</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> results = coll.find(&#123;<span class="string">'age'</span>: &#123;<span class="string">'$lt'</span>: <span class="number">40</span>&#125;&#125;);</span><br></pre></td></tr></table></figure>
+<p><strong>$lte-(less than equal)</strong> - 过滤属性<code>小于或等于</code>提供值的文档</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> results = coll.find(&#123;<span class="string">'age'</span>: &#123;<span class="string">'$lte'</span>: <span class="number">40</span>&#125;&#125;);</span><br></pre></td></tr></table></figure>
+<p><strong>$between</strong> - 通过提供的属性过滤出在提供的值<code>之间</code>的文档</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 匹配50至75之间的计数值的用户</span></span><br><span class="line"><span class="keyword">var</span> results = users.find(&#123; <span class="attr">count</span> : &#123; <span class="string">'$between'</span>: [<span class="number">50</span>, <span class="number">75</span>] &#125;&#125;);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：上面的<code>$gt，$gte，$lt，$lte</code>和<code>$ops</code>之间使用<code>&#39;loki&#39;</code>排序，它提供了一个统一范围的<code>actoss</code>混合类型，并返回相同的结果，无论属性是否被索引。这对二进制索引和保证索引和非索引比较结果相等是必需的。</p>
+<p>如果您不希望利用二进制索引，并且您希望简单的JavaScript比较可以接受，那么我们提供以下操作（由于它们的简化比较）可以提供更优化的执行速度。</p>
+<p><strong>$jgt-(javascipt greater than)</strong> - 过滤(使用简化的JavaScript比较)出具有<code>大于</code>给定值的属性的文档</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="keyword">var</span> results = coll.find(&#123;<span class="string">'age'</span>: &#123;<span class="string">'$jgt'</span>: <span class="number">40</span>&#125;&#125;);</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p><strong>$jgte-(javascipt greater than equal)</strong> - 过滤(使用简化的JavaScript比较)出具有<code>大于等于</code>给定值的属性的文档</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="keyword">var</span> results = coll.find(&#123;<span class="string">'age'</span>: &#123;<span class="string">'$jgte'</span>: <span class="number">40</span>&#125;&#125;);</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p><strong>$jlt-(javascipt less than)</strong> - 过滤(使用简化的JavaScript比较)出具有<code>小于</code>给定值的属性的文档</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="keyword">var</span> results = coll.find(&#123;<span class="string">'age'</span>: &#123;<span class="string">'$jlt'</span>: <span class="number">40</span>&#125;&#125;);</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p><strong>$jlte-(javascipt less than equal)</strong> - 过滤(使用简化的JavaScript比较)出具有<code>小于等于</code>给定值的属性的文档</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="keyword">var</span> results = coll.find(&#123;<span class="string">'age'</span>: &#123;<span class="string">'$jlte'</span>: <span class="number">40</span>&#125;&#125;);</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p><strong>$jbetween</strong>- 通过提供的属性过滤(使用简化的JavaScript比较)出在提供的值<code>之间</code>的文档</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="keyword">var</span> results = users.find(&#123; <span class="attr">count</span> : &#123; <span class="string">'$jbetween'</span>: [<span class="number">50</span>, <span class="number">75</span>] &#125;&#125;);</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p><strong>$regex</strong> - 根据提供的正则表达式过滤出具有属性匹配的文档</p>
+<blockquote>
+<p>如果在<code>命名转换</code>或<code>动态视图</code>过滤器中使用正则表达式操作符，最好使用<code>后两个示例</code>，因为原始正则表达式好像没有<code>序列化/反序列化</code>。</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 传入原始正则表达式</span></span><br><span class="line"><span class="keyword">var</span> results = coll.find(&#123;<span class="string">'Name'</span>: &#123; <span class="string">'$regex'</span> : <span class="regexp">/din/</span> &#125;&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">//或仅传递字符串模式</span></span><br><span class="line">results = coll.find(&#123;<span class="string">'Name'</span>: &#123; <span class="string">'$regex'</span>: <span class="string">'din'</span> &#125;&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 或传入[pattern，options]字符串数组</span></span><br><span class="line">results = coll.find(&#123;<span class="string">'Name'</span>: &#123; <span class="string">'$regex'</span>: [<span class="string">'din'</span>, <span class="string">'i'</span>] &#125;&#125;);</span><br></pre></td></tr></table></figure>
+<p><strong>$in</strong> - 过滤具有与所提供的数组值<code>相匹配</code>的属性的文档。你的属性不应该是一个数组，但你的比较值应该是。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">users.insert(&#123; <span class="attr">name</span> : <span class="string">'odin'</span> &#125;);</span><br><span class="line">users.insert(&#123; <span class="attr">name</span> : <span class="string">'thor'</span> &#125;);</span><br><span class="line">users.insert(&#123; <span class="attr">name</span> : <span class="string">'svafrlami'</span> &#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 在数组集合['odin'，'thor']中将用户与名称进行匹配</span></span><br><span class="line"><span class="keyword">var</span> results = users.find(&#123; <span class="string">'name'</span> : &#123; <span class="string">'$in'</span> : [<span class="string">'odin'</span>, <span class="string">'thor'</span>] &#125; &#125;);</span><br></pre></td></tr></table></figure>
+<p><strong>$nin</strong> -  过滤具有与所提供的数组值<code>不匹配</code>的属性的文档。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">users.insert(&#123; <span class="attr">name</span> : <span class="string">'odin'</span> &#125;);</span><br><span class="line">users.insert(&#123; <span class="attr">name</span> : <span class="string">'thor'</span> &#125;);</span><br><span class="line">users.insert(&#123; <span class="attr">name</span> : <span class="string">'svafrlami'</span> &#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 将用户与名称不匹配的用户匹配['odin'，'thor']（仅svafrlami文档符合）</span></span><br><span class="line"><span class="keyword">var</span> results = users.find(&#123; <span class="string">'name'</span> : &#123; <span class="string">'$nin'</span> : [<span class="string">'odin'</span>, <span class="string">'thor'</span>] &#125; &#125;);</span><br></pre></td></tr></table></figure>
+<p><strong>$keyin</strong> - filter for document(s) whose property value is defined in the provided hash object keys.<em>(Equivalent to $in: Object.keys(hashObject))</em> ( <a href="https://github.com/techfort/LokiJS/issues/362" target="_blank" rel="noopener">#362</a>, <a href="https://github.com/techfort/LokiJS/issues/365" target="_blank" rel="noopener">#365</a> )</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">categories.insert(&#123; <span class="attr">name</span>: <span class="string">'Title'</span>, <span class="attr">column</span>: <span class="string">'title'</span>&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// since the op doesn't use the title value, this is most effective with existing objects</span></span><br><span class="line"><span class="keyword">var</span> result = categories.find(&#123;<span class="attr">column</span>: &#123; <span class="attr">$keyin</span>: &#123; <span class="attr">title</span>: <span class="string">'anything'</span>&#125; &#125;&#125;);</span><br></pre></td></tr></table></figure>
+<p><strong>$nkeyin</strong> - filter for document(s) whose property value is not defined in the provided hash object keys. <strong>(Equivalent to $nin: Object.keys(hashObject))</strong> ( <a href="https://github.com/techfort/LokiJS/issues/362" target="_blank" rel="noopener">#362</a>, <a href="https://github.com/techfort/LokiJS/issues/365" target="_blank" rel="noopener">#365</a> )</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> result = categories.find(&#123;<span class="attr">column</span>: &#123; <span class="attr">$nkeyin</span>: &#123; <span class="attr">title</span>: <span class="string">'anything'</span>&#125; &#125;&#125;);</span><br></pre></td></tr></table></figure>
+<p><strong>$definedin</strong> - filter for document(s) whose property value is defined in the provided hash object as a value other than <strong>undefined</strong>. <a href="https://github.com/techfort/LokiJS/issues/285" target="_blank" rel="noopener">#285</a></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">items.insert(&#123; <span class="attr">name</span> : <span class="string">'mjolnir'</span>, <span class="attr">owner</span>: <span class="string">'thor'</span>, <span class="attr">maker</span>: <span class="string">'dwarves'</span> &#125;);</span><br><span class="line">items.insert(&#123; <span class="attr">name</span> : <span class="string">'gungnir'</span>, <span class="attr">owner</span>: <span class="string">'odin'</span>, <span class="attr">maker</span>: <span class="string">'elves'</span> &#125;);</span><br><span class="line">items.insert(&#123; <span class="attr">name</span> : <span class="string">'tyrfing'</span>, <span class="attr">owner</span>: <span class="string">'Svafrlami'</span>, <span class="attr">maker</span>: <span class="string">'dwarves'</span> &#125;);</span><br><span class="line">items.insert(&#123; <span class="attr">name</span> : <span class="string">'draupnir'</span>, <span class="attr">owner</span>: <span class="string">'odin'</span>, <span class="attr">maker</span>: <span class="string">'elves'</span> &#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// returns gungnir and draupnir.  similar to $keyin, the value ('rule') is not used by the op</span></span><br><span class="line"><span class="keyword">var</span> results = items.find(&#123;<span class="attr">maker</span>: &#123; <span class="attr">$efinedin</span>: &#123; <span class="attr">elves</span>: <span class="string">'rule'</span> &#125; &#125; &#125;);</span><br></pre></td></tr></table></figure>
+<p><strong>$undefinedin</strong> - filter for document(s) whose property value is not defined in the provided hash object or defined but is <strong>undefined</strong>. <a href="https://github.com/techfort/LokiJS/issues/285" target="_blank" rel="noopener">#285</a></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">items.insert(&#123; <span class="attr">name</span> : <span class="string">'mjolnir'</span>, <span class="attr">owner</span>: <span class="string">'thor'</span>, <span class="attr">maker</span>: <span class="string">'dwarves'</span> &#125;);</span><br><span class="line">items.insert(&#123; <span class="attr">name</span> : <span class="string">'gungnir'</span>, <span class="attr">owner</span>: <span class="string">'odin'</span>, <span class="attr">maker</span>: <span class="string">'elves'</span> &#125;);</span><br><span class="line">items.insert(&#123; <span class="attr">name</span> : <span class="string">'tyrfing'</span>, <span class="attr">owner</span>: <span class="string">'Svafrlami'</span>, <span class="attr">maker</span>: <span class="string">'dwarves'</span> &#125;);</span><br><span class="line">items.insert(&#123; <span class="attr">name</span> : <span class="string">'draupnir'</span>, <span class="attr">owner</span>: <span class="string">'odin'</span>, <span class="attr">maker</span>: <span class="string">'elves'</span> &#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// returns mjolnir and tyrfing where the 'dwarves' val is not a property on our passed object</span></span><br><span class="line"><span class="keyword">var</span> results = items.find(&#123;<span class="attr">maker</span>: &#123; <span class="attr">$undefinedin</span>: &#123; <span class="attr">elves</span>: <span class="string">'rule'</span> &#125; &#125; &#125;);</span><br></pre></td></tr></table></figure>
+<p><strong>$contains</strong> - 过滤包含提供值的属性的文档. ( <a href="https://github.com/techfort/LokiJS/pull/120/commits/1f08433203554ccf00b381cbea4e72e25e62d5da" target="_blank" rel="noopener">commit</a>, <a href="https://github.com/techfort/LokiJS/issues/205" target="_blank" rel="noopener">#205</a> ). 当你的属性包含一个数组，但你的比较值不是一个数组时，请使用它。.</p>
+<blockquote>
+<p>当<code>typeof</code>属性是：</p>
+<ul>
+<li>string: 它会为你的字符串做一个子字符串匹配(indexOf)</li>
+<li>array: 它会检查该数组中是否存在“value”(indexOf)</li>
+<li>object: 它会检查你的’值’是否是该对象的一个定义的属性</li>
+</ul>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">users.insert(&#123; <span class="attr">name</span> : <span class="string">'odin'</span>, <span class="attr">weapons</span> : [<span class="string">'gungnir'</span>, <span class="string">'draupnir'</span>]&#125;);</span><br><span class="line">users.insert(&#123; <span class="attr">name</span> : <span class="string">'thor'</span>, <span class="attr">weapons</span> : [<span class="string">'mjolnir'</span>]&#125;);</span><br><span class="line">users.insert(&#123; <span class="attr">name</span> : <span class="string">'svafrlami'</span>, <span class="attr">weapons</span> : [<span class="string">'tyrfing'</span>]&#125;);</span><br><span class="line">users.insert(&#123; <span class="attr">name</span> : <span class="string">'arngrim'</span>, <span class="attr">weapons</span> : [<span class="string">'tyrfing'</span>]&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// returns 'svafrlami' and 'arngrim' documents</span></span><br><span class="line"><span class="keyword">var</span> results = users.find(&#123; <span class="string">'weapons'</span> : &#123; <span class="string">'$contains'</span> : <span class="string">'tyrfing'</span> &#125; &#125;);</span><br></pre></td></tr></table></figure>
+<p><strong>$containsAny</strong> - 过滤包含任何提供值的属性的文档。当你的属性包含一个数组时，使用这个 - 并且你的比较值是一个数组。</p>
+<blockquote>
+<p>When typeof property is :</p>
+<ul>
+<li>string: 它会为你的字符串做一个子字符串匹配(indexOf)</li>
+<li>array: 它会检查该数组中是否存在“value”(indexOf)</li>
+<li>object: 它会检查你的’值’是否是该对象的一个​定义的属性</li>
+</ul>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">users.insert(&#123; <span class="attr">name</span> : <span class="string">'odin'</span>, <span class="attr">weapons</span> : [<span class="string">'gungnir'</span>, <span class="string">'draupnir'</span>]&#125;);</span><br><span class="line">users.insert(&#123; <span class="attr">name</span> : <span class="string">'thor'</span>, <span class="attr">weapons</span> : [<span class="string">'mjolnir'</span>]&#125;);</span><br><span class="line">users.insert(&#123; <span class="attr">name</span> : <span class="string">'svafrlami'</span>, <span class="attr">weapons</span> : [<span class="string">'tyrfing'</span>]&#125;);</span><br><span class="line">users.insert(&#123; <span class="attr">name</span> : <span class="string">'arngrim'</span>, <span class="attr">weapons</span> : [<span class="string">'tyrfing'</span>]&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// returns 'svafrlami', 'arngrim', and 'thor' documents</span></span><br><span class="line">results = users.find(&#123; <span class="string">'weapons'</span> : &#123; <span class="string">'$containsAny'</span> : [<span class="string">'tyrfing'</span>, <span class="string">'mjolnir'</span>] &#125; &#125;);</span><br></pre></td></tr></table></figure>
+<p><strong>$containsNone</strong> - 过滤具有不包含所提供的值的属性的文档</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">users.insert(&#123; <span class="attr">name</span> : <span class="string">'odin'</span>, <span class="attr">weapons</span> : [<span class="string">'gungnir'</span>, <span class="string">'draupnir'</span>]&#125;);</span><br><span class="line">users.insert(&#123; <span class="attr">name</span> : <span class="string">'thor'</span>, <span class="attr">weapons</span> : [<span class="string">'mjolnir'</span>]&#125;);</span><br><span class="line">users.insert(&#123; <span class="attr">name</span> : <span class="string">'svafrlami'</span>, <span class="attr">weapons</span> : [<span class="string">'tyrfing'</span>]&#125;);</span><br><span class="line">users.insert(&#123; <span class="attr">name</span> : <span class="string">'arngrim'</span>, <span class="attr">weapons</span> : [<span class="string">'tyrfing'</span>]&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// returns 'svafrlami' and 'arngrim'</span></span><br><span class="line">results = users.find(&#123; <span class="string">'weapons'</span> : &#123; <span class="string">'$containsNone'</span> : [<span class="string">'gungnir'</span>, <span class="string">'mjolnir'</span>] &#125; &#125;);</span><br></pre></td></tr></table></figure>
+<p><strong>$type</strong> - 过滤具有指定类型属性的文档</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">users.insert([</span><br><span class="line">  &#123; <span class="attr">name</span>: <span class="string">'odin'</span>, <span class="attr">weapons</span>: [<span class="string">'gungnir'</span>, <span class="string">'draupnir'</span>] &#125;,</span><br><span class="line">  &#123; <span class="attr">name</span>: <span class="string">'thor'</span>, <span class="attr">weapons</span>: <span class="string">'mjolnir'</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">name</span>: <span class="string">'svafrlami'</span>, <span class="attr">weapons</span>: [<span class="string">'tyrfing'</span>] &#125;,</span><br><span class="line">  &#123; <span class="attr">name</span>: <span class="string">'arngrim'</span>, <span class="attr">weapons</span>: [<span class="string">'tyrfing'</span>] &#125;</span><br><span class="line">]);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 返回docs（非数组）字符串值为'weapons'（mjolnir）</span></span><br><span class="line"><span class="keyword">var</span> results = users.find(&#123; <span class="string">'weapons'</span> : &#123; <span class="string">'$type'</span> : <span class="string">'string'</span> &#125; &#125;);</span><br></pre></td></tr></table></figure>
+<p><strong>$finite</strong> - 过滤具有数字或非数字属性的文档。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 返回所有文档，其中isFinite（doc.age）=== true</span></span><br><span class="line"><span class="keyword">var</span> results = users.find(&#123; <span class="attr">age</span>: &#123; <span class="attr">$finite</span>: <span class="literal">true</span> &#125;&#125;);</span><br></pre></td></tr></table></figure>
+<p><strong>$size</strong> - 筛选具有指定大小的数组属性的文档。（不适用于字符串）</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">users.insert([</span><br><span class="line">  &#123; <span class="attr">name</span>: <span class="string">'odin'</span>, <span class="attr">weapons</span>: [<span class="string">'gungnir'</span>, <span class="string">'draupnir'</span>] &#125;,</span><br><span class="line">  &#123; <span class="attr">name</span>: <span class="string">'thor'</span>, <span class="attr">weapons</span>: <span class="string">'mjolnir'</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">name</span>: <span class="string">'svafrlami'</span>, <span class="attr">weapons</span>: [<span class="string">'tyrfing'</span>] &#125;,</span><br><span class="line">  &#123; <span class="attr">name</span>: <span class="string">'arngrim'</span>, <span class="attr">weapons</span>: [<span class="string">'tyrfing'</span>] &#125;</span><br><span class="line">]);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 返回docs'weapons'是2个元素数组（odin）</span></span><br><span class="line"><span class="keyword">var</span> results = users.find(&#123; <span class="string">'weapons'</span> : &#123; <span class="string">'$size'</span> : <span class="number">2</span> &#125; &#125;);</span><br></pre></td></tr></table></figure>
+<p><strong>$len</strong> - 筛选具有指定长度的字符串属性的文档。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">users.insert([</span><br><span class="line">  &#123; <span class="attr">name</span>: <span class="string">'odin'</span>, <span class="attr">weapons</span>: [<span class="string">'gungnir'</span>, <span class="string">'draupnir'</span>] &#125;,</span><br><span class="line">  &#123; <span class="attr">name</span>: <span class="string">'thor'</span>, <span class="attr">weapons</span>: <span class="string">'mjolnir'</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">name</span>: <span class="string">'svafrlami'</span>, <span class="attr">weapons</span>: [<span class="string">'tyrfing'</span>] &#125;,</span><br><span class="line">  &#123; <span class="attr">name</span>: <span class="string">'arngrim'</span>, <span class="attr">weapons</span>: [<span class="string">'tyrfing'</span>] &#125;</span><br><span class="line">]);</span><br><span class="line"></span><br><span class="line"><span class="comment">// returns docs where 'name' is a 9 character string (svafrllami)</span></span><br><span class="line"><span class="keyword">var</span> results = users.find(&#123; <span class="string">'name'</span> : &#123; <span class="string">'$len'</span> : <span class="number">9</span> &#125; &#125;);</span><br></pre></td></tr></table></figure>
+<p><strong>$and</strong> - 筛选符合所有嵌套子表达式的文档</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取匹配两个子表达式的文档</span></span><br><span class="line"><span class="keyword">var</span> results = coll.find(&#123;</span><br><span class="line">  <span class="string">'$and'</span>: [&#123; </span><br><span class="line">      <span class="string">'age'</span> : &#123;</span><br><span class="line">        <span class="string">'$gt'</span>: <span class="number">30</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,&#123;</span><br><span class="line">      <span class="string">'name'</span> : <span class="string">'Thor'</span></span><br><span class="line">    &#125;]</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// alternative 'implicit' syntax :</span></span><br><span class="line">results = coll.find(&#123;</span><br><span class="line">  age: &#123; <span class="attr">$gt</span>: <span class="number">30</span> &#125;,</span><br><span class="line">  name: <span class="string">'Thor'</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p><strong>$or</strong> - 筛选符合任何嵌套子表达式的文档</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取匹配任何子表达式的文档</span></span><br><span class="line"><span class="keyword">var</span> results = coll.find(&#123;</span><br><span class="line">  <span class="string">'$or'</span>: [&#123; </span><br><span class="line">      <span class="string">'age'</span> : &#123;</span><br><span class="line">        <span class="string">'$gte'</span>: <span class="string">'40'</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,&#123;</span><br><span class="line">      <span class="string">'name'</span> : <span class="string">'Thor'</span></span><br><span class="line">    &#125;]</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="支持“find”查询的功能"><a href="#支持“find”查询的功能" class="headerlink" title="支持“find”查询的功能"></a>支持“find”查询的功能</h3><p>这些<code>操作符</code>可用于组合查找过滤对象，可用于以下内容中：</p>
+<ul>
+<li>Collection find()</li>
+<li>Collection findOne()</li>
+<li>(chained) Resultset find()</li>
+<li>Collection Transforms</li>
+<li>DynamicView applyFind()</li>
+</ul>
+<h3 id="程序化查询示例"><a href="#程序化查询示例" class="headerlink" title="程序化查询示例"></a>程序化查询示例</h3><p>以下查询返回相同的结果：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Core collection 'find' method</span></span><br><span class="line"><span class="keyword">var</span> results = coll.find(&#123;<span class="string">'Age'</span>: &#123;<span class="string">'$gte'</span>: <span class="number">40</span>&#125;&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Resultset chaining</span></span><br><span class="line">results = coll.chain().find(&#123;<span class="string">'Age'</span>: &#123;<span class="string">'$gte'</span>: <span class="number">40</span>&#125;&#125;).data();</span><br><span class="line"></span><br><span class="line"><span class="comment">// Core collection 'where' method</span></span><br><span class="line">results = coll.where(<span class="function"><span class="keyword">function</span>(<span class="params">obj</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> obj.Age &gt;= <span class="number">40</span>;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="Resultset-链"><a href="#Resultset-链" class="headerlink" title="Resultset 链"></a>Resultset 链</h3><p>核心<code>find</code>和<code>where</code>功能是<code>Resultset链</code>允许您构建的两个主要构建块。其他可用的方法包括：</p>
+<ul>
+<li>limit - 允许将结果集限制为指定数量的文档。</li>
+<li>offset - 允许从结果集中跳过第一批数据文档。</li>
+<li>branch - 用于将查询路径分成多个分支。</li>
+<li>simplesort - 只需传递一个属性名称，你的<code>resulset</code>就会按这个排序。</li>
+<li>sort - 允许您提供自己的<code>比较函数</code>来对结果集进行排序。</li>
+<li>compoundsort - 允许您<code>根据多个属性按升序或降序</code>排序。</li>
+<li>update - 用于对当前结果集中的所有文档运行更新操作（JavaScript函数）。</li>
+<li>remove - 从集合中删除当前处于结果集中的所有文档对象（以及结果集）</li>
+<li>map - 映射到一个新的匿名集合中，提供一个映射函数</li>
+<li>mapReduce - 允许您在当前结果集数据上指定map函数和reduce函数。</li>
+<li>eqJoin - 左连接两组数据。连接键可以被定义或计算属性</li>
+<li>transform - 在结果集级别，这需要一个原始转换数组。当开始一个链时，一个命名或原始的转换可能被传入链式方法。 (See the <a href="https://github.com/techfort/LokiJS/wiki/Collection-Transforms" target="_blank" rel="noopener">‘Collection Transforms’</a> wiki page for more details.)</li>
+</ul>
+<p>更好地使用<code>方法链</code>的例子可能如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> results = coll.chain()</span><br><span class="line">                  .find(&#123;<span class="string">'Age'</span>: &#123;<span class="string">'$gt'</span>:<span class="number">20</span>&#125;&#125;)</span><br><span class="line">                  .where(<span class="function"><span class="keyword">function</span>(<span class="params">obj</span>) </span>&#123;</span><br><span class="line">                     <span class="keyword">return</span> obj.Country.indexOf(<span class="string">'FR'</span>) === <span class="number">0</span>;</span><br><span class="line">                   &#125;)</span><br><span class="line">                  .simplesort(<span class="string">'Name'</span>)</span><br><span class="line">                  .offset(<span class="number">100</span>)</span><br><span class="line">                  .limit(<span class="number">25</span>)</span><br><span class="line">                  .data();</span><br></pre></td></tr></table></figure>
+<h3 id="结果集分支-Resultset-branching"><a href="#结果集分支-Resultset-branching" class="headerlink" title="结果集分支(Resultset branching)"></a>结果集分支(Resultset branching)</h3><p>结果集及其结果并不意味着被“持有”。这些情况通常涉及利用动态视图来保持结果最新。但是，只要您想在发生任何插入/更新/删除之前，立即使用结果集，您可以随时临时分支<code>Resulset</code>。动态视图还允许分支结果集，而结果集又取其内部的结果集，并使用此分支来允许您进一步查询和转换其结果，而不会受到已执行过的过滤器的初始化时的影响。</p>
+<p>集合分支的一个简单示例，如下所示：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> baseResulset = coll.chain().find(&#123;<span class="string">'Age'</span>: &#123;<span class="string">'$gte'</span>: <span class="number">40</span>&#125;&#125;);</span><br><span class="line"><span class="keyword">var</span> branchedResulset = baseResultset.branch();</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> usResults = baseResultset.find(&#123;<span class="string">'Country'</span>: <span class="string">'US'</span>&#125;).data();</span><br><span class="line"><span class="keyword">var</span> ieResults = branchedResulset.find(&#123;<span class="string">'Country'</span>: <span class="string">'IE'</span>&#125;).data();</span><br></pre></td></tr></table></figure>
+<p>如果基础查询耗费时间，则您的后续分支无需承担该通用成本，这样做的好处是。在大型集合或对时间敏感的应用程序中，分支通常更有用。</p>
+<p>如果您需要检查链中各个阶段的<code>data()</code>或文档计数，则可以保留结果集（即使未分支时）以将链分成几个部分。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p><strong>尽可能在’Where’查询之前使用’Find’查询。</strong>如果它们被应用并与您的查询有关，则<strong>“Find”查询能够使用索引</strong>。</p>
+<p><strong>核心（Collection）的查询方法（<code>Collection.where(), Collection.find(), Collection.findOne(), Collection.by()</code>）是学习<code>lokijs</code>的最佳方法。对于许多应用程序来说，这可能足以满足您的查询需求。</strong>不可用的功能(尚未提供)是排序(sorting)，限制(limiting)，偏移(offsets)和其他更高级别的转换。</p>
+<hr>
+<p><strong>链查询通过调用<code>collection.chain()</code>方法返回的<code>Resultset</code>类来完成。</strong></p>
+<p>这样做，为我们的查询建立一个<code>state</code>。您可以将多个<code>查找(find)</code>，<code>过滤(where)</code>，<code>排序(sorts)</code>，<code>限制(limit)</code>，<code>偏移(offset)</code>等操作串在一起，逐步过滤和转换结果。</p>
+<p>您也可以建立查询分支，尽可能高效地将查询分解为多个方向。通过结果集进行<code>链调用</code>仍然用于即时评估。</p>
+<p>如果您将结果集保留在内存中，则不保证底层数据发生更改时保持最新状态。</p>
+<p>只有第一个链的操作可能会使用数据库过滤器，因此优先考虑最昂贵的<code>find()</code>过滤器（其中应用了索引）作为第一个链接操作。</p>
+<hr>
+<p><strong>通过<code>链变换</code>允许在对象中定义与方法链相同的功能，其功能类似于<code>存储过程</code>。</strong></p>
+<p>由于它是对象表示，因此可以（可选）命名并与数据库一起保存。此方法也用于即时评估。</p>
+<hr>
+<p><strong><code>DynamicViews</code>旨在让<code>fresh</code>的数据库视图随时可用。</strong></p>
+<p>您可以应用<code>find</code>和<code>where</code>过滤器，并指定排序。</p>
+<p><u>随着文档的插入，更新或删除，您查看的内容将立即保持最新状态。</u></p>
+<p>这可以确保您的视图具有最佳的读取性能，因为它始终处于最新状态。</p>
+<p>如果您的视图需要进一步过滤，则可以将结果集从其中分离出来。</p>
+<p>在分支<code>DynamicView</code>的时候，您可以在该时刻捕获<code>DynamicView</code>内部结果集的快照，从而可以执行各种各样的链接操作以进行即时评估。</p>
+<p>因此，如果您执行<code>DynamicView</code>分支，请将视图视为保证<code>fresh</code>，并将分支视为快速一次性分支进行评估。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>感谢您的支持，这将鼓励我坚持技术分享！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="http://cn.gravatar.com/userimage/119205447/f356a9687dd39e3fb68fa6ad110b31a7.png?size=200" alt="William-Dream WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="http://cn.gravatar.com/userimage/119205447/aecd8d2eaf8428ddaad1b31aaf41a333.jpg?size=200" alt="William-Dream Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/02/lokijs2_index_query/" rel="next" title="索引和查询性能">
+                <i class="fa fa-chevron-left"></i> 索引和查询性能
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/05/02/lokijs5_persistence_adapters/" rel="prev" title="LokiJS 持久化以及适配器">
+                LokiJS 持久化以及适配器 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yODE4MC80NzUz"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://www.gravatar.com/avatar/c8b98e5df395f0e0fd3b47948b37b881.jpg?s=215"
+               alt="William-Dream" />
+          <p class="site-author-name" itemprop="name">William-Dream</p>
+           
+              <p class="site-description motion-element" itemprop="description">为了梦-追梦,我的英文名由此而来</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">83</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/li-jun-bo" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              Links
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.lijunbo.com/" title="Net" target="_blank">Net</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#注意：我们现在在这个库的’examples’子文件夹中有几个快速入门示例。"><span class="nav-number">1.</span> <span class="nav-text">注意：我们现在在这个库的’examples’子文件夹中有几个快速入门示例。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设计查询"><span class="nav-number">2.</span> <span class="nav-text">设计查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#‘Where’-查询"><span class="nav-number">3.</span> <span class="nav-text">‘Where’ 查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#‘Find’-查询"><span class="nav-number">4.</span> <span class="nav-text">‘Find’ 查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#‘Find’-操作符示例"><span class="nav-number">5.</span> <span class="nav-text">‘Find’ 操作符示例 :</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#支持“find”查询的功能"><span class="nav-number">6.</span> <span class="nav-text">支持“find”查询的功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#程序化查询示例"><span class="nav-number">7.</span> <span class="nav-text">程序化查询示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Resultset-链"><span class="nav-number">8.</span> <span class="nav-text">Resultset 链</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结果集分支-Resultset-branching"><span class="nav-number">9.</span> <span class="nav-text">结果集分支(Resultset branching)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">10.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">William-Dream</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("PWTRJaGA9VmnmuJISstgYQVk-gzGzoHsz", "OhMVXOeW5jbdIohUayYbpq1v");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+  
+
+
+  
+
+</body>
+</html>

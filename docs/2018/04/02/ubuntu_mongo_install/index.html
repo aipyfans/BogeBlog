@@ -1,0 +1,1200 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+<script data-ad-client="ca-pub-7376123380604387" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Software,Server," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="静水流深" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="概览使用本教程在使用.deb软件包的LTS Ubuntu Linux 系统上安装MongoDB社区版。  重要的 由Ubuntu提供的非官方mongodb包不是由MongoDB维护的。您应该始终使用官方的MongoDB mongodb-org软件包，它们随时与最新的MongoDB的主版本和次要版本保持同步。   支持平台 MongoDB仅提供64位 LTS(长期支持) Ubuntu 发行版的软件包">
+<meta name="keywords" content="Software,Server">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在Ubuntu上安装MongoDB社区版">
+<meta property="og:url" content="http://blog.lijunbo.com/2018/04/02/ubuntu_mongo_install/index.html">
+<meta property="og:site_name" content="静水流深">
+<meta property="og:description" content="概览使用本教程在使用.deb软件包的LTS Ubuntu Linux 系统上安装MongoDB社区版。  重要的 由Ubuntu提供的非官方mongodb包不是由MongoDB维护的。您应该始终使用官方的MongoDB mongodb-org软件包，它们随时与最新的MongoDB的主版本和次要版本保持同步。   支持平台 MongoDB仅提供64位 LTS(长期支持) Ubuntu 发行版的软件包">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-10-08T10:39:52.111Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="在Ubuntu上安装MongoDB社区版">
+<meta name="twitter:description" content="概览使用本教程在使用.deb软件包的LTS Ubuntu Linux 系统上安装MongoDB社区版。  重要的 由Ubuntu提供的非官方mongodb包不是由MongoDB维护的。您应该始终使用官方的MongoDB mongodb-org软件包，它们随时与最新的MongoDB的主版本和次要版本保持同步。   支持平台 MongoDB仅提供64位 LTS(长期支持) Ubuntu 发行版的软件包">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.lijunbo.com/2018/04/02/ubuntu_mongo_install/"/>
+
+
+
+
+
+  <title> 在Ubuntu上安装MongoDB社区版 | 静水流深 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?4a874f383236eb548cfc14b4365008b8";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">静水流深</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">非淡泊无以明志，非宁静无以致远</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://blog.lijunbo.com/2018/04/02/ubuntu_mongo_install/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="William-Dream">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://www.gravatar.com/avatar/c8b98e5df395f0e0fd3b47948b37b881.jpg?s=215">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="静水流深">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                在Ubuntu上安装MongoDB社区版
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-02T15:21:47+08:00">
+                2018-04-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CST/" itemprop="url" rel="index">
+                    <span itemprop="name">CST</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/04/02/ubuntu_mongo_install/" class="leancloud_visitors" data-flag-title="在Ubuntu上安装MongoDB社区版">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="概览"><a href="#概览" class="headerlink" title="概览"></a>概览</h2><p>使用本教程在使用<code>.deb</code>软件包的LTS Ubuntu Linux 系统上安装MongoDB社区版。</p>
+<blockquote>
+<p><strong>重要的</strong></p>
+<p>由Ubuntu提供的非官方<code>mongodb</code>包不是由MongoDB维护的。您应该始终使用官方的MongoDB <code>mongodb-org</code>软件包，它们随时与最新的MongoDB的主版本和次要版本保持同步。</p>
+</blockquote>
+<blockquote>
+<p><strong>支持平台</strong></p>
+<p>MongoDB仅提供64位 LTS(长期支持) Ubuntu 发行版的软件包。</p>
+<p>例如，12.04 LTS (precise)，14.04 LTS (trusty)，16.04 LTS (xenial)等等。</p>
+<p>这些软件包可能与其他Ubuntu发行版一起使用，但是，它们不受支持。</p>
+<p>MongoDB 3.6 放弃了对 Ubuntu 12.04 LTS (precise) 的支持。</p>
+</blockquote>
+<blockquote>
+<p><strong>在IBM电脑系统上，Ubuntu 16.04需要更新软件包</strong></p>
+<p>由于Ubuntu 16.04的旧版<code>glibc</code>软件包存在锁定漏洞问题，因此在运行MongoDB之前，必须将<code>glibc</code>软件包升级至<code>glibc 2.23-0ubuntu5</code>。</p>
+<p>具有旧版本<code>glibc</code>软件包的系统将由于随机内存损坏而遇到数据库服务器崩溃和不正常行为，并且不适合MongoDB的生产部署</p>
+</blockquote>
+<h2 id="包"><a href="#包" class="headerlink" title="包"></a>包</h2><p>MongoDB在他们自己的仓库中提供官方支持的软件包。此库包含以下软件包：</p>
+<table>
+<thead>
+<tr>
+<th>包名</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>mongodb-org</code></td>
+<td>一个元数据包，将自动安装下面列出的四个组件包。</td>
+</tr>
+<tr>
+<td><code>mongodb-org-server</code></td>
+<td>包含<code>mongod</code>守护进程和相关的配置以及init脚本。</td>
+</tr>
+<tr>
+<td><code>mongodb-org-mongos</code></td>
+<td>包含<code>mongos</code>守护进程。</td>
+</tr>
+<tr>
+<td><code>mongodb-org-shell</code></td>
+<td>包含<code>mongo</code> shell。</td>
+</tr>
+<tr>
+<td><code>mongodb-org-tools</code></td>
+<td>包含以下MongoDB工具: <a href="https://docs.mongodb.com/master/reference/program/mongoimport/#bin.mongoimport" target="_blank" rel="noopener"><code>mongoimport</code></a> <a href="https://docs.mongodb.com/master/reference/program/bsondump/#bin.bsondump" target="_blank" rel="noopener"><code>bsondump</code></a>, <a href="https://docs.mongodb.com/master/reference/program/mongodump/#bin.mongodump" target="_blank" rel="noopener"><code>mongodump</code></a>, <a href="https://docs.mongodb.com/master/reference/program/mongoexport/#bin.mongoexport" target="_blank" rel="noopener"><code>mongoexport</code></a>, <a href="https://docs.mongodb.com/master/reference/program/mongofiles/#bin.mongofiles" target="_blank" rel="noopener"><code>mongofiles</code></a>, <a href="https://docs.mongodb.com/master/reference/program/mongoperf/#bin.mongoperf" target="_blank" rel="noopener"><code>mongoperf</code></a>, <a href="https://docs.mongodb.com/master/reference/program/mongorestore/#bin.mongorestore" target="_blank" rel="noopener"><code>mongorestore</code></a>, <a href="https://docs.mongodb.com/master/reference/program/mongostat/#bin.mongostat" target="_blank" rel="noopener"><code>mongostat</code></a>, 和 <a href="https://docs.mongodb.com/master/reference/program/mongotop/#bin.mongotop" target="_blank" rel="noopener"><code>mongotop</code></a>.</td>
+</tr>
+</tbody>
+</table>
+<p><code>mongodb-org-server</code>软件包提供了一个初始化脚本，它使用<code>/etc/mongod.conf</code>配置文件启动<code>mongod</code>。</p>
+<p>有关使用此初始化脚本的详细信息，请参阅<a href="https://docs.mongodb.com/master/tutorial/install-mongodb-on-ubuntu/#run-mongodb-community-edition" target="_blank" rel="noopener">运行MongoDB社区版</a> 。</p>
+<p>这些软件包与Ubuntu提供的<code>mongodb</code>，<code>mongodb-server</code>和<code>mongodb-clients</code>软件包相冲突。</p>
+<p>默认情况下，软件包提供的默认<code>/etc/mongod.conf</code>配置文件的<code>bind_ip</code>设置为127.0.0.1。在<a href="https://docs.mongodb.com/master/reference/glossary/#term-replica-set" target="_blank" rel="noopener">初始化副本集</a>之前根据您的环境需要修改此设置。</p>
+<h2 id="安装-MongoDB-社区版"><a href="#安装-MongoDB-社区版" class="headerlink" title="安装 MongoDB 社区版"></a>安装 MongoDB 社区版</h2><blockquote>
+<p>注意</p>
+<p>要安装不同版本的MongoDB，请参阅该版本的文档。例如，参见<a href="https://docs.mongodb.com/v3.4/tutorial/install-mongodb-on-ubuntu/" target="_blank" rel="noopener">3.4</a>版。</p>
+</blockquote>
+<h3 id="1-导入包管理系统使用的公钥"><a href="#1-导入包管理系统使用的公钥" class="headerlink" title="1. 导入包管理系统使用的公钥."></a>1. 导入包管理系统使用的公钥.</h3><p>Ubuntu软件包管理工具（即<code>dpkg</code>和<code>apt</code>）通过要求分销商使用<code>gpg</code>密钥对软件包进行签名来确保软件包的一致性和真实性。发出以下命令来导入<a href="https://www.mongodb.org/static/pgp/server-3.6.asc" target="_blank" rel="noopener">MongoDB 公共 GPG 密钥</a>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2930ADAE8CAF5059EE73BB4B58712A2291FA4AD5</span><br></pre></td></tr></table></figure>
+<h3 id="2-为MongoDB创建软件源list文件"><a href="#2-为MongoDB创建软件源list文件" class="headerlink" title="2. 为MongoDB创建软件源list文件."></a>2. 为MongoDB创建软件源list文件.</h3><p>使用适合您的Ubuntu版本的命令创建<code>/etc/apt/sources.list.d/mongodb-org-3.6.list</code>软件源list文件：</p>
+<ul>
+<li><p>Ubuntu 12.04 (deprecated)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;deb [ arch=amd64 ] https://repo.mongodb.org/apt/ubuntu precise/mongodb-org/3.6 multiverse&quot; | sudo tee /etc/apt/sources.list.d/mongodb-org-3.6.list</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Ubuntu 14.04</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;deb [ arch=amd64 ] https://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.6 multiverse&quot; | sudo tee /etc/apt/sources.list.d/mongodb-org-3.6.list</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Ubuntu 16.04</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.6 multiverse&quot; | sudo tee /etc/apt/sources.list.d/mongodb-org-3.6.list</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="3-重新加载本地包数据库"><a href="#3-重新加载本地包数据库" class="headerlink" title="3. 重新加载本地包数据库."></a>3. 重新加载本地包数据库.</h3><p>发出以下命令以重新加载本地包数据库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br></pre></td></tr></table></figure>
+<h3 id="4-安装-MongoDB-包"><a href="#4-安装-MongoDB-包" class="headerlink" title="4. 安装 MongoDB 包."></a>4. 安装 MongoDB 包.</h3><h4 id="安装最新的稳定版本的MongoDB"><a href="#安装最新的稳定版本的MongoDB" class="headerlink" title="安装最新的稳定版本的MongoDB."></a>安装最新的稳定版本的MongoDB.</h4><p>发出以下命令:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install -y mongodb-org</span><br></pre></td></tr></table></figure>
+<h4 id="安装指定版本的MongoDB"><a href="#安装指定版本的MongoDB" class="headerlink" title="安装指定版本的MongoDB."></a>安装指定版本的MongoDB.</h4><p>要安装特定版本，必须单独指定每个组件包以及版本号，如下例所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install -y mongodb-org=3.6.3 mongodb-org-server=3.6.3 mongodb-org-shell=3.6.3 mongodb-org-mongos=3.6.3 mongodb-org-tools=3.6.3</span><br></pre></td></tr></table></figure>
+<p>如果您只安装<code>mongodb-org = 3.6.3</code>并且不包含组件软件包，则无论您指定了哪个版本，都会安装每个<code>mongodb</code>软件包的最新版本。</p>
+<h4 id="固定一个特定版本的MongoDB"><a href="#固定一个特定版本的MongoDB" class="headerlink" title="固定一个特定版本的MongoDB."></a>固定一个特定版本的MongoDB.</h4><p>尽管您可以指定任何可用的MongoDB版本，但<code>apt-get</code>会在新版本可用时升级软件包。以防止意外升级，固定包装。要在当前安装的版本上固定MongoDB的版本，请发出以下命令序列：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;mongodb-org hold&quot; | sudo dpkg --set-selections</span><br><span class="line">echo &quot;mongodb-org-server hold&quot; | sudo dpkg --set-selections</span><br><span class="line">echo &quot;mongodb-org-shell hold&quot; | sudo dpkg --set-selections</span><br><span class="line">echo &quot;mongodb-org-mongos hold&quot; | sudo dpkg --set-selections</span><br><span class="line">echo &quot;mongodb-org-tools hold&quot; | sudo dpkg --set-selections</span><br></pre></td></tr></table></figure>
+<h2 id="运行-MongoDB-社区版"><a href="#运行-MongoDB-社区版" class="headerlink" title="运行 MongoDB 社区版"></a>运行 MongoDB 社区版</h2><p>大多数类Unix操作系统会限制会话可能使用的系统资源。这些限制可能会对MongoDB操作产生负面影响。有关更多信息，请参阅 <a href="https://docs.mongodb.com/master/reference/ulimit/" target="_blank" rel="noopener">UNIX ulimit</a> 设置。</p>
+<p>MongoDB实例默认将其数据文件存储在 <code>/var/lib/mongodb</code> 及其日志文件 <code>/var/log/mongodb</code>中，并使用<code>mongodb</code>用户帐户运行。您可以在<code>/etc/mongod.conf</code>中指定备用日志和数据文件目录。有关其他信息，请参阅 <a href="https://docs.mongodb.com/master/reference/configuration-options/#systemLog.path" target="_blank" rel="noopener"><code>systemLog.path</code></a> 和 <a href="https://docs.mongodb.com/master/reference/configuration-options/#storage.dbPath" target="_blank" rel="noopener"><code>storage.dbPath</code></a> 。</p>
+<p>如果更改运行MongoDB进程的用户，则必须修改<code>/var/lib/mongodb</code> 和 <code>/var/log/mongodb</code> 目录的访问控制权限，以使该用户可以访问这些目录。</p>
+<h3 id="1-启动-MongoDB"><a href="#1-启动-MongoDB" class="headerlink" title="1. 启动 MongoDB."></a>1. 启动 MongoDB.</h3><p>发出以下命令:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service mongod start</span><br></pre></td></tr></table></figure>
+<h3 id="2-验证MongoDB已成功启动"><a href="#2-验证MongoDB已成功启动" class="headerlink" title="2. 验证MongoDB已成功启动"></a>2. 验证MongoDB已成功启动</h3><p>通过在<code>/var/log/mongodb/mongod.log</code>中检查日志文件的内容以确认<code>mongod</code>进程已成功启动。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[initandlisten] waiting for connections on port 27017</span><br></pre></td></tr></table></figure>
+<p><code>&lt;port&gt;</code>是 <a href="https://docs.mongodb.com/master/reference/program/mongod/#bin.mongod" target="_blank" rel="noopener"><code>mongod</code></a> 侦听的端口。如果您修改了<code>/etc/mongod.conf</code>配置文件中的 <a href="https://docs.mongodb.com/master/reference/configuration-options/#net.port" target="_blank" rel="noopener"><code>net.port</code></a> 设置，则端口可能会有所不同。</p>
+<p>如果您修改了 <a href="https://docs.mongodb.com/master/reference/configuration-options/#systemLog.path" target="_blank" rel="noopener"><code>systemLog.path</code></a> 配置文件选项，请在您为该设置指定的位置查找日志文件。</p>
+<p>您可能会在 <a href="https://docs.mongodb.com/master/reference/program/mongod/#bin.mongod" target="_blank" rel="noopener"><code>mongod</code></a> 输出中看到非严重警告。只要您看到上面显示的日志行，就可以在您对MongoDB进行初始评估期间安全地忽略这些警告。</p>
+<h3 id="3-停止-MongoDB"><a href="#3-停止-MongoDB" class="headerlink" title="3. 停止 MongoDB."></a>3. 停止 MongoDB.</h3><p>根据需要，您可以通过发出以下命令来停止 <a href="https://docs.mongodb.com/master/reference/program/mongod/#bin.mongod" target="_blank" rel="noopener"><code>mongod</code></a> 进程：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service mongod stop</span><br></pre></td></tr></table></figure>
+<h3 id="4-重新启动-MongoDB"><a href="#4-重新启动-MongoDB" class="headerlink" title="4. 重新启动 MongoDB."></a>4. 重新启动 MongoDB.</h3><p>发出以下命令重新启动 <a href="https://docs.mongodb.com/master/reference/program/mongod/#bin.mongod" target="_blank" rel="noopener"><code>mongod</code></a> :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service mongod restart</span><br></pre></td></tr></table></figure>
+<h3 id="5-开始使用-MongoDB"><a href="#5-开始使用-MongoDB" class="headerlink" title="5. 开始使用 MongoDB."></a>5. 开始使用 MongoDB.</h3><p>在与 <a href="https://docs.mongodb.com/master/reference/program/mongod/#bin.mongod" target="_blank" rel="noopener"><code>mongod</code></a> 相同的主机上启动一个 <a href="https://docs.mongodb.com/master/reference/program/mongo/#bin.mongo" target="_blank" rel="noopener"><code>mongo</code></a>  shell。使用 <a href="https://docs.mongodb.com/master/reference/program/mongo/#cmdoption-mongo-host" target="_blank" rel="noopener"><code>--host</code></a> 命令行选项来指定 <a href="https://docs.mongodb.com/master/reference/program/mongod/#bin.mongod" target="_blank" rel="noopener"><code>mongod</code></a> 侦听的本地主机地址和端口</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mongo --host 127.0.0.1:27017</span><br></pre></td></tr></table></figure>
+<p>之后，要停止MongoDB，请在运行<code>mongod</code>实例的终端中按下<strong>Control+C</strong>。</p>
+<h2 id="卸载-MongoDB-社区版"><a href="#卸载-MongoDB-社区版" class="headerlink" title="卸载 MongoDB 社区版"></a>卸载 MongoDB 社区版</h2><p>要从系统中完全删除MongoDB，您必须自行删除MongoDB应用程序，配置文件以及包含数据和日志的任何目录。以下部分将指导您完成必要的步骤。</p>
+<blockquote>
+<p><strong>警告</strong></p>
+<p>这个过程将完全删除MongoDB以及它的配置和所有数据库。此过程不可逆，因此请确保在继续之前备份所有配置和数据。</p>
+</blockquote>
+<h3 id="1-停止-MongoDB-服务"><a href="#1-停止-MongoDB-服务" class="headerlink" title="1. 停止 MongoDB 服务."></a>1. 停止 MongoDB 服务.</h3><p>使用以下的命令停止mongod进程：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service mongod stop</span><br></pre></td></tr></table></figure>
+<h3 id="2-移除软件包"><a href="#2-移除软件包" class="headerlink" title="2. 移除软件包."></a>2. 移除软件包.</h3><p>删除以前安装的任何MongoDB软件包。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get purge mongodb-org*</span><br></pre></td></tr></table></figure>
+<h3 id="3-删除数据目录"><a href="#3-删除数据目录" class="headerlink" title="3. 删除数据目录."></a>3. 删除数据目录.</h3><p>删除MongoDB数据库和日志文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo rm -r /var/log/mongodb</span><br><span class="line">sudo rm -r /var/lib/mongodb</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>感谢您的支持，这将鼓励我坚持技术分享！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="http://cn.gravatar.com/userimage/119205447/f356a9687dd39e3fb68fa6ad110b31a7.png?size=200" alt="William-Dream WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="http://cn.gravatar.com/userimage/119205447/aecd8d2eaf8428ddaad1b31aaf41a333.jpg?size=200" alt="William-Dream Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Software/" rel="tag"># Software</a>
+          
+            <a href="/tags/Server/" rel="tag"># Server</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/02/ubuntu_mongo_db/" rel="next" title="Ubuntu安装MongoDB">
+                <i class="fa fa-chevron-left"></i> Ubuntu安装MongoDB
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/21/2018-04-21-node-update/" rel="prev" title="Node.js和NPM版本的升级">
+                Node.js和NPM版本的升级 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yODE4MC80NzUz"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://www.gravatar.com/avatar/c8b98e5df395f0e0fd3b47948b37b881.jpg?s=215"
+               alt="William-Dream" />
+          <p class="site-author-name" itemprop="name">William-Dream</p>
+           
+              <p class="site-description motion-element" itemprop="description">为了梦-追梦,我的英文名由此而来</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">83</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/li-jun-bo" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              Links
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.lijunbo.com/" title="Net" target="_blank">Net</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概览"><span class="nav-number">1.</span> <span class="nav-text">概览</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#包"><span class="nav-number">2.</span> <span class="nav-text">包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装-MongoDB-社区版"><span class="nav-number">3.</span> <span class="nav-text">安装 MongoDB 社区版</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-导入包管理系统使用的公钥"><span class="nav-number">3.1.</span> <span class="nav-text">1. 导入包管理系统使用的公钥.</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-为MongoDB创建软件源list文件"><span class="nav-number">3.2.</span> <span class="nav-text">2. 为MongoDB创建软件源list文件.</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-重新加载本地包数据库"><span class="nav-number">3.3.</span> <span class="nav-text">3. 重新加载本地包数据库.</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-安装-MongoDB-包"><span class="nav-number">3.4.</span> <span class="nav-text">4. 安装 MongoDB 包.</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#安装最新的稳定版本的MongoDB"><span class="nav-number">3.4.1.</span> <span class="nav-text">安装最新的稳定版本的MongoDB.</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装指定版本的MongoDB"><span class="nav-number">3.4.2.</span> <span class="nav-text">安装指定版本的MongoDB.</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#固定一个特定版本的MongoDB"><span class="nav-number">3.4.3.</span> <span class="nav-text">固定一个特定版本的MongoDB.</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运行-MongoDB-社区版"><span class="nav-number">4.</span> <span class="nav-text">运行 MongoDB 社区版</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-启动-MongoDB"><span class="nav-number">4.1.</span> <span class="nav-text">1. 启动 MongoDB.</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-验证MongoDB已成功启动"><span class="nav-number">4.2.</span> <span class="nav-text">2. 验证MongoDB已成功启动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-停止-MongoDB"><span class="nav-number">4.3.</span> <span class="nav-text">3. 停止 MongoDB.</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-重新启动-MongoDB"><span class="nav-number">4.4.</span> <span class="nav-text">4. 重新启动 MongoDB.</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-开始使用-MongoDB"><span class="nav-number">4.5.</span> <span class="nav-text">5. 开始使用 MongoDB.</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#卸载-MongoDB-社区版"><span class="nav-number">5.</span> <span class="nav-text">卸载 MongoDB 社区版</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-停止-MongoDB-服务"><span class="nav-number">5.1.</span> <span class="nav-text">1. 停止 MongoDB 服务.</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-移除软件包"><span class="nav-number">5.2.</span> <span class="nav-text">2. 移除软件包.</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-删除数据目录"><span class="nav-number">5.3.</span> <span class="nav-text">3. 删除数据目录.</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">William-Dream</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("PWTRJaGA9VmnmuJISstgYQVk-gzGzoHsz", "OhMVXOeW5jbdIohUayYbpq1v");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+  
+
+
+  
+
+</body>
+</html>

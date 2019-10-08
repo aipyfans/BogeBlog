@@ -1,0 +1,1160 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+<script data-ad-client="ca-pub-7376123380604387" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="静水流深" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="React is flexible and can be used in a variety of projects. You can create new apps with it, but you can also gradually introduce it into an existing codebase without doing a rewrite. React能够灵活的适用于各种项">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Installation（安装）">
+<meta property="og:url" content="http://blog.lijunbo.com/2017/03/27/rqd-installation/index.html">
+<meta property="og:site_name" content="静水流深">
+<meta property="og:description" content="React is flexible and can be used in a variety of projects. You can create new apps with it, but you can also gradually introduce it into an existing codebase without doing a rewrite. React能够灵活的适用于各种项">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-10-08T10:39:52.093Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Installation（安装）">
+<meta name="twitter:description" content="React is flexible and can be used in a variety of projects. You can create new apps with it, but you can also gradually introduce it into an existing codebase without doing a rewrite. React能够灵活的适用于各种项">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.lijunbo.com/2017/03/27/rqd-installation/"/>
+
+
+
+
+
+  <title> Installation（安装） | 静水流深 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?4a874f383236eb548cfc14b4365008b8";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">静水流深</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">非淡泊无以明志，非宁静无以致远</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://blog.lijunbo.com/2017/03/27/rqd-installation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="William-Dream">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://www.gravatar.com/avatar/c8b98e5df395f0e0fd3b47948b37b881.jpg?s=215">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="静水流深">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Installation（安装）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-27T11:11:11+08:00">
+                2017-03-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/react/" itemprop="url" rel="index">
+                    <span itemprop="name">react</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/03/27/rqd-installation/" class="leancloud_visitors" data-flag-title="Installation（安装）">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>React is flexible and can be used in a variety of projects. You can create new apps with it, but you can also gradually introduce it into an existing codebase without doing a rewrite.</p>
+<p>React能够灵活的适用于各种项目。 您可以使用它创建新的应用程序，同时您也可以逐渐将其引入到现有的代码库中，而无需重写。</p>
+<h2 id="Trying-Out-React（尝试使用React）"><a href="#Trying-Out-React（尝试使用React）" class="headerlink" title="Trying Out React（尝试使用React）"></a>Trying Out React（尝试使用React）</h2><p>If you’re just interested in playing around with React, you can use CodePen. Try starting from <a href="http://codepen.io/gaearon/pen/rrpgNB?editors=0010" target="_blank" rel="noopener">this Hello World example code</a>. You don’t need to install anything; you can just modify the code and see if it works.</p>
+<p>If you prefer to use your own text editor, you can also <a href="/react/downloads/single-file-example.html" download="hello.html">download this HTML file</a>, edit it, and open it from the local filesystem in your browser. It does a slow runtime code transformation, so don’t use it in production.</p>
+<p>如果您对React感兴趣，想尝试一下，您可以使用CodePen。 尝试从这个Hello World示例代码开始。 你不需要安装任何东西; 你只需要修改一下代码，看看它是否正常运行。</p>
+<p>如果您喜欢使用自己已有的文本编辑器，您还可以下载此HTML文件，进行编辑，并从浏览器中的本地文件系统中打开它。 它在运行时执行代码转换比较缓慢，所以不要在生产环境中使用它。</p>
+<h2 id="Creating-a-Single-Page-Application-创建单页面应用程序"><a href="#Creating-a-Single-Page-Application-创建单页面应用程序" class="headerlink" title="Creating a Single Page Application(创建单页面应用程序)"></a>Creating a Single Page Application(创建单页面应用程序)</h2><p><a href="http://github.com/facebookincubator/create-react-app" target="_blank" rel="noopener">Create React App</a> is the best way to start building a new React single page application. It sets up your development environment so that you can use the latest JavaScript features, provides a nice developer experience, and optimizes your app for production.</p>
+<p>创建React应用程序是开始构建一个新的React单页面应用程序的最佳方式。 它设置您的开发环境，以便您可以使用最新的JavaScript功能，提供不错的开发人员体验，并优化您的应用程序。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">npm install -g create-react-app</span><br><span class="line">create-react-app hello-world</span><br><span class="line"><span class="built_in">cd</span> hello-world</span><br><span class="line">npm start</span><br></pre></td></tr></table></figure>
+<p>Create React App doesn’t handle backend logic or databases; it just creates a frontend build pipeline, so you can use it with any backend you want. It uses <a href="https://webpack.js.org/" target="_blank" rel="noopener">webpack</a>, <a href="http://babeljs.io/" target="_blank" rel="noopener">Babel</a> and <a href="http://eslint.org/" target="_blank" rel="noopener">ESLint</a> under the hood, but configures them for you.</p>
+<p>Create React App不处理后端逻辑或数据库; 它只是创建一个前端构建管道，所以你可以使用任何你想使用的后台。 你可以在React中使用webpack，Babel和ESLint进行配置。</p>
+<h2 id="Adding-React-to-an-Existing-Application-将React添加到已有的应用程序中"><a href="#Adding-React-to-an-Existing-Application-将React添加到已有的应用程序中" class="headerlink" title="Adding React to an Existing Application(将React添加到已有的应用程序中)"></a>Adding React to an Existing Application(将React添加到已有的应用程序中)</h2><p>You don’t need to rewrite your app to start using React.</p>
+<p>您不需要重写您的应用程序,就可以开始使用React。</p>
+<p>We recommend adding React to a small part of your application, such as an individual widget, so you can see if it works well for your use case.</p>
+<p>我们建议您将React添加到应用程序的一小部分，例如单个窗口小部件，以便您可以看到它在您的用例中，是否能更好地运行。</p>
+<p>While React <a href="/react/docs/react-without-es6.html">can be used</a> without a build pipeline, we recommend setting it up so you can be more productive. A modern build pipeline typically consists of:</p>
+<p>虽然React可以在没有构建管道的情况下使用，但我们建议你对其进行设置，以便你的开发工作更为高效。 流行的构建管道通常包括：</p>
+<ul>
+<li>A <strong>package manager</strong>, such as <a href="https://yarnpkg.com/" target="_blank" rel="noopener">Yarn</a> or <a href="https://www.npmjs.com/" target="_blank" rel="noopener">npm</a>. It lets you take advantage of a vast ecosystem of third-party packages, and easily install or update them.</li>
+<li>一个包管理器，如Yarn 或 npm。 它可以让您利用庞大的第三方软件包的生态系统，从而更轻松安装和更新它们。</li>
+</ul>
+<ul>
+<li>A <strong>bundler</strong>, such as <a href="https://webpack.js.org/" target="_blank" rel="noopener">webpack</a> or <a href="http://browserify.org/" target="_blank" rel="noopener">Browserify</a>. It lets you write modular code and bundle it together into small packages to optimize load time.</li>
+</ul>
+<ul>
+<li>一个打包器，如webpack或Browserify。 它允许您编写模块化代码并将其打包在一起，成为压缩包，以优化加载时间。</li>
+</ul>
+<ul>
+<li>A <strong>compiler</strong> such as <a href="http://babeljs.io/" target="_blank" rel="noopener">Babel</a>. It lets you write modern JavaScript code that still works in older browsers.</li>
+</ul>
+<ul>
+<li>一个编译器，如Babel。 它可以让您编写最新的JavaScript代码，但仍旧能运行在旧版浏览器上。</li>
+</ul>
+<h3 id="Installing-React-安装React"><a href="#Installing-React-安装React" class="headerlink" title="Installing React(安装React)"></a>Installing React(安装React)</h3><p>We recommend using <a href="https://yarnpkg.com/" target="_blank" rel="noopener">Yarn</a> or <a href="https://www.npmjs.com/" target="_blank" rel="noopener">npm</a> for managing front-end dependencies. If you’re new to package managers, the <a href="https://yarnpkg.com/en/docs/getting-started" target="_blank" rel="noopener">Yarn documentation</a> is a good place to get started.</p>
+<p>我们建议使用Yarn 或 npm来管理前端依赖关系。 如果您是新来的软件包管理员，则该<a href="https://yarnpkg.com/en/docs/getting-started" target="_blank" rel="noopener">Yarn文档</a>是开始使用Yarn的好地方。</p>
+<p>To install React with Yarn, run:（使用Yarn安装React，请运行）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yarn init</span><br><span class="line">yarn add react react-dom</span><br></pre></td></tr></table></figure>
+<p>To install React with npm, run:（使用npm安装React，请运行）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm init</span><br><span class="line">npm install --save react react-dom</span><br></pre></td></tr></table></figure>
+<p>Both Yarn and npm download packages from the <a href="http://npmjs.com/" target="_blank" rel="noopener">npm registry</a>.</p>
+<p>从npm注册表中下载Yarn和npm的软件包。</p>
+<h3 id="Enabling-ES6-and-JSX-启用ES6和JSX"><a href="#Enabling-ES6-and-JSX-启用ES6和JSX" class="headerlink" title="Enabling ES6 and JSX(启用ES6和JSX)"></a>Enabling ES6 and JSX(启用ES6和JSX)</h3><p>We recommend using React with <a href="http://babeljs.io/" target="_blank" rel="noopener">Babel</a> to let you use ES6 and JSX in your JavaScript code. ES6 is a set of modern JavaScript features that make development easier, and JSX is an extension to the JavaScript language that works nicely with React.</p>
+<p>我们建议您使用Babel来将React代码进行转换，以便于您可以在JavaScript代码中使用ES6语法和JSX语法。 ES6是JavaScript的一组最新的特性，可以使开发变得更简单，JSX是对JavaScript语言的一种扩展，它能使React的很好地运行。</p>
+<p>The <a href="https://babeljs.io/docs/setup/" target="_blank" rel="noopener">Babel setup instructions</a> explain how to configure Babel in many different build environments. Make sure you install <a href="http://babeljs.io/docs/plugins/preset-react/#basic-setup-with-the-cli-" target="_blank" rel="noopener"><code>babel-preset-react</code></a> and <a href="http://babeljs.io/docs/plugins/preset-es2015/#basic-setup-with-the-cli-" target="_blank" rel="noopener"><code>babel-preset-es2015</code></a> and enable them in your <a href="http://babeljs.io/docs/usage/babelrc/" target="_blank" rel="noopener"><code>.babelrc</code> configuration</a>, and you’re good to go.</p>
+<p>Babel设置说明：声明了如何在许多不同的构建环境中配置Babel。 确保您安装了<a href="http://babeljs.io/docs/plugins/preset-react/#basic-setup-with-the-cli-" target="_blank" rel="noopener">babel-preset-react</a> 和<a href="http://babeljs.io/docs/plugins/preset-es2015/#basic-setup-with-the-cli-" target="_blank" rel="noopener">babel-preset-es2015</a>，并在<a href="http://babeljs.io/docs/usage/babelrc/" target="_blank" rel="noopener">.babelrc</a>配置中启用它们。</p>
+<h3 id="Hello-World-with-ES6-and-JSX-使用ES6和JSX构建Hello-World程序"><a href="#Hello-World-with-ES6-and-JSX-使用ES6和JSX构建Hello-World程序" class="headerlink" title="Hello World with ES6 and JSX(使用ES6和JSX构建Hello World程序)"></a>Hello World with ES6 and JSX(使用ES6和JSX构建Hello World程序)</h3><p>We recommend using a bundler like <a href="https://webpack.js.org/" target="_blank" rel="noopener">webpack</a> or <a href="http://browserify.org/" target="_blank" rel="noopener">Browserify</a> so you can write modular code and bundle it together into small packages to optimize load time.</p>
+<p>我们建议你使用像webpack或Browserify这样的打包器。 这样您可以编写模块化代码并将其打包在一起，成为压缩包，以优化加载时间。</p>
+<p>The smallest React example looks like this:</p>
+<p>最见得的React示例如下所示：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">'react'</span>;</span><br><span class="line"><span class="keyword">import</span> ReactDOM <span class="keyword">from</span> <span class="string">'react-dom'</span>;</span><br><span class="line"></span><br><span class="line">ReactDOM.render(</span><br><span class="line">  &lt;h1&gt;Hello, world!<span class="xml"><span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span>,</span><br><span class="line">  <span class="built_in">document</span>.getElementById(<span class="string">'root'</span>)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>This code renders into a DOM element with the id of <code>root</code> so you need <code>&lt;div id=&quot;root&quot;&gt;&lt;/div&gt;</code> somewhere in your HTML file.</p>
+<p>这块代码将其它元素渲染进一个ID为root的DOM元素，因此您需要在HTML文件中的某个位置使用<div id="“root”"> &lt;/ div&gt;。</div></p>
+<p>Similarly, you can render a React component inside a DOM element somewhere inside your existing app written with any other JavaScript UI library.</p>
+<p>类似地，您可以在现有应用程序中的任何其他地方，将DOM元素中渲染为（使用任何其他的JavaScript UI库编写的任何）React组件。</p>
+<h3 id="Development-and-Production-Versions-开发和生产版本"><a href="#Development-and-Production-Versions-开发和生产版本" class="headerlink" title="Development and Production Versions(开发和生产版本)"></a>Development and Production Versions(开发和生产版本)</h3><p>By default, React includes many helpful warnings. These warnings are very useful in development. However, they make React larger and slower so you should make sure to use the production version when you deploy the app.</p>
+<p>默认情况下，React包含许多有用的警告。 这些警告在开发中非常有用。 但是，它们使React应用包更大，运行更加缓慢，所以您应该确保在部署应用程序时，使用生产版本。</p>
+<h4 id="Brunch"><a href="#Brunch" class="headerlink" title="Brunch"></a>Brunch</h4><p>To create an optimized production build with Brunch, just add the <code>-p</code> flag to the build command. See the <a href="http://brunch.io/docs/commands" target="_blank" rel="noopener">Brunch docs</a> for more details.</p>
+<p>要使用Brunch创建优化的生产构建，只需将<code>-p</code>标志添加到build命令中即可。 有关详细信息，请参阅Brunch文档。</p>
+<h4 id="Browserify"><a href="#Browserify" class="headerlink" title="Browserify"></a>Browserify</h4><p>Run Browserify with <code>NODE_ENV</code> environment variable set to <code>production</code> and use <a href="https://github.com/mishoo/UglifyJS" target="_blank" rel="noopener">UglifyJS</a> as the last build step so that development-only code gets stripped out.</p>
+<p>运行Browserify时，将<code>NODE_ENV</code>环境变量设置为<code>production</code>，并使用UglifyJS作为最后一个构建步骤，以便将开发代码进行分离。</p>
+<h4 id="Create-React-App"><a href="#Create-React-App" class="headerlink" title="Create React App"></a>Create React App</h4><p>If you use <a href="https://github.com/facebookincubator/create-react-app" target="_blank" rel="noopener">Create React App</a>, <code>npm run build</code> will create an optimized build of your app in the <code>build</code> folder.</p>
+<p>如果您使用Create React App命令行工具，<code>npm run build</code>将在<code>build</code>文件夹中创建一个已经优化过的应用程序。</p>
+<h4 id="Rollup"><a href="#Rollup" class="headerlink" title="Rollup"></a>Rollup</h4><p>Use <a href="https://github.com/rollup/rollup-plugin-replace" target="_blank" rel="noopener">rollup-plugin-replace</a> plugin together with <a href="https://github.com/rollup/rollup-plugin-commonjs" target="_blank" rel="noopener">rollup-plugin-commonjs</a> (in that order) to remove development-only code. <a href="https://gist.github.com/Rich-Harris/cb14f4bc0670c47d00d191565be36bf0" target="_blank" rel="noopener">See this gist</a> for a complete setup example.</p>
+<p>使用rollup-plugin-replace插件和rollup-plugin-commonjs（按顺序）来分离开发代码。 <a href="">参考这个一个完整的设置示例</a>。</p>
+<h4 id="Webpack"><a href="#Webpack" class="headerlink" title="Webpack"></a>Webpack</h4><p>Include both <code>DefinePlugin</code> and <code>UglifyJsPlugin</code> into your production Webpack configuration as described in <a href="https://webpack.js.org/guides/production-build/" target="_blank" rel="noopener">this guide</a>.</p>
+<p>将DefinePlugin和UglifyJsPlugin包含在本指南中描述的生产Webpack配置中，<a href="https://webpack.js.org/guides/production-build/" target="_blank" rel="noopener">在这个指导</a>中进行详细的描述。</p>
+<h3 id="Using-a-CDN-使用CDN"><a href="#Using-a-CDN-使用CDN" class="headerlink" title="Using a CDN(使用CDN)"></a>Using a CDN(使用CDN)</h3><p>If you don’t want to use npm to manage client packages, the <code>react</code> and <code>react-dom</code> npm packages also provide single-file distributions in <code>dist</code> folders, which are hosted on a CDN:</p>
+<p>如果您不想使用npm来管理客户端软件依赖包，那么<code>React</code>和<code>React-dom</code> npm软件包也会在<code>dist</code>文件夹中提供单文件分发,它们托管在CDN上：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://unpkg.com/react@15/dist/react.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://unpkg.com/react-dom@15/dist/react-dom.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>The versions above are only meant for development, and are not suitable for production. Minified and optimized production versions of React are available at:</p>
+<p>以上版本仅用于开发，不适合生产。 React优化生产版本可在以下网址获得：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://unpkg.com/react@15/dist/react.min.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://unpkg.com/react-dom@15/dist/react-dom.min.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>To load a specific version of <code>react</code> and <code>react-dom</code>, replace <code>15</code> with the version number.</p>
+<p>要加载<code>react</code> 和 <code>react-dom</code>的特定版本，请使用其它的版本号替换15。</p>
+<p>If you use Bower, React is available via the <code>react</code> package.</p>
+<p>如果您使用Bower，React可通过 <code>react</code> 包获得。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>感谢您的支持，这将鼓励我坚持技术分享！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="http://cn.gravatar.com/userimage/119205447/f356a9687dd39e3fb68fa6ad110b31a7.png?size=200" alt="William-Dream WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="http://cn.gravatar.com/userimage/119205447/aecd8d2eaf8428ddaad1b31aaf41a333.jpg?size=200" alt="William-Dream Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/01/11/linux-dev-tool/" rel="next" title="Ubuntu Development Tools">
+                <i class="fa fa-chevron-left"></i> Ubuntu Development Tools
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/28/rqd-hello-world/" rel="prev" title="Hello World(你好世界)">
+                Hello World(你好世界) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yODE4MC80NzUz"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://www.gravatar.com/avatar/c8b98e5df395f0e0fd3b47948b37b881.jpg?s=215"
+               alt="William-Dream" />
+          <p class="site-author-name" itemprop="name">William-Dream</p>
+           
+              <p class="site-description motion-element" itemprop="description">为了梦-追梦,我的英文名由此而来</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">83</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/li-jun-bo" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              Links
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.lijunbo.com/" title="Net" target="_blank">Net</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Trying-Out-React（尝试使用React）"><span class="nav-number">1.</span> <span class="nav-text">Trying Out React（尝试使用React）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Creating-a-Single-Page-Application-创建单页面应用程序"><span class="nav-number">2.</span> <span class="nav-text">Creating a Single Page Application(创建单页面应用程序)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Adding-React-to-an-Existing-Application-将React添加到已有的应用程序中"><span class="nav-number">3.</span> <span class="nav-text">Adding React to an Existing Application(将React添加到已有的应用程序中)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Installing-React-安装React"><span class="nav-number">3.1.</span> <span class="nav-text">Installing React(安装React)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Enabling-ES6-and-JSX-启用ES6和JSX"><span class="nav-number">3.2.</span> <span class="nav-text">Enabling ES6 and JSX(启用ES6和JSX)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hello-World-with-ES6-and-JSX-使用ES6和JSX构建Hello-World程序"><span class="nav-number">3.3.</span> <span class="nav-text">Hello World with ES6 and JSX(使用ES6和JSX构建Hello World程序)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Development-and-Production-Versions-开发和生产版本"><span class="nav-number">3.4.</span> <span class="nav-text">Development and Production Versions(开发和生产版本)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Brunch"><span class="nav-number">3.4.1.</span> <span class="nav-text">Brunch</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Browserify"><span class="nav-number">3.4.2.</span> <span class="nav-text">Browserify</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Create-React-App"><span class="nav-number">3.4.3.</span> <span class="nav-text">Create React App</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Rollup"><span class="nav-number">3.4.4.</span> <span class="nav-text">Rollup</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Webpack"><span class="nav-number">3.4.5.</span> <span class="nav-text">Webpack</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Using-a-CDN-使用CDN"><span class="nav-number">3.5.</span> <span class="nav-text">Using a CDN(使用CDN)</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">William-Dream</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("PWTRJaGA9VmnmuJISstgYQVk-gzGzoHsz", "OhMVXOeW5jbdIohUayYbpq1v");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+  
+
+
+  
+
+</body>
+</html>

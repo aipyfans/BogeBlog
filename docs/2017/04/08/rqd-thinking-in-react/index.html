@@ -1,0 +1,1243 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+<script data-ad-client="ca-pub-7376123380604387" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="静水流深" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="React is, in our opinion, the premier way to build big, fast Web apps with JavaScript. It has scaled very well for us at Facebook and Instagram. 在我看来，React 是快速 构建大型Web应用的首选方式。它已经在Facebook和Instagram被我们">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Thinking in React(React的思想)">
+<meta property="og:url" content="http://blog.lijunbo.com/2017/04/08/rqd-thinking-in-react/index.html">
+<meta property="og:site_name" content="静水流深">
+<meta property="og:description" content="React is, in our opinion, the premier way to build big, fast Web apps with JavaScript. It has scaled very well for us at Facebook and Instagram. 在我看来，React 是快速 构建大型Web应用的首选方式。它已经在Facebook和Instagram被我们">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://facebook.github.io/react/img/blog/thinking-in-react-mock.png">
+<meta property="og:image" content="https://facebook.github.io/react/img/blog/thinking-in-react-components.png">
+<meta property="og:updated_time" content="2019-10-08T10:39:52.097Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Thinking in React(React的思想)">
+<meta name="twitter:description" content="React is, in our opinion, the premier way to build big, fast Web apps with JavaScript. It has scaled very well for us at Facebook and Instagram. 在我看来，React 是快速 构建大型Web应用的首选方式。它已经在Facebook和Instagram被我们">
+<meta name="twitter:image" content="https://facebook.github.io/react/img/blog/thinking-in-react-mock.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.lijunbo.com/2017/04/08/rqd-thinking-in-react/"/>
+
+
+
+
+
+  <title> Thinking in React(React的思想) | 静水流深 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?4a874f383236eb548cfc14b4365008b8";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">静水流深</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">非淡泊无以明志，非宁静无以致远</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://blog.lijunbo.com/2017/04/08/rqd-thinking-in-react/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="William-Dream">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://www.gravatar.com/avatar/c8b98e5df395f0e0fd3b47948b37b881.jpg?s=215">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="静水流深">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Thinking in React(React的思想)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-08T11:11:11+08:00">
+                2017-04-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/react/" itemprop="url" rel="index">
+                    <span itemprop="name">react</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/04/08/rqd-thinking-in-react/" class="leancloud_visitors" data-flag-title="Thinking in React(React的思想)">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>React is, in our opinion, the premier way to build big, fast Web apps with JavaScript. It has scaled very well for us at Facebook and Instagram.</p>
+<p>在我看来，React 是快速 构建大型<code>Web</code>应用的首选方式。它已经在<code>Facebook</code>和<code>Instagram</code>被我们有了广泛的应用。</p>
+<p>One of the many great parts of React is how it makes you think about apps as you build them. In this document, we’ll walk you through the thought process of building a searchable product data table using React.</p>
+<p>React许多优点之一：它使得你在构建 app 的过程中不断思考。在本文里，我将带你经历一次使用 React 构建可搜索的商品数据表的思考过程。</p>
+<h2 id="Start-With-A-Mock-从模型开始"><a href="#Start-With-A-Mock-从模型开始" class="headerlink" title="Start With A Mock(从模型开始)"></a>Start With A Mock(从模型开始)</h2><p>Imagine that we already have a JSON API and a mock from our designer. The mock looks like this:</p>
+<p>想象我们已经有个一个 JSON API 和一个来自设计师的模型。我们的设计师显然做得不够好，因为模型看起来像这样：</p>
+<p><img src="https://facebook.github.io/react/img/blog/thinking-in-react-mock.png" alt="Mockup"></p>
+<p>Our JSON API returns some data that looks like this:</p>
+<p>我们的 JSON API 返回一些看起来像这样的数据：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">  &#123;category: &quot;Sporting Goods&quot;, price: &quot;$49.99&quot;, stocked: true, name: &quot;Football&quot;&#125;,</span><br><span class="line">  &#123;category: &quot;Sporting Goods&quot;, price: &quot;$9.99&quot;, stocked: true, name: &quot;Baseball&quot;&#125;,</span><br><span class="line">  &#123;category: &quot;Sporting Goods&quot;, price: &quot;$29.99&quot;, stocked: false, name: &quot;Basketball&quot;&#125;,</span><br><span class="line">  &#123;category: &quot;Electronics&quot;, price: &quot;$99.99&quot;, stocked: true, name: &quot;iPod Touch&quot;&#125;,</span><br><span class="line">  &#123;category: &quot;Electronics&quot;, price: &quot;$399.99&quot;, stocked: false, name: &quot;iPhone 5&quot;&#125;,</span><br><span class="line">  &#123;category: &quot;Electronics&quot;, price: &quot;$199.99&quot;, stocked: true, name: &quot;Nexus 7&quot;&#125;</span><br><span class="line">];</span><br></pre></td></tr></table></figure>
+<h2 id="Step-1-Break-The-UI-Into-A-Component-Hierarchy"><a href="#Step-1-Break-The-UI-Into-A-Component-Hierarchy" class="headerlink" title="Step 1: Break The UI Into A Component Hierarchy"></a>Step 1: Break The UI Into A Component Hierarchy</h2><h2 id="第一步：把UI拆分为一些有层级结构的组件"><a href="#第一步：把UI拆分为一些有层级结构的组件" class="headerlink" title="第一步：把UI拆分为一些有层级结构的组件"></a>第一步：把UI拆分为一些有层级结构的组件</h2><p>The first thing you’ll want to do is to draw boxes around every component (and subcomponent) in the mock and give them all names. If you’re working with a designer, they may have already done this, so go talk to them! Their Photoshop layer names may end up being the names of your React components!</p>
+<p>首先你想要做的，是在模型里的每一个组件周围绘制边框，并给它们命名。如果你和设计师一起工作，他们应该已经完成这步了，所以去和他们谈谈！他们的 Photoshop 图层名也许最终会成为你的 React 组件名。</p>
+<p>But how do you know what should be its own component? Just use the same techniques for deciding if you should create a new function or object. One such technique is the <a href="https://en.wikipedia.org/wiki/Single_responsibility_principle" target="_blank" rel="noopener">single responsibility principle</a>, that is, a component should ideally only do one thing. If it ends up growing, it should be decomposed into smaller subcomponents.</p>
+<p>但是你如何知道什么东西应该是独立的组件？只需在你创建一个函数或者对象时，根据是否使用过相同技术来做决定。一种这样的技术是<a href="https://en.wikipedia.org/wiki/Single_responsibility_principle" target="_blank" rel="noopener">单一功能原则（single responsibility principle）</a>，也就是一个组件在理想情况下只做一件事情。如果它最终增长了，它就应该被分解为更小的组件。</p>
+<p>Since you’re often displaying a JSON data model to a user, you’ll find that if your model was built correctly, your UI (and therefore your component structure) will map nicely. That’s because UI and data models tend to adhere to the same <em>information architecture</em>, which means the work of separating your UI into components is often trivial. Just break it up into components that represent exactly one piece of your data model.</p>
+<p>既然你频繁显示一个 JSON 的数据模型给用户，你会发现，如果你的模型构建正确，你的 UI（因此也有你的组件结构）就将映射良好。那是因为 UI 和数据模型趋向附着于相同的 <em>信息架构</em>，这意味着，把你的 UI 分离为组件的工作通常是琐碎的，只需把 UI 拆分成能准确对应数据模型的每块组件。</p>
+<p><img src="https://facebook.github.io/react/img/blog/thinking-in-react-components.png" alt="Component diagram"></p>
+<p>You’ll see here that we have five components in our simple app. We’ve italicized the data each component represents.</p>
+<p>在这里你会看到，在我们的简单的APP里有五个组件。我用斜体表示每个组件的数据。</p>
+<ol>
+<li><p><strong><code>FilterableProductTable</code> (orange):</strong> contains the entirety of the example</p>
+<p><strong>FilterableProductTable (橙色):</strong> 包含示例的整体</p>
+</li>
+<li><p><strong><code>SearchBar</code> (blue):</strong> receives all <em>user input</em></p>
+<p><strong>SearchBar (蓝色):</strong> 接收所有 <em>用户输入</em></p>
+</li>
+<li><p><strong><code>ProductTable</code> (green):</strong> displays and filters the <em>data collection</em> based on <em>user input</em></p>
+<p><strong>ProductTable (绿色):</strong> 基于 <em>用户输入</em> 显示和过滤的 <em>数据集合(data collection)</em></p>
+</li>
+<li><p><strong><code>ProductCategoryRow</code> (turquoise):</strong> displays a heading for each <em>category</em></p>
+<p><strong>ProductCategoryRow (蓝绿色):</strong> 为每个 <em>分类</em> 显示一个列表头</p>
+</li>
+<li><p><strong><code>ProductRow</code> (red):</strong> displays a row for each <em>product</em></p>
+<p><strong>ProductRow (红色):</strong> 为每个 <em>商品</em> 显示一行</p>
+</li>
+</ol>
+<p>If you look at <code>ProductTable</code>, you’ll see that the table header (containing the “Name” and “Price” labels) isn’t its own component. This is a matter of preference, and there’s an argument to be made either way. For this example, we left it as part of <code>ProductTable</code> because it is part of rendering the <em>data collection</em> which is <code>ProductTable</code>‘s responsibility. However, if this header grows to be complex (i.e. if we were to add affordances for sorting), it would certainly make sense to make this its own <code>ProductTableHeader</code> component.</p>
+<p>如果你看着 <code>ProductTable</code>，你会看到表头(包含了 “Name” 和 “Price” 标签) 不是独立的组件。这是一个个人喜好问题，并且无论采用哪种方式都有争论。对于这个例子，我把它留做 <code>ProductTable</code> 的一部分，因为它是 <em>data collection</em>渲染的一部分，而 <em>data collection</em> 渲染是 <code>ProductTable</code> 的职责。然而，当列表头增长到复杂的时候(例如：如果我们添加排序功能)，那么使它成为独立的 <code>ProductTableHeader</code> 组件无疑是有意义的。</p>
+<p>Now that we’ve identified the components in our mock, let’s arrange them into a hierarchy. This is easy. Components that appear within another component in the mock should appear as a child in the hierarchy:</p>
+<p>既然现在我们已经识别出了我们模型中的组件，让我们把他们安排到一个层级中。这很容易。在模型中，出现在一个组件里面的另一组件 ，应该在层级中表现为一种子级关系：</p>
+<ul>
+<li><code>FilterableProductTable</code><ul>
+<li><code>SearchBar</code></li>
+<li><code>ProductTable</code><ul>
+<li><code>ProductCategoryRow</code></li>
+<li><code>ProductRow</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="Step-2-Build-A-Static-Version-in-React"><a href="#Step-2-Build-A-Static-Version-in-React" class="headerlink" title="Step 2: Build A Static Version in React"></a>Step 2: Build A Static Version in React</h2><h2 id="第二步：用React创建一个静态版本"><a href="#第二步：用React创建一个静态版本" class="headerlink" title="第二步：用React创建一个静态版本"></a>第二步：用React创建一个静态版本</h2><p></p><p data-height="600" data-theme-id="0" data-slug-hash="vXpAgj" data-default-tab="js" data-user="lacker" data-embed-version="2" class="codepen">See the Pen <a href="http://codepen.io/lacker/pen/vXpAgj/" target="_blank" rel="noopener">Thinking In React: Step 2</a> on <a href="http://codepen.io" target="_blank" rel="noopener">CodePen</a>.</p><p></p>
+<script async src="//assets.codepen.io/assets/embed/ei.js"></script>
+
+<p>Now that you have your component hierarchy, it’s time to implement your app. The easiest way is to build a version that takes your data model and renders the UI but has no interactivity. It’s best to decouple these processes because building a static version requires a lot of typing and no thinking, and adding interactivity requires a lot of thinking and not a lot of typing. We’ll see why.</p>
+<p>既然你已经了解了组件的层级结构，是时候实现你的app了。简单的方式是构建一个版本，它取走你的数据模型并渲染UI，除了没有互动性。这是将过程解耦的最好办法，因为构建一个静态版本需要不假思索地写很多代码，而添加互动性需要很多思考但不需要太多代码。之后我们将会看到原因。</p>
+<p>To build a static version of your app that renders your data model, you’ll want to build components that reuse other components and pass data using <em>props</em>. <em>props</em> are a way of passing data from parent to child. If you’re familiar with the concept of <em>state</em>, <strong>don’t use state at all</strong> to build this static version. State is reserved only for interactivity, that is, data that changes over time. Since this is a static version of the app, you don’t need it.</p>
+<p>要构建一个静态版本 app 来渲染你的数据模型，你将会想到构建一个重用其它组件并利用 <em>props</em> 传递数据的组件。<em>props</em> 是一种从父级传递数据到子级的方式。如果你对 <em>state</em> 的观念很熟悉，<strong>绝不要用state</strong> 来构建这个静态版本。State 仅仅是为互动性，也就是随时间变化的数据所预留的。由于这是一个静态版本，你还不需要用到它。</p>
+<p>You can build top-down or bottom-up. That is, you can either start with building the components higher up in the hierarchy (i.e. starting with <code>FilterableProductTable</code>) or with the ones lower in it (<code>ProductRow</code>). In simpler examples, it’s usually easier to go top-down, and on larger projects, it’s easier to go bottom-up and write tests as you build.</p>
+<p>你可以自顶向下或自底向上的构建。也就是说，你可以既从较高的层级（比如从 <code>FilterableProductTable</code> 开始）也可以从较低的层级（<code>ProductRow</code>）开始构建组件。在较简单的例子里，通常自顶向下要容易一些，然而在更大的项目上，自底向上地构建更容易，并且更方便伴随着构建写测试。</p>
+<p>At the end of this step, you’ll have a library of reusable components that render your data model. The components will only have <code>render()</code> methods since this is a static version of your app. The component at the top of the hierarchy (<code>FilterableProductTable</code>) will take your data model as a prop. If you make a change to your underlying data model and call <code>ReactDOM.render()</code> again, the UI will be updated. It’s easy to see how your UI is updated and where to make changes since there’s nothing complicated going on. React’s <strong>one-way data flow</strong> (also called <em>one-way binding</em>) keeps everything modular and fast.</p>
+<p>在这一步的最后，你会获得一个渲染数据模型的可重用组件库。这些组件只有 <code>render()</code> 方法，因为这是一个静态版本。在层级顶端的组件 (<code>FilterableProductTable</code>) 将会接受你的数据模型，并将其作为一个prop。如果你改变了底层数据模型，并且再次调用 <code>React.render()</code> ，UI 将会更新。你可以很容易地看到 UI 是如何更新的，以及哪里变动了，因为这没什么复杂的。React的 <strong>单向数据流</strong> (也被称为 <em>单向绑定</em>)使一切保持了模块化和快速。</p>
+<p>Simply refer to the <a href="/react/docs/">React docs</a> if you need help executing this step.</p>
+<p>如果你在执行这步时需要帮助，请参阅 <a href="http://www.lijunbo.com/react/2017/03/28/rqd-hello-world.html" target="_blank" rel="noopener">React 文档</a>。</p>
+<h3 id="A-Brief-Interlude-Props-vs-State"><a href="#A-Brief-Interlude-Props-vs-State" class="headerlink" title="A Brief Interlude: Props vs State"></a>A Brief Interlude: Props vs State</h3><p>There are two types of “model” data in React: props and state. It’s important to understand the distinction between the two; skim <a href="/react/docs/interactivity-and-dynamic-uis.html">the official React docs</a> if you aren’t sure what the difference is.</p>
+<h2 id="Step-3-Identify-The-Minimal-but-complete-Representation-Of-UI-State"><a href="#Step-3-Identify-The-Minimal-but-complete-Representation-Of-UI-State" class="headerlink" title="Step 3: Identify The Minimal (but complete) Representation Of UI State"></a>Step 3: Identify The Minimal (but complete) Representation Of UI State</h2><h2 id="第三步：确定最小（但完备）的-UI-state-表达"><a href="#第三步：确定最小（但完备）的-UI-state-表达" class="headerlink" title="第三步：确定最小（但完备）的 UI state 表达"></a>第三步：确定最小（但完备）的 UI state 表达</h2><p>To make your UI interactive, you need to be able to trigger changes to your underlying data model. React makes this easy with <strong>state</strong>.</p>
+<p>要让你的 UI 互动，你需要做到触发底层数据模型发生变化。React用 <strong>state</strong> 来让此变得容易。</p>
+<p>To build your app correctly, you first need to think of the minimal set of mutable state that your app needs. The key here is DRY: <em>Don’t Repeat Yourself</em>. Figure out the absolute minimal representation of the state your application needs and compute everything else you need on-demand. For example, if you’re building a TODO list, just keep an array of the TODO items around; don’t keep a separate state variable for the count. Instead, when you want to render the TODO count, simply take the length of the TODO items array.</p>
+<p>要正确的构建你的 app，你首先需要思考你的 app 需要的可变 state 的最小组。这里的关键是 DRY 原则：<em>Don’t Repeat Yourself(不要重复自己)</em>。想出哪些是你的应用需要的绝对最小 state 表达，并按需计算其他任何数据。例如，如果你要构建一个 TODO 列表，只要保持一个 TODO 项的数组；不要为了计数保持一个单独的 state 变量。当你想渲染 TODO 的计数时，简单的采用 TODO 项目的数组长度作为替代。</p>
+<p>fdsajhgfiuytretrewq7lkz2Think of all of the pieces of data in our example application. We have:</p>
+<p>考虑我们示例应用中的数据所有块，包括：</p>
+<ul>
+<li>The original list of products</li>
+<li>原始的商品列表</li>
+<li>The search text the user has entered</li>
+<li>用户输入的搜索文本</li>
+<li>The value of the checkbox</li>
+<li>复选框的值</li>
+<li>The filtered list of products</li>
+<li>商品的过滤列表</li>
+</ul>
+<p>Let’s go through each one and figure out which one is state. Simply ask three questions about each piece of data:</p>
+<p>让我们逐个检查出哪一个是state，只需要简单地问以下三个问题:</p>
+<ol>
+<li><p>Is it passed in from a parent via props? If so, it probably isn’t state.</p>
+<p>它是通过props从父级传递来的吗？如果是，它可能不是 state。</p>
+</li>
+<li><p>Does it remain unchanged over time? If so, it probably isn’t state.</p>
+<p>它随时间变化吗？如果不是,它可能不是 state。</p>
+</li>
+<li><p>Can you compute it based on any other state or props in your component? If so, it isn’t state.</p>
+<p>你能基于其他任何组件里的 state 或者 props 计算出它吗？如果是,它可能不是state.</p>
+</li>
+</ol>
+<p>The original list of products is passed in as props, so that’s not state. The search text and the checkbox seem to be state since they change over time and can’t be computed from anything. And finally, the filtered list of products isn’t state because it can be computed by combining the original list of products with the search text and value of the checkbox.</p>
+<p>原始的商品列表以 props 传入，所以它不是 state。搜索文本和复选框看起来是 state，因为他们随时间变化并且不能从任何东西计算出。最后，过滤出的商品列表不是 state，因为它可以通过原始列表与搜索文本及复选框的值组合计算得出。</p>
+<p>So finally, our state is:(所以最后,我们的 state 是:)</p>
+<ul>
+<li>The search text the user has entered (用户输入的搜索文本)</li>
+<li>The value of the checkbox(checkbox 的值)</li>
+</ul>
+<h2 id="Step-4-Identify-Where-Your-State-Should-Live"><a href="#Step-4-Identify-Where-Your-State-Should-Live" class="headerlink" title="Step 4: Identify Where Your State Should Live"></a>Step 4: Identify Where Your State Should Live</h2><h2 id="第四步：确定你的-state-应该存在于哪里"><a href="#第四步：确定你的-state-应该存在于哪里" class="headerlink" title="第四步：确定你的 state 应该存在于哪里"></a>第四步：确定你的 state 应该存在于哪里</h2><p></p><p data-height="600" data-theme-id="0" data-slug-hash="ORzEkG" data-default-tab="js" data-user="lacker" data-embed-version="2" class="codepen">See the Pen <a href="http://codepen.io/lacker/pen/ORzEkG/" target="_blank" rel="noopener">Thinking In React: Step 4</a> by Kevin Lacker (<a href="http://codepen.io/lacker" target="_blank" rel="noopener">@lacker</a>) on <a href="http://codepen.io" target="_blank" rel="noopener">CodePen</a>.</p><p></p>
+<script async src="//assets.codepen.io/assets/embed/ei.js"></script>
+
+<p>OK, so we’ve identified what the minimal set of app state is. Next, we need to identify which component mutates, or <em>owns</em>, this state.</p>
+<p>OK，我们已经确定好应用的最小 state 集合是什么。接下来，我们需要确定哪个组件可以改变，或者 <em>拥有</em> 这个state.</p>
+<p>Remember: React is all about one-way data flow down the component hierarchy. It may not be immediately clear which component should own what state. <strong>This is often the most challenging part for newcomers to understand,</strong> so follow these steps to figure it out:</p>
+<p>记住：React 总是在组件层级中单向数据流动的。可能不能立刻明白哪些组件应该拥有哪些 state。 <strong>这对于新手在理解上经常是最具挑战的一部分，</strong> 所以跟着这几步来弄明白它：</p>
+<p>For each piece of state in your application:(对于您的应用程序中的每个状态)</p>
+<ul>
+<li><p>Identify every component that renders something based on that state.</p>
+<p>确定哪些组件要基于 state 来渲染内容。</p>
+</li>
+<li><p>Find a common owner component (a single component above all the components that need the state in the hierarchy).</p>
+<p>找到多个组件的一个共同拥有者（在所有需要这个state组件的层次之上，找出共有的单一组件）。</p>
+</li>
+<li><p>Either the common owner or another component higher up in the hierarchy should own the state.</p>
+<p>要么是共同拥有者，要么是其他在层级里更高级的组件应该拥有这个state。</p>
+</li>
+<li><p>If you can’t find a component where it makes sense to own the state, create a new component simply for holding the state and add it somewhere in the hierarchy above the common owner component.</p>
+<p>如果你找不到一个组件让其可以有意义地拥有这个 state，可以简单地创建一个新的组件 hold 住这个state，并把它添加到比共同拥有者组件更高的层级上。</p>
+</li>
+</ul>
+<p>Let’s run through this strategy for our application:</p>
+<p>让我们使用这个策略浏览一遍我们的应用：</p>
+<ul>
+<li><p><code>ProductTable</code> needs to filter the product list based on state and <code>SearchBar</code> needs to display the search text and checked state.</p>
+<p><code>ProductTable</code> 需要基于 state 过滤产品列表，<code>SearchBar</code> 需要显示搜索文本和选择状态。</p>
+</li>
+<li><p>The common owner component is <code>FilterableProductTable</code>.</p>
+</li>
+<li><p>共同拥有者组件是 <code>FilterableProductTable</code>。</p>
+</li>
+<li><p>It conceptually makes sense for the filter text and checked value to live in <code>FilterableProductTable</code></p>
+<p>对于过滤文本和选择框值存在于 <code>FilterableProductTable</code>，从概念上讲是有意义的。</p>
+</li>
+</ul>
+<p>Cool, so we’ve decided that our state lives in <code>FilterableProductTable</code>. First, add an instance property <code>this.state = {filterText: &#39;&#39;, inStockOnly: false}</code> to <code>FilterableProductTable</code>‘s <code>constructor</code> to reflect the initial state of your application. Then, pass <code>filterText</code> and <code>inStockOnly</code> to <code>ProductTable</code> and <code>SearchBar</code> as a prop. Finally, use these props to filter the rows in <code>ProductTable</code> and set the values of the form fields in <code>SearchBar</code>.</p>
+<p>酷，我们已经确定了我们的 state 存在于 <code>FilterableProductTable</code>。首先，向<code>FilterableProductTable</code>的构造函数添加一个实例属性<code>this.state = {filterText：&#39;，inStockOnly：false}</code>以反映应用程序的初始状态。然后，传递<code>filterText</code> 和 <code>inStockOnly</code> 给 <code>ProductTable</code> 和 <code>SearchBar</code> 作为属性。最后，使用这些属性来过滤 <code>ProductTable</code> 中的行和设置 <code>SearchBar</code> 的表单项的值。</p>
+<p>You can start seeing how your application will behave: set <code>filterText</code> to <code>&quot;ball&quot;</code> and refresh your app. You’ll see that the data table is updated correctly.</p>
+<p>你可以开始看看你的应用将有怎样的行为了: 设置 <code>filterText</code> 为 <code>&quot;ball&quot;</code> 并刷新你的 app。你将可以看到数据表被正确地更新。</p>
+<h2 id="Step-5-Add-Inverse-Data-Flow"><a href="#Step-5-Add-Inverse-Data-Flow" class="headerlink" title="Step 5: Add Inverse Data Flow"></a>Step 5: Add Inverse Data Flow</h2><h2 id="第五步：添加反向数据流"><a href="#第五步：添加反向数据流" class="headerlink" title="第五步：添加反向数据流"></a>第五步：添加反向数据流</h2><p></p><p data-height="265" data-theme-id="0" data-slug-hash="qRqmjd" data-default-tab="js,result" data-user="rohan10" data-embed-version="2" data-pen-title="Thinking In React: Step 5" class="codepen">See the Pen <a href="http://codepen.io/rohan10/pen/qRqmjd" target="_blank" rel="noopener">Thinking In React: Step 5</a> on <a href="http://codepen.io" target="_blank" rel="noopener">CodePen</a>.</p><p></p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+<p>So far, we’ve built an app that renders correctly as a function of props and state flowing down the hierarchy. Now it’s time to support data flowing the other way: the form components deep in the hierarchy need to update the state in <code>FilterableProductTable</code>.</p>
+<p>到目前为止，我们已经构建了一个应用, 它能够使用 props 和 state的功能沿着自顶向下层级正确渲染。现在是时候支持另一种数据流了：在层级深处的表单组件需要更新 <code>FilterableProductTable</code> 里的 state。</p>
+<p>React makes this data flow explicit to make it easy to understand how your program works, but it does require a little more typing than traditional two-way data binding.</p>
+<p>React让数据流显式流动，使您可以轻松了解程序的工作原理，但它比传统的双向数据绑定需要写更多的代码。</p>
+<p>If you try to type or check the box in the current version of the example, you’ll see that React ignores your input. This is intentional, as we’ve set the <code>value</code> prop of the <code>input</code> to always be equal to the <code>state</code> passed in from <code>FilterableProductTable</code>.</p>
+<p>如果你尝试在当前版本的示例中输入或者选中复选框，你会发现 React 忽略了你的输入。这是有意的，因为我们已经设置了 <code>input</code> 的 <code>value</code> prop 值总是与 <code>FilterableProductTable</code> 传递过来的 <code>state</code> 一致。</p>
+<p>Let’s think about what we want to happen. We want to make sure that whenever the user changes the form, we update the state to reflect the user input. Since components should only update their own state, <code>FilterableProductTable</code> will pass callbacks to <code>SearchBar</code> that will fire whenever the state should be updated. We can use the <code>onChange</code> event on the inputs to be notified of it. The callbacks passed by <code>FilterableProductTable</code> will call <code>setState()</code>, and the app will be updated.</p>
+<p>让我们思考下希望发生什么。我们想确保每当用户改变表单，就通过更新 state 来反映用户的输入。由于组件应该只更新自己拥有的 state ， <code>FilterableProductTable</code> 将会传递一个回调函数给 <code>SearchBar</code> ，每当 state 应被更新时回调函数就会被调用。我们可以使用 input 的 <code>onChange</code> 事件来接收它的通知。 <code>FilterableProductTable</code> 传递的回调函数将会调用 <code>setState()</code> ，然后应用将会被更新。</p>
+<p>Though this sounds complex, it’s really just a few lines of code. And it’s really explicit how your data is flowing throughout the app.</p>
+<p>虽然这听起来复杂，但是实际上只有几行代码。并且这明确显示出了数据在应用中从始至终是如何流动的。</p>
+<h2 id="And-That’s-It-好了，就是这样"><a href="#And-That’s-It-好了，就是这样" class="headerlink" title="And That’s It (好了，就是这样)"></a>And That’s It (好了，就是这样)</h2><p>Hopefully, this gives you an idea of how to think about building components and applications with React. While it may be a little more typing than you’re used to, remember that code is read far more than it’s written, and it’s extremely easy to read this modular, explicit code. As you start to build large libraries of components, you’ll appreciate this explicitness and modularity, and with code reuse, your lines of code will start to shrink. :)</p>
+<p>希望这给了你一个怎样思考用React构建组件和应用的概念。虽然可能比你过往的习惯要多敲一点代码，但记住，读代码的时间远比写代码的时间多，并且阅读这种模块化的、显式的代码是极为容易的。当你开始构建大型组件库时，你会非常感激这种清晰性和模块化，并且随着代码的重用，你的代码行数将会开始缩减。:)</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>感谢您的支持，这将鼓励我坚持技术分享！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="http://cn.gravatar.com/userimage/119205447/f356a9687dd39e3fb68fa6ad110b31a7.png?size=200" alt="William-Dream WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="http://cn.gravatar.com/userimage/119205447/aecd8d2eaf8428ddaad1b31aaf41a333.jpg?size=200" alt="William-Dream Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/07/rqd-composition-vs-inheritance/" rel="next" title="Composition vs Inheritance(组合与继承)">
+                <i class="fa fa-chevron-left"></i> Composition vs Inheritance(组合与继承)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/04/10/rad-jsx-in-depth/" rel="prev" title="JSX In Depth(深入JSX)">
+                JSX In Depth(深入JSX) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yODE4MC80NzUz"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://www.gravatar.com/avatar/c8b98e5df395f0e0fd3b47948b37b881.jpg?s=215"
+               alt="William-Dream" />
+          <p class="site-author-name" itemprop="name">William-Dream</p>
+           
+              <p class="site-description motion-element" itemprop="description">为了梦-追梦,我的英文名由此而来</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">83</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/li-jun-bo" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              Links
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.lijunbo.com/" title="Net" target="_blank">Net</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Start-With-A-Mock-从模型开始"><span class="nav-number">1.</span> <span class="nav-text">Start With A Mock(从模型开始)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Step-1-Break-The-UI-Into-A-Component-Hierarchy"><span class="nav-number">2.</span> <span class="nav-text">Step 1: Break The UI Into A Component Hierarchy</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第一步：把UI拆分为一些有层级结构的组件"><span class="nav-number">3.</span> <span class="nav-text">第一步：把UI拆分为一些有层级结构的组件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Step-2-Build-A-Static-Version-in-React"><span class="nav-number">4.</span> <span class="nav-text">Step 2: Build A Static Version in React</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第二步：用React创建一个静态版本"><span class="nav-number">5.</span> <span class="nav-text">第二步：用React创建一个静态版本</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#A-Brief-Interlude-Props-vs-State"><span class="nav-number">5.1.</span> <span class="nav-text">A Brief Interlude: Props vs State</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Step-3-Identify-The-Minimal-but-complete-Representation-Of-UI-State"><span class="nav-number">6.</span> <span class="nav-text">Step 3: Identify The Minimal (but complete) Representation Of UI State</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第三步：确定最小（但完备）的-UI-state-表达"><span class="nav-number">7.</span> <span class="nav-text">第三步：确定最小（但完备）的 UI state 表达</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Step-4-Identify-Where-Your-State-Should-Live"><span class="nav-number">8.</span> <span class="nav-text">Step 4: Identify Where Your State Should Live</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第四步：确定你的-state-应该存在于哪里"><span class="nav-number">9.</span> <span class="nav-text">第四步：确定你的 state 应该存在于哪里</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Step-5-Add-Inverse-Data-Flow"><span class="nav-number">10.</span> <span class="nav-text">Step 5: Add Inverse Data Flow</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第五步：添加反向数据流"><span class="nav-number">11.</span> <span class="nav-text">第五步：添加反向数据流</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#And-That’s-It-好了，就是这样"><span class="nav-number">12.</span> <span class="nav-text">And That’s It (好了，就是这样)</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">William-Dream</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("PWTRJaGA9VmnmuJISstgYQVk-gzGzoHsz", "OhMVXOeW5jbdIohUayYbpq1v");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+  
+
+
+  
+
+</body>
+</html>

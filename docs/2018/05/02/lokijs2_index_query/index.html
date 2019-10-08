@@ -1,0 +1,1121 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+<script data-ad-client="ca-pub-7376123380604387" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="静水流深" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="Loki.js一直是快速的内存数据库解决方案。事实上，最近的基准测试表明，在node.js下运行的终端Core i5中，其主要的get()操作速度约为每秒140万次。get() 操作利用一个自动生成的 &amp;#39;$loki id 列和自己生成的二进制索引。如果您希望提供您自己的unique key，则可以添加单个唯一的索引到集合中，便可使用collection.by()方法进行获取。这种方法比使用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="索引和查询性能">
+<meta property="og:url" content="http://blog.lijunbo.com/2018/05/02/lokijs2_index_query/index.html">
+<meta property="og:site_name" content="静水流深">
+<meta property="og:description" content="Loki.js一直是快速的内存数据库解决方案。事实上，最近的基准测试表明，在node.js下运行的终端Core i5中，其主要的get()操作速度约为每秒140万次。get() 操作利用一个自动生成的 &amp;#39;$loki id 列和自己生成的二进制索引。如果您希望提供您自己的unique key，则可以添加单个唯一的索引到集合中，便可使用collection.by()方法进行获取。这种方法比使用">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-10-08T10:39:52.112Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="索引和查询性能">
+<meta name="twitter:description" content="Loki.js一直是快速的内存数据库解决方案。事实上，最近的基准测试表明，在node.js下运行的终端Core i5中，其主要的get()操作速度约为每秒140万次。get() 操作利用一个自动生成的 &amp;#39;$loki id 列和自己生成的二进制索引。如果您希望提供您自己的unique key，则可以添加单个唯一的索引到集合中，便可使用collection.by()方法进行获取。这种方法比使用">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.lijunbo.com/2018/05/02/lokijs2_index_query/"/>
+
+
+
+
+
+  <title> 索引和查询性能 | 静水流深 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?4a874f383236eb548cfc14b4365008b8";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">静水流深</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">非淡泊无以明志，非宁静无以致远</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://blog.lijunbo.com/2018/05/02/lokijs2_index_query/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="William-Dream">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://www.gravatar.com/avatar/c8b98e5df395f0e0fd3b47948b37b881.jpg?s=215">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="静水流深">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                索引和查询性能
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-02T09:12:51+08:00">
+                2018-05-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/database/" itemprop="url" rel="index">
+                    <span itemprop="name">database</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/05/02/lokijs2_index_query/" class="leancloud_visitors" data-flag-title="索引和查询性能">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><code>Loki.js</code>一直是快速的内存数据库解决方案。事实上，最近的基准测试表明，在<code>node.js</code>下运行的终端<code>Core i5</code>中，其主要的<code>get()</code>操作速度约为每秒140万次。<code>get()</code> 操作利用一个自动生成的 <code>&#39;$loki</code> id 列和自己生成的二进制索引。如果您希望提供您自己的<code>unique key</code>，则可以添加单个唯一的索引到集合中，便可使用<code>collection.by()</code>方法进行获取。这种方法比使用内置的<code>$loki</code>  id快得多。因此，如果您打算进行单一对象查找，就可以获得此优化的性能。</p>
+<h3 id="使用自动生成的-loki列查找示例"><a href="#使用自动生成的-loki列查找示例" class="headerlink" title="使用自动生成的$loki列查找示例 :"></a>使用自动生成的<code>$loki</code>列查找示例 :</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> users = db.addCollection(<span class="string">"users"</span>);</span><br><span class="line"><span class="keyword">var</span> resultObj = users.insert(&#123;<span class="attr">username</span>:<span class="string">"Heimdallr"</span>&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 现在我们的对象已经被插入，它将会添加一个`$loki`属性</span></span><br><span class="line"><span class="keyword">var</span> heimdallr = users.get(resultObj.$loki);</span><br></pre></td></tr></table></figure>
+<h3 id="示例对象查找指定您自己的唯一索引"><a href="#示例对象查找指定您自己的唯一索引" class="headerlink" title="示例对象查找指定您自己的唯一索引 :"></a>示例对象查找指定您自己的唯一索引 :</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> users = db.addCollection(<span class="string">"users"</span>, &#123;</span><br><span class="line">    unique: [<span class="string">'username'</span>]</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 插入记录后，您可能会使用coll.by()检索记录</span></span><br><span class="line"><span class="keyword">var</span> result = users.by(<span class="string">"username"</span>, <span class="string">"Heimdallr"</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="‘Find’-过滤"><a href="#‘Find’-过滤" class="headerlink" title="‘Find’ 过滤"></a>‘Find’ 过滤</h3><p>更通用的查询方式是使用接受<code>mongo</code>风格查询对象的<code>collection.find()</code>。如果您没有为正在搜索的列添加索引，可以在<code>node.js</code>下获得预期约 <code>20k ops/sec</code> (浏览器性能可能会有所不同，但这是一个很好的数量级)。对于大多数情况下，性能可能比需要的更高，但现在可以在对象属性上应用<code>loki.js</code>二进制索引。使用<code>collection.ensureIndex(propertyName)</code>方法，您可以创建一个可以被各种<code>find()</code>操作使用的索引，例如<code>collection.find()</code>。对于我们的测试基准，这会将性能提高到大约<code>500k ops/sec</code>。</p>
+<p>二进制索引可以与范围操作符一起使用，返回给定<code>属性/范围</code>的多个文档结果。<strong>如果您已将二进制索引应用于属性，则可以通过使用包含该属性的查询对象调用<code>collection.find()</code>来利用该索引。</strong>能够使用二进制索引的<code>find()</code>操作符包括<code>$eq, $aeq, $lt, $lte, $gt, $gte, $between, $in.</code></p>
+<blockquote>
+<p>默认情况下，如果您在属性上应用了二进制索引，并且将包含JavaScript Date对象的文档作为该属性的值插入，则 <code>loki</code> 将用可序列化安全的历元时间格式日期（整数）替换它。这是为了防止索引变得不可维护，如果我们将它保存为Date并将其作为字符串加载（它们就可以不同的顺序排序）。如果你不打算保存你的数据库（完全在内存中使用），你可以在创建集合时传递一个<code>&#39;serializableIndices：false&#39;</code>选项，我们不会改变你的日期。</p>
+</blockquote>
+<h3 id="二进制索引示例"><a href="#二进制索引示例" class="headerlink" title="二进制索引示例 :"></a>二进制索引示例 :</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> coll = db.addCollection(<span class="string">'users'</span>, &#123;</span><br><span class="line">  indices: [<span class="string">'location'</span>]</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 插入记录后，您可以使用相等或范围操作符,如这种隐式 (strict) $eq op :</span></span><br><span class="line"><span class="keyword">var</span> results = users.find(&#123; <span class="attr">location</span>:  <span class="string">'Himinbjörg'</span> &#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="Loki-的排序和范围"><a href="#Loki-的排序和范围" class="headerlink" title="Loki 的排序和范围"></a>Loki 的排序和范围</h3><blockquote>
+<p>Native JavaScript提供 <code>==</code>（abstract）相等，<code>===</code>（strict）相等，<code>&lt;</code>（abstract）小于，<code>&gt;</code>（abstract）大于等等。JavaScript处理很多混合类型，所以你可能想要一个数字4（abstract）等于字符串’4’。如果你想测试’小于’4，它会默认转换为字符串，所以如果你不想要字符串，你将不得不使用<code>&#39;typeof&#39;</code>或其他类型检测来手动过滤掉其他类型。Loki倾向于处理纯数据，但必须动态变化以支持额外发现的各种“脏”数据。因此，我们试图调整“范围”的概念，因为它涉及属性上的混合类型，以便它们适应混合类型，并提供类似的<code>find()</code>结果，而不管您是否使用二进制索引。</p>
+</blockquote>
+<ul>
+<li><code>loki</code>中的所有值都被我们的<code>find()</code>操作解释为“小于”，“大于” 或 “等于” 任何其他值。这与JavaScript不同，所以<code>loki</code>在两个值之间建立了统一的范围排序。</li>
+<li>4 是 <code>$aeq</code> (非严格等于) <code>&#39;4&#39;</code>, 正如 <code>&#39;3&#39; $lt(小于) 4</code>, 和 <code>4 is $gte(大于) &#39;3&#39;</code>, 所以混合数字和’数字’字符串范围在<code>loki</code>中查找数字。</li>
+<li>‘数字’字符串与’非数字’字符串保持在不同的范围（数字），所以<code>9999</code>将会是<code>$lt &#39;111asdf&quot;</code>。</li>
+<li>对象都是平等的（除非使用点符号来查询对象属性）。</li>
+<li>日期按照他们的纪元时间排序为数字……这些数字很大，一般在数字范围的顶端。</li>
+<li><code>$type op</code>可用于过滤不符合特定<code>JavaScript</code>类型的结果。</li>
+<li><code>$finite op</code> 可用于过滤出“数字”或“非数字”的结果。</li>
+</ul>
+<h3 id="‘Where’-过滤器"><a href="#‘Where’-过滤器" class="headerlink" title="‘Where’ 过滤器"></a>‘Where’ 过滤器</h3><p><strong>如果性能受到关注，应该谨慎使用’Where’过滤器（JavaScript过滤器函数）。他们无法使用索引，因此性能不会比未索引查找更好，并且取决于过滤器函数的复杂性，甚至更少。</strong>Unindex查询以及过滤器始终需要完整阵列扫描的位置，但如果数千ops/sec足够用，或稍后在查询链或动态视图过滤器管道中使用，并且惩罚更少，则它们可能非常有用。</p>
+<h3 id="在查询链中进行索引"><a href="#在查询链中进行索引" class="headerlink" title="在查询链中进行索引"></a>在查询链中进行索引</h3><p><code>Resultset</code>类引入了<code>方法链</code>作为查询选项。您可以使用<code>方法链</code>来连续应用几个查找操作，或者将<code>find()</code>，<code>where()</code>和<code>sort()</code>操作混合到<code>顺序链式</code>管道中。为了简单起见，这个例子可能是（其中用户是一个集合对象）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">users.chain().find(queryObj).where(queryFunc).simplesort(&apos;name&apos;).data();</span><br></pre></td></tr></table></figure>
+<p>检查这个语句，如果<code>queryObj</code>（一个mongo风格的查询对象）是<code>{&#39;age&#39;：{&#39;$ gt&#39;：30}}</code>，那么这个年龄段列表最好应用一个索引，并且<code>find()</code>链操作应该在<code>方法链</code>中排名第一。<strong>在链式操作中，只有第一个链式过滤器可以利用索引进行过滤。</strong>如果它筛选出足够数量的记录，那么（where）查询函数的影响会更小。保留过滤结果集的开销比<code>collection.find</code>降低了20％左右，但是它们的功能更强大。在我们的基准测试中，这仍然大约是 <strong>400k  ops/sec</strong>。</p>
+<h3 id="索引和排序"><a href="#索引和排序" class="headerlink" title="索引和排序"></a>索引和排序</h3><p>如果没有应用过滤器，并且（例如）’name’属性上存在二进制索引，则可以充分利用二进制索引：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">coll.chain().simplesort(&apos;name&apos;).data();</span><br></pre></td></tr></table></figure>
+<p>如果发生了过滤，我们将检测我们是否可以利用<code>&#39;索引相交&#39;</code>算法中的索引来加速对典型<code>loki</code>排序的排序。只有在结果集中的结果集总数超过10％的情况下，才会启用此’索引相交’算法，否则标准loki排序将被确定为更快的方法。“索引相交”的性能优势与过滤质量有些成反比，因此它利用二进制索引来帮助减少“最坏情况”的分类处罚。</p>
+<p><strong><code>Loki sorting</code> 不仅用于排序，还用于构建二进制索引</strong>，但如果您不需要在混合类型中进行更加统一的排序，则可以通过调用以下方法将额外的毫秒数排除在排序调用之外：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">coll.chain().simplesort(&apos;name&apos;, &#123; useJavascriptSorting: true &#125;).data();</span><br></pre></td></tr></table></figure>
+<p>如果在<code>&#39;name&#39;</code>属性中存在二进制索引，我们将使用索引相交算法，除非<code>resultset</code>具有10％或更少的文档总数，此时我们将回退到传递给<code>simplesort</code>的属性上的JavaScript排序。如果您没有在该属性上应用二进制索引，那么如果该选项已通过，我们将始终使用JavaScript排序。</p>
+<h2 id="动态视图管道"><a href="#动态视图管道" class="headerlink" title="动态视图管道"></a>动态视图管道</h2><p>动态视图的行为与结果集[resultsets]相似，因为您要使用索引，必须使用第一个过滤器</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> userview = users.addDynamicView(<span class="string">"over30"</span>);</span><br><span class="line">userview.applyFind(&#123;<span class="string">'Age'</span>: &#123;<span class="string">'$gte'</span>:<span class="number">30</span>&#125;&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 可以随时获取最新的视图结果</span></span><br><span class="line"><span class="keyword">var</span> results = userview.data();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 或对结果集进一步过滤</span></span><br><span class="line">results = userview.branchResultset().find(&#123;<span class="string">'Country'</span>: <span class="string">'JP'</span>&#125;).data();</span><br></pre></td></tr></table></figure>
+<p>该查找过滤器理想情况下应引用您已应用索引（在此情况下为“年龄”）的字段。但是，动态视图运行一次它们的过滤器，因此即使是非高性能查询管道在建立之后也是快速的。这是由于在插入，更新或从集合中删除单个对象时重新评估这些过滤器。作为单个对象评估，在第一次评估期间不存在阵列扫描损失。动态视图的开销占据了结果集的顶部，将第一次评估的性能降低了大约40％，但后续查询得到了高度优化（比collection.find更快）。即使有这样的开销，我们的基准测试显示初始评估大约为30万[ops/sec]性能。根据更新频率的不同，后续评估可以扩展至每秒100万次以上。</p>
+<p>在<code>loki.js</code>中，动态视图目前有两个选项，<code>&#39;persistent&#39;（默认为false</code>）和<code>&#39;sortPriority&#39;（默认为&#39;passive&#39;）</code>。</p>
+<p><code>&#39;persistent&#39;</code>选项表示结果将保存在内部数组中（除了正常的结果集）。这个<code>&#39;resultdata&#39;</code>数组会根据您的规范进行过滤和排序。将结果复制到内部数组发生在第一次<code>data()</code>评估期间，或者一旦过滤器或排序将结果集污染（文档插入，更新，从视图中删除）。此选项会增加内存开销，但可能会优化<code>data()</code>调用。</p>
+<p><code>&#39;sortPriority&#39;</code>选项可以是<code>&#39;passive&#39;或&#39;active&#39;</code>。默认情况下，当调用<code>data()</code>并将这些排序标记污染时，会进行懒惰<code>（&#39;passive&#39;）</code>。如果您希望排序成本为<code>“up-front”</code>，您可以指定<code>“active” sortPriority</code>。使用<code>active</code>的<code>sortPriority</code>，一旦插入/更新/删除将排序标记为脏，我们将排队并限制异步排序以在线程产生时运行。因此，如果更新频率较低或单独批量修改，则可以预先支付性能成本，以确保稍后获得最佳<code>data()</code>检索速度。如果您的数据修改频繁且零星，如果没有人读取数据，则有效的<code>sortPriority</code>可能会浪费计算排序。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>感谢您的支持，这将鼓励我坚持技术分享！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="http://cn.gravatar.com/userimage/119205447/f356a9687dd39e3fb68fa6ad110b31a7.png?size=200" alt="William-Dream WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="http://cn.gravatar.com/userimage/119205447/aecd8d2eaf8428ddaad1b31aaf41a333.jpg?size=200" alt="William-Dream Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/02/lokijs1_overview/" rel="next" title="LokiJS快速入门">
+                <i class="fa fa-chevron-left"></i> LokiJS快速入门
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/05/02/lokijs3_query_examples/" rel="prev" title="查询示例">
+                查询示例 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yODE4MC80NzUz"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://www.gravatar.com/avatar/c8b98e5df395f0e0fd3b47948b37b881.jpg?s=215"
+               alt="William-Dream" />
+          <p class="site-author-name" itemprop="name">William-Dream</p>
+           
+              <p class="site-description motion-element" itemprop="description">为了梦-追梦,我的英文名由此而来</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">83</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/li-jun-bo" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              Links
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.lijunbo.com/" title="Net" target="_blank">Net</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用自动生成的-loki列查找示例"><span class="nav-number">1.</span> <span class="nav-text">使用自动生成的$loki列查找示例 :</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#示例对象查找指定您自己的唯一索引"><span class="nav-number">2.</span> <span class="nav-text">示例对象查找指定您自己的唯一索引 :</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#‘Find’-过滤"><span class="nav-number">3.</span> <span class="nav-text">‘Find’ 过滤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二进制索引示例"><span class="nav-number">4.</span> <span class="nav-text">二进制索引示例 :</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Loki-的排序和范围"><span class="nav-number">5.</span> <span class="nav-text">Loki 的排序和范围</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#‘Where’-过滤器"><span class="nav-number">6.</span> <span class="nav-text">‘Where’ 过滤器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在查询链中进行索引"><span class="nav-number">7.</span> <span class="nav-text">在查询链中进行索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#索引和排序"><span class="nav-number">8.</span> <span class="nav-text">索引和排序</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动态视图管道"><span class="nav-number"></span> <span class="nav-text">动态视图管道</span></a></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">William-Dream</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("PWTRJaGA9VmnmuJISstgYQVk-gzGzoHsz", "OhMVXOeW5jbdIohUayYbpq1v");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+  
+
+
+  
+
+</body>
+</html>

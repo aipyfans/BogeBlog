@@ -1,0 +1,1145 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+<script data-ad-client="ca-pub-7376123380604387" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="静水流深" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="用于通过TabRouter轻松设置带有多个选项卡的屏幕。有关实例，请参阅我们的展示Demo( our expo demo)。 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162class MyHomeScreen ext">
+<meta property="og:type" content="article">
+<meta property="og:title" content="标签导航器(TabNavigator)">
+<meta property="og:url" content="http://blog.lijunbo.com/2017/06/01/tab-navigator/index.html">
+<meta property="og:site_name" content="静水流深">
+<meta property="og:description" content="用于通过TabRouter轻松设置带有多个选项卡的屏幕。有关实例，请参阅我们的展示Demo( our expo demo)。 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162class MyHomeScreen ext">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-10-08T10:39:52.101Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="标签导航器(TabNavigator)">
+<meta name="twitter:description" content="用于通过TabRouter轻松设置带有多个选项卡的屏幕。有关实例，请参阅我们的展示Demo( our expo demo)。 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162class MyHomeScreen ext">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.lijunbo.com/2017/06/01/tab-navigator/"/>
+
+
+
+
+
+  <title> 标签导航器(TabNavigator) | 静水流深 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?4a874f383236eb548cfc14b4365008b8";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">静水流深</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">非淡泊无以明志，非宁静无以致远</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://blog.lijunbo.com/2017/06/01/tab-navigator/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="William-Dream">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://www.gravatar.com/avatar/c8b98e5df395f0e0fd3b47948b37b881.jpg?s=215">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="静水流深">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                标签导航器(TabNavigator)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-01T11:11:11+08:00">
+                2017-06-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/react-navigation/" itemprop="url" rel="index">
+                    <span itemprop="name">react navigation</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/06/01/tab-navigator/" class="leancloud_visitors" data-flag-title="标签导航器(TabNavigator)">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>用于通过TabRouter轻松设置带有多个选项卡的屏幕。有关实例，请参阅我们的展示Demo( <a href="https://exp.host/@react-navigation/NavigationPlayground" target="_blank" rel="noopener">our expo demo</a>)。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyHomeScreen</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span><br><span class="line">  <span class="keyword">static</span> navigationOptions = &#123;</span><br><span class="line">    tabBarLabel: <span class="string">'Home'</span>,</span><br><span class="line">    <span class="comment">// 注意：默认情况下，该图标仅在iOS上显示。搜索下面的showIcon选项.</span></span><br><span class="line">    tabBarIcon: <span class="function">(<span class="params">&#123; tintColor &#125;</span>) =&gt;</span> (</span><br><span class="line">      &lt;Image</span><br><span class="line">        source=&#123;<span class="built_in">require</span>(<span class="string">'./chats-icon.png'</span>)&#125;</span><br><span class="line">        style=&#123;[styles.icon, &#123;<span class="attr">tintColor</span>: tintColor&#125;]&#125;</span><br><span class="line">      /&gt;</span><br><span class="line">    ),</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  render() &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;Button</span><br><span class="line">        onPress=&#123;() =&gt; <span class="keyword">this</span>.props.navigation.navigate(<span class="string">'Notifications'</span>)&#125;</span><br><span class="line">        title=<span class="string">"Go to notifications"</span></span><br><span class="line">      /&gt;</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyNotificationsScreen</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span><br><span class="line">  <span class="keyword">static</span> navigationOptions = &#123;</span><br><span class="line">    tabBarLabel: <span class="string">'Notifications'</span>,</span><br><span class="line">    tabBarIcon: <span class="function">(<span class="params">&#123; tintColor &#125;</span>) =&gt;</span> (</span><br><span class="line">      &lt;Image</span><br><span class="line">        source=&#123;<span class="built_in">require</span>(<span class="string">'./notif-icon.png'</span>)&#125;</span><br><span class="line">        style=&#123;[styles.icon, &#123;<span class="attr">tintColor</span>: tintColor&#125;]&#125;</span><br><span class="line">      /&gt;</span><br><span class="line">    ),</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  render() &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;Button</span><br><span class="line">        onPress=&#123;() =&gt; <span class="keyword">this</span>.props.navigation.goBack()&#125;</span><br><span class="line">        title=<span class="string">"Go back home"</span></span><br><span class="line">      /&gt;</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> styles = StyleSheet.create(&#123;</span><br><span class="line">  icon: &#123;</span><br><span class="line">    width: <span class="number">26</span>,</span><br><span class="line">    height: <span class="number">26</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> MyApp = TabNavigator(&#123;</span><br><span class="line">  Home: &#123;</span><br><span class="line">    screen: MyHomeScreen,</span><br><span class="line">  &#125;,</span><br><span class="line">  Notifications: &#123;</span><br><span class="line">    screen: MyNotificationsScreen,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;, &#123;</span><br><span class="line">  tabBarOptions: &#123;</span><br><span class="line">    activeTintColor: <span class="string">'#e91e63'</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h2 id="API-定义"><a href="#API-定义" class="headerlink" title="API 定义"></a>API 定义</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">TabNavigator(RouteConfigs, TabNavigatorConfig)</span><br></pre></td></tr></table></figure>
+<h3 id="路由配置-RouteConfigs"><a href="#路由配置-RouteConfigs" class="headerlink" title="路由配置(RouteConfigs)"></a>路由配置(RouteConfigs)</h3><p>路由配置对象是从路由名称到路由配置的映射，它告诉导航器该路由的内容，请参阅<code>StackNavigator</code>中的示例。</p>
+<h3 id="标签导航器配置-TabNavigatorConfig"><a href="#标签导航器配置-TabNavigatorConfig" class="headerlink" title="标签导航器配置(TabNavigatorConfig)"></a>标签导航器配置(TabNavigatorConfig)</h3><ul>
+<li><code>tabBarComponent</code> - 用作标签栏的组件，例如。 <code>TabBarBottom</code>（这是iOS上的默认），<code>TabBarTop</code>（这是Android上的默认）</li>
+<li><code>tabBarPosition</code> - 标签栏的位置可以是“top”或“bottom”</li>
+<li><code>swipeEnabled</code> - 是否允许在标签之间进行滑动</li>
+<li><code>animationEnabled</code> - 是否在切换标签时启动动画</li>
+<li><code>lazy</code> - 是否根据需要懒加载标签，而不是提前渲染</li>
+<li><code>tabBarOptions</code> - 配置标签栏，见下文。</li>
+</ul>
+<p>这几个选项被传递到底层路由器来修改导航逻辑：</p>
+<ul>
+<li><code>initialRouteName</code> - 第一次加载时初始标签路由的routeName</li>
+<li><code>order</code> -定义标签卡顺序的routeNames数组</li>
+<li><code>paths</code> - 提供routeName到路径配置的映射，该配置将覆盖routeConfigs中设置的路径.(不太明白)</li>
+<li><code>backBehavior</code> - 按下后退按钮是否会使Tab键切换到初始选项卡？如果是，设置为<code>initialRoute</code>，否则为<code>none</code>。默认为<code>initialRoute</code>行为。</li>
+</ul>
+<h3 id="tabBarOptions-for-TabBarBottom-default-tab-bar-on-iOS"><a href="#tabBarOptions-for-TabBarBottom-default-tab-bar-on-iOS" class="headerlink" title="tabBarOptions for TabBarBottom (default tab bar on iOS)"></a><code>tabBarOptions</code> for <code>TabBarBottom</code> (default tab bar on iOS)</h3><p>使用<code>TabBarBottom</code>组件的标签栏选项(tabBarOptions)(在IOS上默认使用此组件)</p>
+<ul>
+<li><code>activeTintColor</code> -激活标签的标题和图标的颜色值</li>
+<li><code>activeBackgroundColor</code> - 激活标签的标题和图标的背景颜色值</li>
+<li><code>inactiveTintColor</code> - 非激活标签的标签和图标颜色</li>
+<li><code>inactiveBackgroundColor</code> - 非激活标签的标签和图标的背景颜色值</li>
+<li><code>showLabel</code> - 是否显示标签的标题，默认为true显示</li>
+<li><code>style</code> - 标签栏的样式对象</li>
+<li><code>labelStyle</code> - 标签标题样式对象</li>
+<li><code>tabStyle</code> - 标签的样式对象</li>
+</ul>
+<p>示例:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">tabBarOptions: &#123;</span><br><span class="line">  activeTintColor: <span class="string">'#e91e63'</span>,</span><br><span class="line">  labelStyle: &#123;</span><br><span class="line">    fontSize: <span class="number">12</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  style: &#123;</span><br><span class="line">    backgroundColor: <span class="string">'blue'</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="tabBarOptions-for-TabBarTop-default-tab-bar-on-Android"><a href="#tabBarOptions-for-TabBarTop-default-tab-bar-on-Android" class="headerlink" title="tabBarOptions for TabBarTop (default tab bar on Android)"></a><code>tabBarOptions</code> for <code>TabBarTop</code> (default tab bar on Android)</h3><p>使用<code>TabBarTop</code>组件的标签栏选项(tabBarOptions)(在Android上默认使用此组件)</p>
+<ul>
+<li><code>activeTintColor</code> -激活标签的标题和图标的颜色值</li>
+<li><p><code>inactiveTintColor</code> - 非激活标签的标签和图标颜色</p>
+</li>
+<li><p><code>showIcon</code> - 是否显示标签的图标，默认为false不显示</p>
+</li>
+<li><code>showLabel</code> - 是否显示标签的标题，默认为true显示</li>
+<li><code>upperCaseLabel</code> - 是否使标签大写，默认为true</li>
+<li><code>pressColor</code> - 按压为材质波纹颜色值 (仅Android &gt;= 5.0)</li>
+<li><code>pressOpacity</code> - 按压标签的不透明度 (iOS 和 仅Android &lt; 5.0)</li>
+<li><code>scrollEnabled</code> - 是否启用可滚动选项卡</li>
+<li><code>tabStyle</code> - 标签的样式对象</li>
+<li><code>indicatorStyle</code> - 标签指示器的样式对象（选项卡底部的行）</li>
+<li><code>labelStyle</code> - 标签标题的样式对象</li>
+<li><code>iconStyle</code> - 标签图标的样式对象</li>
+<li><code>style</code> - 标签栏的对象</li>
+</ul>
+<p>示例:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">tabBarOptions: &#123;</span><br><span class="line">  labelStyle: &#123;</span><br><span class="line">    fontSize: <span class="number">12</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  style: &#123;</span><br><span class="line">    backgroundColor: <span class="string">'blue'</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="屏幕导航选项-Screen-Navigation-Options"><a href="#屏幕导航选项-Screen-Navigation-Options" class="headerlink" title="屏幕导航选项(Screen Navigation Options)"></a>屏幕导航选项(Screen Navigation Options)</h3><h4 id="title"><a href="#title" class="headerlink" title="title"></a><code>title</code></h4><p>可用作<code>headerTitle</code>和<code>tabBarLabel</code>的回退的通用标题</p>
+<h4 id="tabBarVisible"><a href="#tabBarVisible" class="headerlink" title="tabBarVisible"></a><code>tabBarVisible</code></h4><p>True或false显示或隐藏选项卡栏，如果未设置，则默认为true</p>
+<h4 id="tabBarIcon"><a href="#tabBarIcon" class="headerlink" title="tabBarIcon"></a><code>tabBarIcon</code></h4><p>React元素(组件)或赋予{focused：boolean，tintColor：string}的一个函数返回一个React元素(组件)，以在tab栏中显示</p>
+<h4 id="tabBarLabel"><a href="#tabBarLabel" class="headerlink" title="tabBarLabel"></a><code>tabBarLabel</code></h4><p>标签栏或React元素中显示的标签的标题字符串，或给定{focused：boolean，tintColor：string}的函数返回一个React元素(组件)，用以显示在选项卡栏中。未定义时，使用场景标题(<code>title</code>)。要隐藏，请参阅上一节中的<code>tabBarOptions.showLabel</code>。</p>
+<h3 id="导航器属性-Navigator-Props"><a href="#导航器属性-Navigator-Props" class="headerlink" title="导航器属性(Navigator Props)"></a>导航器属性(Navigator Props)</h3><p>由<code>TabNavigator（...）</code>创建的导航器组件具有以下属性：</p>
+<ul>
+<li><code>screenProps</code> - 向子屏幕传递额外的选项和导航选项，例如：</li>
+</ul>
+ <figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> TabNav = TabNavigator(&#123;</span><br><span class="line">  <span class="comment">// 配置</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">&lt;TabNav</span><br><span class="line">  screenProps=&#123;<span class="comment">/* 这个属性传递给子屏幕组件，在子屏幕组件中作为this.props.screenProps使用 */</span>&#125;</span><br><span class="line">/&gt;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>感谢您的支持，这将鼓励我坚持技术分享！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="http://cn.gravatar.com/userimage/119205447/f356a9687dd39e3fb68fa6ad110b31a7.png?size=200" alt="William-Dream WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="http://cn.gravatar.com/userimage/119205447/aecd8d2eaf8428ddaad1b31aaf41a333.jpg?size=200" alt="William-Dream Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/31/stack-navigator/" rel="next" title="栈导航器(StackNavigator)">
+                <i class="fa fa-chevron-left"></i> 栈导航器(StackNavigator)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/06/02/drawer-navigator/" rel="prev" title="抽屉导航器(DrawerNavigator)">
+                抽屉导航器(DrawerNavigator) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yODE4MC80NzUz"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://www.gravatar.com/avatar/c8b98e5df395f0e0fd3b47948b37b881.jpg?s=215"
+               alt="William-Dream" />
+          <p class="site-author-name" itemprop="name">William-Dream</p>
+           
+              <p class="site-description motion-element" itemprop="description">为了梦-追梦,我的英文名由此而来</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">83</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/li-jun-bo" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              Links
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.lijunbo.com/" title="Net" target="_blank">Net</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#API-定义"><span class="nav-number">1.</span> <span class="nav-text">API 定义</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#路由配置-RouteConfigs"><span class="nav-number">1.1.</span> <span class="nav-text">路由配置(RouteConfigs)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#标签导航器配置-TabNavigatorConfig"><span class="nav-number">1.2.</span> <span class="nav-text">标签导航器配置(TabNavigatorConfig)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tabBarOptions-for-TabBarBottom-default-tab-bar-on-iOS"><span class="nav-number">1.3.</span> <span class="nav-text">tabBarOptions for TabBarBottom (default tab bar on iOS)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tabBarOptions-for-TabBarTop-default-tab-bar-on-Android"><span class="nav-number">1.4.</span> <span class="nav-text">tabBarOptions for TabBarTop (default tab bar on Android)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#屏幕导航选项-Screen-Navigation-Options"><span class="nav-number">1.5.</span> <span class="nav-text">屏幕导航选项(Screen Navigation Options)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#title"><span class="nav-number">1.5.1.</span> <span class="nav-text">title</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#tabBarVisible"><span class="nav-number">1.5.2.</span> <span class="nav-text">tabBarVisible</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#tabBarIcon"><span class="nav-number">1.5.3.</span> <span class="nav-text">tabBarIcon</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#tabBarLabel"><span class="nav-number">1.5.4.</span> <span class="nav-text">tabBarLabel</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#导航器属性-Navigator-Props"><span class="nav-number">1.6.</span> <span class="nav-text">导航器属性(Navigator Props)</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">William-Dream</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("PWTRJaGA9VmnmuJISstgYQVk-gzGzoHsz", "OhMVXOeW5jbdIohUayYbpq1v");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+  
+
+
+  
+
+</body>
+</html>
